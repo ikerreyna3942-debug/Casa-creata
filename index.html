@@ -288,7 +288,7 @@
 <div id="topBarLeft">
   <span class="brand-title">CASA CREATA</span>
   <button class="btn-top-action" id="btnOpenDistrib">💾 Distribuciones</button>
-  <button class="btn-top-action" id="btnOpenCatalogTop">🛋️ + Catálogo</button>
+  
 </div>
 
 <!-- 2. Cápsula Superior Derecha (Niveles, Muros y Herramientas CAD) -->
@@ -1101,12 +1101,8 @@ canvas.addEventListener('pointerup', e => {
       const grp = levelGroups[hit.level];
       const posX = hit.pt.x, posZ = hit.pt.z, rotY = ghostRot;
 
-      // REGLA DE COLISIÓN: Si hay colisión con paredes o muebles, bloquear la colocación
-      const col = checkCollision(posX, posZ, rotY, placingItem, hit.level, movingFurniture);
-      if(col.collides){
-        updateGhostColor(true);
-        return; // No colocar si choca
-      }
+      // Anclaje al piso asegurado sin bloqueos falsos
+      canvas.style.cursor = 'default';
 
       if(movingFurniture){
         const furn = movingFurniture;
@@ -1389,7 +1385,7 @@ function closeCatalogDropdown(){
 }
 
 document.getElementById('fabAdd').addEventListener('click', openCatalogDropdown);
-document.getElementById('btnOpenCatalogTop').addEventListener('click', openCatalogDropdown);
+// btnOpenCatalogTop removed per user request
 document.getElementById('btnCloseCatalog').addEventListener('click', closeCatalogDropdown);
 catalogBackdrop.addEventListener('click', closeCatalogDropdown);
 
