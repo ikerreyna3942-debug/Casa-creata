@@ -859,7 +859,7 @@ scene.background = new THREE.Color(0x0e0f12);
 
 const CENTER = new THREE.Vector3(EJES_X.E/2, 3.2, -EJES_Y['1']/2);
 const camera = new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 0.1, 500);
-camera.position.set(CENTER.x + 32, 28, CENTER.z + 42);
+camera.position.set(CENTER.x + 32, 32, CENTER.z + 40);
 
 // HEADLIGHT: Luz direccional frontal vinculada a la cámara para eliminar cualquier sombra oscura
 const headlight = new THREE.DirectionalLight(0xffffff, 1.35);
@@ -868,20 +868,95 @@ camera.add(headlight);
 scene.add(camera);
 
 const controls = new OrbitControls(camera, canvas);
-controls.target.copy(CENTER);
+controls.target.set(CENTER.x, 8.5, CENTER.z); // Centrado en la maqueta tridimensional
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
-controls.zoomToCursor = false; // DESACTIVADO: garantiza que la cámara pivote y haga zoom estable sobre el objeto centrado sin desplazarse
-controls.minDistance = 0.25; // Permite acercamiento fluido hasta 25 cm para inspección de acabados sin topar con paredes invisibles
+controls.zoomToCursor = false;
+controls.minDistance = 0.25;
 controls.maxDistance = 150.0;
 controls.minPolarAngle = 0.05;
-controls.maxPolarAngle = Math.PI * 0.485;
+controls.maxPolarAngle = Math.PI * 0.43; // 77.4°: evita visión horizontal a ras de piso que muestra vacíos negros entre niveles
 controls.autoRotate = false;
 controls.autoRotateSpeed = 1.6;
 
-canvas.addEventListener('wheel', () => {
-  if(cameraAnim) cameraAnim = null;
+// ZOOM INTELIGENTE HACIA EL CURSOR (Raycast directo a pisos, muebles y muros)
+canvas.addEventListener('wheel', (e) => {
+  if(cameraAnim) cameraAnim = null; // Cancela animación en curso
+
+  const rect = canvas.getBoundingClientRect();
+  const mx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  const my = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  const wheelRay = new THREE.Raycaster();
+  wheelRay.setFromCamera(new THREE.Vector2(mx, my), camera);
+
+  if(e.deltaY < 0){
+    // Zoom IN: si el cursor apunta a un piso, mueble o pared, lerp suave hacia ese punto
+    const targets = [];
+    Object.values(levelGroups).forEach(grp => {
+      if(grp && grp.visible){
+        grp.traverse(c => {
+          if(c.isMesh && (c.userData.isFloor || c.userData.parentFurniture || c.userData.isWall || c.userData.isCol)){
+            targets.push(c);
+          }
+        });
+      }
+    });
+    const hits = wheelRay.intersectObjects(targets, false);
+    if(hits.length > 0){
+      const hitPt = hits[0].point;
+      // Aproximación suave del pivote hacia el punto señalado (15% por scroll)
+      controls.target.lerp(hitPt, 0.15);
+    }
+  } else {
+    // Zoom OUT: retorno suave hacia el centro general del nivel activo
+    const targetCenterY = (currentFloorMode === 'exploded') ? 8.5 : 1.2;
+    const defaultCenter = new THREE.Vector3(CENTER.x, targetCenterY, CENTER.z);
+    controls.target.lerp(defaultCenter, 0.05);
+  }
 }, { passive: true });
+
+// DOBLE CLIC PARA ENFOCAR HABITACIÓN O MUEBLE DE INMEDIATO
+canvas.addEventListener('dblclick', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  const my = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  const dblRay = new THREE.Raycaster();
+  dblRay.setFromCamera(new THREE.Vector2(mx, my), camera);
+
+  // 1. Doble clic en mueble: enfocar directamente
+  const furnTargets = [];
+  placedFurniture.forEach(f => {
+    if(f.visible && f.parent && f.parent.visible){
+      f.traverse(c => { if(c.isMesh && !c.userData.isFloor) furnTargets.push(c); });
+    }
+  });
+  const furnHits = dblRay.intersectObjects(furnTargets, false);
+  if(furnHits.length > 0){
+    const furn = furnHits[0].object.userData.parentFurniture;
+    if(furn){
+      selectFurniture(furn);
+      document.getElementById('btnResetView').click();
+      return;
+    }
+  }
+
+  // 2. Doble clic en habitación / piso / muro: volar suavemente a ese punto
+  const floorTargets = [];
+  Object.values(levelGroups).forEach(grp => {
+    if(grp && grp.visible){
+      grp.traverse(c => { if(c.isMesh && (c.userData.isFloor || c.userData.isWall)) floorTargets.push(c); });
+    }
+  });
+  const floorHits = dblRay.intersectObjects(floorTargets, false);
+  if(floorHits.length > 0){
+    const pt = floorHits[0].point;
+    const destTarget = new THREE.Vector3(pt.x, pt.y + 0.3, pt.z);
+    const viewDir = camera.position.clone().sub(controls.target).normalize();
+    const destCam = destTarget.clone().add(viewDir.multiplyScalar(6.5));
+    if(destCam.y < destTarget.y + 2.8) destCam.y = destTarget.y + 2.8;
+    animateCameraTo(destCam, destTarget, 420);
+  }
+});
 
 // Iluminación ambiental y hemisférica amplia y luminosa
 const ambLight = new THREE.AmbientLight(0xffffff, 1.85);
@@ -1087,7 +1162,9 @@ function setFloorMode(mode){
       targetY[L.id] = (L.id==='PB') ? 0 : (L.id==='N1' ? H_PB + 4.5 : H_PB + H_N1 + 9.0);
       levelGroups[L.id].visible = true;
     });
-    controls.target.y = 6.5;
+    const destTarget = new THREE.Vector3(CENTER.x, 8.5, CENTER.z);
+    const destCam = new THREE.Vector3(CENTER.x + 32, 32, CENTER.z + 40);
+    animateCameraTo(destCam, destTarget, 500);
   } else {
     activeWorkingLevel = mode;
     NIVELES.forEach(L => {
@@ -1099,9 +1176,10 @@ function setFloorMode(mode){
         levelGroups[L.id].visible = false;
       }
     });
-    controls.target.y = 1.4;
+    const destTarget = new THREE.Vector3(CENTER.x, 1.2, CENTER.z);
+    const destCam = new THREE.Vector3(CENTER.x + 24, 20, CENTER.z + 28);
+    animateCameraTo(destCam, destTarget, 480);
   }
-  controls.update();
 }
 
 document.querySelectorAll('#topBarRight .pill-btn[data-mode]').forEach(btn => {
@@ -1235,9 +1313,16 @@ document.getElementById('btnResetView').addEventListener('click', () => {
     );
     animateCameraTo(destCam, destTarget, 450);
   } else {
-    const destCam = new THREE.Vector3(CENTER.x + 30, 26, CENTER.z + 38);
-    const destTarget = CENTER.clone();
-    animateCameraTo(destCam, destTarget, 500);
+    // Vista general adaptada al modo de piso actual (3 Niveles vs Piso Individual)
+    if(currentFloorMode === 'exploded'){
+      const destTarget = new THREE.Vector3(CENTER.x, 8.5, CENTER.z);
+      const destCam = new THREE.Vector3(CENTER.x + 32, 32, CENTER.z + 40);
+      animateCameraTo(destCam, destTarget, 500);
+    } else {
+      const destTarget = new THREE.Vector3(CENTER.x, 1.2, CENTER.z);
+      const destCam = new THREE.Vector3(CENTER.x + 24, 20, CENTER.z + 28);
+      animateCameraTo(destCam, destTarget, 500);
+    }
   }
 });
 
