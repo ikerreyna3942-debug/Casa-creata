@@ -2,7 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0e0f12">
 <title>CASA CREATA · Showroom 3D Interactivo</title>
 <style>
   :root{
@@ -19,7 +23,7 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;background:var(--bg);overflow:hidden;font-family:"Inter","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-  #c{position:fixed;inset:0;display:block}
+  #c{position:fixed;inset:0;display:block;touch-action:none;-webkit-touch-callout:none;user-select:none}
 
   /* 1. Cápsula Superior Izquierda: CASA CREATA + [💾 Distribuciones] + [+ Catálogo] */
   #topBarLeft{
@@ -250,8 +254,8 @@
   .ficha-table{width:100%;border-collapse:collapse;font-size:10.5px;text-align:center;border-radius:8px;overflow:hidden}
   .ficha-table th{background:rgba(255,255,255,.08);color:#d0ccc4;padding:5px 3px;font-weight:700;border:1px solid rgba(255,255,255,.08)}
   .ficha-table td{background:rgba(255,255,255,.03);color:#fff;padding:6px 3px;border:1px solid rgba(255,255,255,.08);font-weight:700}
-  .sales-tier-0-4{background:#f4cccc !important;color:#782828 !important}
-  .sales-tier-4-6{background:#ffe599 !important;color:#6b5200 !important}
+  .sales-tier-0-4{background:#ea9999 !important;color:#4a1212 !important;font-weight:700}
+  .sales-tier-4-6{background:#ffd966 !important;color:#4a3800 !important;font-weight:700}
   .sales-tier-6-10{background:#fce5cd !important;color:#7a4413 !important}
   .sales-tier-10plus{background:#d9ead3 !important;color:#1e5e22 !important}
   .btn-close-ficha{
@@ -279,6 +283,182 @@
     background:rgba(255,255,255,.05);padding:8px 12px;border-radius:8px;
     display:flex;align-items:center;justify-content:space-between;font-size:12px;
   }
+
+  /* =====================================================================
+     ADAPTACIÓN TOTAL A DISPOSITIVOS MÓVILES (SMARTPHONES Y TABLETS)
+     ===================================================================== */
+  @media (max-width: 768px) {
+    /* Barra superior izquierda compacta */
+    #topBarLeft {
+      top: 10px;
+      left: 10px;
+      padding: 5px 12px;
+      gap: 8px;
+      z-index: 25;
+    }
+    .brand-title {
+      font-size: 11px;
+      letter-spacing: .04em;
+    }
+    .btn-top-action {
+      font-size: 10.5px;
+      padding: 4px 9px;
+    }
+
+    /* Barra superior derecha reubicada en segunda fila desplazable con el pulgar */
+    #topBarRight {
+      top: 50px;
+      left: 10px;
+      right: 10px;
+      max-width: calc(100vw - 20px);
+      padding: 4px 6px;
+      gap: 4px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      justify-content: flex-start;
+    }
+    .pill-btn {
+      font-size: 10.5px;
+      padding: 5px 9px;
+      flex-shrink: 0;
+    }
+    .pill-sep {
+      height: 14px;
+      margin: 0 2px;
+    }
+
+    /* Popover de slider de Muros centrado en pantalla móvil */
+    #murosSliderWrap {
+      top: 92px;
+      left: 10px;
+      right: 10px;
+      width: auto;
+      min-width: unset;
+    }
+
+    /* Catálogo desplegable adaptado a pantalla móvil completa con cuadrícula 2 columnas */
+    #catalogDropdown {
+      max-height: 92vh;
+      border-radius: 0 0 20px 20px;
+    }
+    .catalog-top-bar {
+      padding: 12px 14px 8px;
+      gap: 8px;
+    }
+    .catalog-title-group h3 {
+      font-size: 14px;
+    }
+    .catalog-title-group p {
+      font-size: 10px;
+    }
+    .cat-chips-bar {
+      width: 100%;
+      padding-bottom: 4px;
+      gap: 4px;
+    }
+    .cat-chip {
+      font-size: 10.5px;
+      padding: 4px 10px;
+    }
+    .catalog-scroll-body {
+      padding: 10px 12px 24px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .prod-card {
+      min-height: 195px;
+      border-radius: 12px;
+    }
+    .prod-card-img {
+      height: 95px;
+      padding: 6px;
+    }
+    .prod-card-body {
+      padding: 8px;
+    }
+    .prod-name {
+      font-size: 11px;
+      line-height: 1.2;
+    }
+    .prod-dim {
+      font-size: 9px;
+      margin-top: 2px;
+    }
+    .btn-card-add {
+      padding: 5px 0;
+      font-size: 10.5px;
+      margin-top: 6px;
+      border-radius: 6px;
+    }
+
+    /* Tarjeta lateral convertida en Bottom Sheet Drawer nativo en móvil */
+    #selectedCardWrap {
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-width: 100%;
+      max-height: 68vh;
+      border-radius: 20px 20px 0 0;
+      padding: 10px 14px 22px;
+      box-shadow: 0 -12px 40px rgba(0,0,0,.7);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      background: rgba(26,26,30,.98);
+      backdrop-filter: blur(20px);
+      z-index: 50;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    #selectedCardWrap::before {
+      content: '';
+      display: block;
+      width: 44px;
+      height: 4px;
+      background: rgba(255,255,255,.3);
+      border-radius: 2px;
+      margin: 0 auto 8px;
+    }
+    .sel-card {
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+    }
+    .main-photo-box {
+      height: 155px;
+    }
+    .thumb-box {
+      width: 48px;
+      height: 48px;
+    }
+    #selectedCardWrap.open ~ #fabAdd {
+      display: none;
+    }
+
+    /* Botón Flotante [+] adaptado en tamaño para pantallas táctiles */
+    #fabAdd {
+      bottom: 16px;
+      right: 16px;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+    }
+
+    /* Modal de distribuciones responsive */
+    .distrib-box {
+      padding: 16px;
+      border-radius: 16px;
+    }
+    .distrib-item {
+      padding: 8px 10px;
+      font-size: 11.5px;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -842,10 +1022,11 @@ function loadGLB(glbName, cb){
 }
 
 function getSalesTierColor(num){
-  if(num <= 4) return 0xf4cccc; // Rojo suave
-  if(num <= 6) return 0xffe599; // Amarillo suave
-  if(num <= 10) return 0xfce5cd; // Naranja suave
-  return 0xd9ead3; // Verde suave
+  // Tonos +30% más vivos y definidos sobre el piso blanco arquitectónico
+  if(num <= 4) return 0xea9999; // Rojo vivo
+  if(num <= 6) return 0xffd966; // Amarillo/Oro vivo
+  if(num <= 10) return 0xf9cb9c; // Naranja vivo
+  return 0xb6d7a8; // Verde vivo
 }
 
 function getSalesClass(num){
@@ -898,16 +1079,25 @@ function createFurnitureInstance(item, callback){
     });
     group.add(wrapper);
 
-    // Halo circular tenue inferior según ventas
+    // Halo circular inferior 30% más fuerte y nítido según ventas
     const salesNum = item.ventas.casa_creata || 0;
     const haloColor = getSalesTierColor(salesNum);
     const radius = Math.max(item.dim_m[0], item.dim_m[1]) * 0.55;
-    const haloGeo = new THREE.CircleGeometry(radius, 32);
+    const haloGeo = new THREE.CircleGeometry(radius, 36);
     haloGeo.rotateX(-Math.PI/2);
-    const haloMat = new THREE.MeshBasicMaterial({ color: haloColor, transparent:true, opacity:0.42, side:THREE.DoubleSide, depthWrite:false });
+    // Disco central con opacidad aumentada 30% (0.65)
+    const haloMat = new THREE.MeshBasicMaterial({ color: haloColor, transparent:true, opacity:0.65, side:THREE.DoubleSide, depthWrite:false });
     const haloMesh = new THREE.Mesh(haloGeo, haloMat);
     haloMesh.position.y = 0.005;
     group.add(haloMesh);
+
+    // Anillo exterior de contorno para máxima definición arquitectónica
+    const haloRingGeo = new THREE.RingGeometry(radius - 0.03, radius, 36);
+    haloRingGeo.rotateX(-Math.PI/2);
+    const haloRingMat = new THREE.MeshBasicMaterial({ color: haloColor, transparent:true, opacity:0.88, side:THREE.DoubleSide, depthWrite:false });
+    const haloRingMesh = new THREE.Mesh(haloRingGeo, haloRingMat);
+    haloRingMesh.position.y = 0.006;
+    group.add(haloRingMesh);
 
     // Invisible Click-Box para selección 100% inmediata
     const clickGeo = new THREE.BoxGeometry(Math.max(item.dim_m[0], 0.6), Math.max(item.dim_m[2], 0.6), Math.max(item.dim_m[1], 0.6));
@@ -1082,7 +1272,8 @@ canvas.addEventListener('pointermove', e => {
 
 canvas.addEventListener('pointerup', e => {
   if(e.button !== 0) return;
-  if(Math.hypot(e.clientX - ptrDownPos.x, e.clientY - ptrDownPos.y) > 6) return;
+  const maxMove = (e.pointerType === 'touch') ? 18 : 6;
+  if(Math.hypot(e.clientX - ptrDownPos.x, e.clientY - ptrDownPos.y) > maxMove) return;
 
   const rect = canvas.getBoundingClientRect();
   mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -1664,7 +1855,15 @@ document.getElementById('btnClearAllFurn').addEventListener('click', () => {
    13. BUCLE DE RENDER Y ANIMACIÓN
    ===================================================================== */
 function onResize(){
-  camera.aspect = innerWidth / innerHeight;
+  const aspect = innerWidth / innerHeight;
+  camera.aspect = aspect;
+  if(aspect < 1.0){
+    // Pantalla vertical móvil (smartphones en vertical):
+    // Aumentamos FOV progresivamente para encuadrar todo el edificio sin recortar laterales
+    camera.fov = Math.min(62, Math.max(45, 40 / aspect * 0.80));
+  } else {
+    camera.fov = 40;
+  }
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight, false);
 }
