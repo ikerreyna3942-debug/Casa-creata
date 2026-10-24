@@ -326,8 +326,28 @@
   .ficha-table td{background:rgba(255,255,255,.03);color:#fff;padding:6px 3px;border:1px solid rgba(255,255,255,.08);font-weight:700}
   .sales-tier-0-4{background:#ea9999 !important;color:#4a1212 !important;font-weight:700}
   .sales-tier-4-6{background:#ffd966 !important;color:#4a3800 !important;font-weight:700}
-  .sales-tier-6-10{background:#fce5cd !important;color:#7a4413 !important}
-  .sales-tier-10plus{background:#d9ead3 !important;color:#1e5e22 !important}
+  .sales-tier-6-10{background:#f9cb9c !important;color:#7c2d12 !important;font-weight:700}
+  .sales-tier-10plus{background:#b6d7a8 !important;color:#14532d !important;font-weight:700}
+  .active-store-cell{
+    outline: 2.5px solid #ffffff !important;
+    outline-offset: -2.5px;
+    box-shadow: 0 0 12px rgba(255,255,255,0.55) !important;
+    font-weight: 900 !important;
+  }
+  .active-store-th{
+    background: var(--store-color, #10b981) !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  }
+  .active-store-cell-inv{
+    outline: 2px solid var(--store-color, #10b981) !important;
+    outline-offset: -2px;
+    font-weight: 800 !important;
+  }
+  #fichaStoreBadge{
+    transition: all .2s ease;
+  }
   .btn-close-ficha{
     background:#ebd8c3;border:none;color:#1c1a18;font-weight:700;font-size:11.5px;cursor:pointer;
     padding:8px;border-radius:999px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.25);
@@ -671,7 +691,10 @@
   </div>
 
   <div class="ficha-card" id="fichaCard">
-    <h4 class="ficha-title">FICHA TÉCNICA Y ESCALA REAL</h4>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <h4 class="ficha-title" style="margin:0">FICHA TÉCNICA Y ESCALA REAL</h4>
+    </div>
+    <div id="fichaStoreBadge" style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;margin-bottom:8px;"></div>
     <div class="ficha-info-box">
       <div class="ficha-row">
         <span class="ficha-label">NOMBRE:</span>
@@ -695,7 +718,7 @@
     <table class="ficha-table">
       <thead>
         <tr>
-          <th>CEDIS</th><th>PTC</th><th>PLAYA</th><th>COLOSIO</th><th>C. CREATA</th>
+          <th>CEDIS</th><th id="th_inv_ptc">PTC</th><th id="th_inv_playa">PLAYA</th><th id="th_inv_colosio">COLOSIO</th><th id="th_inv_casa_creata">C. CREATA</th>
         </tr>
       </thead>
       <tbody>
@@ -713,7 +736,7 @@
     <table class="ficha-table">
       <thead>
         <tr>
-          <th>PTC</th><th>PLAYA</th><th>COLOSIO</th><th>C. CREATA</th>
+          <th id="th_v_ptc">PTC</th><th id="th_v_playa">PLAYA</th><th id="th_v_colosio">COLOSIO</th><th id="th_v_casa_creata">C. CREATA</th>
         </tr>
       </thead>
       <tbody>
@@ -848,13 +871,17 @@ const controls = new OrbitControls(camera, canvas);
 controls.target.copy(CENTER);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
-controls.zoomToCursor = true;
-controls.minDistance = 1.8;
-controls.maxDistance = 140.0;
+controls.zoomToCursor = false; // DESACTIVADO: garantiza que la cámara pivote y haga zoom estable sobre el objeto centrado sin desplazarse
+controls.minDistance = 0.25; // Permite acercamiento fluido hasta 25 cm para inspección de acabados sin topar con paredes invisibles
+controls.maxDistance = 150.0;
 controls.minPolarAngle = 0.05;
 controls.maxPolarAngle = Math.PI * 0.485;
 controls.autoRotate = false;
 controls.autoRotateSpeed = 1.6;
+
+canvas.addEventListener('wheel', () => {
+  if(cameraAnim) cameraAnim = null;
+}, { passive: true });
 
 // Iluminación ambiental y hemisférica amplia y luminosa
 const ambLight = new THREE.AmbientLight(0xffffff, 1.85);
@@ -1195,13 +1222,22 @@ document.getElementById('btnResetView').addEventListener('click', () => {
   if(selectedFurniture && selectedFurniture.parent){
     const wp = new THREE.Vector3();
     selectedFurniture.getWorldPosition(wp);
-    const destTarget = new THREE.Vector3(wp.x, wp.y + 0.4, wp.z);
-    const destCam = new THREE.Vector3(wp.x + 3.8, wp.y + 2.8, wp.z + 4.2);
-    animateCameraTo(destCam, destTarget, 500);
+    const item = selectedFurniture.userData.item;
+    const dims = (item && item.dim_m) ? item.dim_m : [1, 1, 0.8];
+    const maxDim = Math.max(dims[0] || 1, dims[1] || 1, dims[2] || 0.8);
+    // Distancia de encuadre óptima proporcional al tamaño real del producto
+    const viewDist = Math.max(2.0, Math.min(maxDim * 1.6 + 1.1, 4.8));
+    const destTarget = new THREE.Vector3(wp.x, wp.y + (dims[2] || 0.8) * 0.4, wp.z);
+    const destCam = new THREE.Vector3(
+      wp.x + viewDist * 0.72,
+      wp.y + viewDist * 0.55 + 0.2,
+      wp.z + viewDist * 0.72
+    );
+    animateCameraTo(destCam, destTarget, 450);
   } else {
-    const destCam = new THREE.Vector3(CENTER.x + 32, 28, CENTER.z + 42);
+    const destCam = new THREE.Vector3(CENTER.x + 30, 26, CENTER.z + 38);
     const destTarget = CENTER.clone();
-    animateCameraTo(destCam, destTarget, 550);
+    animateCameraTo(destCam, destTarget, 500);
   }
 });
 
@@ -1760,20 +1796,59 @@ function renderFichaTables(item){
   document.getElementById('inv_colosio').textContent = stock.colosio || 0;
   document.getElementById('inv_casa_creata').textContent = stock.casa_creata || 0;
 
-  const tiendas = [
-    { key: 'ptc', el: document.getElementById('v_ptc'), v: ventas.ptc || 0 },
-    { key: 'playa', el: document.getElementById('v_playa'), v: ventas.playa || 0 },
-    { key: 'colosio', el: document.getElementById('v_colosio'), v: ventas.colosio || 0 },
-    { key: 'casa_creata', el: document.getElementById('v_casa_creata'), v: ventas.casa_creata || 0 },
+  const invTiendas = [
+    { key: 'ptc', el: document.getElementById('inv_ptc'), th: document.getElementById('th_inv_ptc') },
+    { key: 'playa', el: document.getElementById('inv_playa'), th: document.getElementById('th_inv_playa') },
+    { key: 'colosio', el: document.getElementById('inv_colosio'), th: document.getElementById('th_inv_colosio') },
+    { key: 'casa_creata', el: document.getElementById('inv_casa_creata'), th: document.getElementById('th_inv_casa_creata') },
   ];
-  tiendas.forEach(t => {
-    t.el.textContent = t.v;
-    if(t.key === currentStore){
-      t.el.className = 'store-highlighted-sale';
-    } else {
-      t.el.className = getSalesClass(t.v);
+  invTiendas.forEach(t => {
+    if(t.el){
+      if(t.key === currentStore){
+        t.el.classList.add('active-store-cell-inv');
+      } else {
+        t.el.classList.remove('active-store-cell-inv');
+      }
+    }
+    if(t.th){
+      if(t.key === currentStore){
+        t.th.classList.add('active-store-th');
+      } else {
+        t.th.classList.remove('active-store-th');
+      }
     }
   });
+
+  const tiendas = [
+    { key: 'ptc', el: document.getElementById('v_ptc'), th: document.getElementById('th_v_ptc'), v: ventas.ptc || 0 },
+    { key: 'playa', el: document.getElementById('v_playa'), th: document.getElementById('th_v_playa'), v: ventas.playa || 0 },
+    { key: 'colosio', el: document.getElementById('v_colosio'), th: document.getElementById('th_v_colosio'), v: ventas.colosio || 0 },
+    { key: 'casa_creata', el: document.getElementById('v_casa_creata'), th: document.getElementById('th_v_casa_creata'), v: ventas.casa_creata || 0 },
+  ];
+  tiendas.forEach(t => {
+    if(t.el){
+      t.el.textContent = t.v;
+      t.el.className = getSalesClass(t.v) + (t.key === currentStore ? ' active-store-cell' : '');
+    }
+    if(t.th){
+      if(t.key === currentStore){
+        t.th.classList.add('active-store-th');
+      } else {
+        t.th.classList.remove('active-store-th');
+      }
+    }
+  });
+
+  const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
+  const storeSales = (ventas && ventas[currentStore] !== undefined) ? ventas[currentStore] : 0;
+  const salesTier = getSalesColorData(storeSales);
+  const badge = document.getElementById('fichaStoreBadge');
+  if(badge){
+    badge.style.background = salesTier.badgeBg;
+    badge.style.color = salesTier.badgeText;
+    badge.style.border = `1px solid ${salesTier.border}`;
+    badge.innerHTML = `🏪 Tienda Activa: <b>${storeCfg.name.toUpperCase()}</b> • <b>${storeSales}</b> ventas (${salesTier.tier})`;
+  }
 }
 
 function switchFurnitureVariant(furn, newVariantItem){
