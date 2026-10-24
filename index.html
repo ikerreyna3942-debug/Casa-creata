@@ -154,3 +154,1543 @@
     box-shadow:0 12px 32px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.3);
     z-index:30;transition:transform .2s cubic-bezier(.34,1.56,.64,1),background .15s;
     user-select:none;
+  }
+  #fabAdd:hover{transform:scale(1.08);background:#f4e6d4}
+  #fabAdd:active{transform:scale(.95)}
+
+  /* 4. Columna Flotante Derecha: Tarjeta de Mueble Seleccionado */
+  #selectedCardWrap{
+    position:fixed;top:70px;right:20px;width:340px;max-width:calc(100vw - 36px);
+    display:none;flex-direction:column;gap:10px;z-index:28;max-height:calc(100vh - 90px);
+    overflow-y:auto;scrollbar-width:none;
+  }
+  #selectedCardWrap.open{display:flex}
+  #selectedCardWrap::-webkit-scrollbar{display:none}
+
+  .sel-card{
+    background:var(--panel-dark);border-radius:18px;padding:14px;color:#fff;
+    box-shadow:0 16px 40px rgba(0,0,0,.45);border:1px solid var(--border);position:relative;
+  }
+  .sel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
+  .sel-name{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+  .sel-actions{display:flex;align-items:center;gap:6px}
+  .icon-sq-btn{
+    width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);
+    color:#e5e0d8;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;
+    transition:background .15s;
+  }
+  .icon-sq-btn:hover{background:rgba(255,255,255,.22);color:#fff}
+  .icon-sq-btn.active{background:var(--btn-pill-active);color:#221e1a}
+
+  .main-photo-box{
+    width:100%;height:200px;background:#ffffff;border-radius:12px;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;padding:12px;position:relative;
+  }
+  .main-photo-box img{max-width:100%;max-height:100%;object-fit:contain;transition:transform .2s ease}
+  .main-photo-box img.flipped{transform:scaleX(-1)}
+
+  .thumb-strip{display:flex;gap:7px;margin-top:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .thumb-strip::-webkit-scrollbar{display:none}
+  .thumb-box{
+    width:56px;height:56px;border-radius:10px;background:#ffffff;padding:4px;flex:none;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden;
+    border:2px solid transparent;transition:border-color .15s,transform .1s;
+  }
+  .thumb-box img{width:100%;height:100%;object-fit:contain}
+  .thumb-box:hover{transform:scale(1.04)}
+  .thumb-box.active{border-color:#d8c3a8}
+
+  #editControlsBox{
+    background:rgba(18,18,20,.92);border-radius:12px;padding:10px;margin-top:10px;
+    display:none;flex-direction:column;gap:8px;border:1px solid rgba(255,255,255,.08);
+  }
+  #editControlsBox.open{display:flex}
+  .edit-row{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:11.5px}
+  .btn-subtle{
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;
+    padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;
+  }
+  .btn-subtle:hover{background:rgba(255,255,255,.22)}
+  .nudge-pad{display:grid;grid-template-columns:repeat(3,24px);grid-gap:3px;margin:0 auto}
+  .nudge-b{
+    width:24px;height:24px;background:rgba(255,255,255,.1);border:none;color:#fff;
+    border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;
+  }
+  .nudge-b:hover{background:#ebd8c3;color:#1c1a18}
+
+  .variant-selector-wrap{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .variant-chip{
+    display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);padding:3px 8px;
+    border-radius:999px;cursor:pointer;font-size:10.5px;border:1px solid rgba(255,255,255,.1);
+  }
+  .variant-chip:hover{background:rgba(255,255,255,.16)}
+  .variant-chip.active{background:#ebd8c3;color:#1c1a18;font-weight:700;border-color:#ebd8c3}
+  .chip-dot{width:10px;height:10px;border-radius:5px;border:1px solid rgba(0,0,0,.2)}
+
+  /* Tarjeta 2: FICHA TÉCNICA Y ESCALA REAL */
+  .ficha-card{
+    background:var(--panel-dark);border-radius:18px;padding:16px;color:#fff;
+    box-shadow:0 16px 40px rgba(0,0,0,.45);border:1px solid var(--border);
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .ficha-title{margin:0;font-size:13.5px;font-weight:800;letter-spacing:.04em;color:#ebd8c3}
+  .ficha-info-box{display:flex;flex-direction:column;gap:7px}
+  .ficha-row{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px}
+  .ficha-label{color:var(--mut);font-weight:600}
+  .ficha-val{color:#f5f3ef;font-weight:700;text-align:right}
+  .ficha-val.measures{color:#d8c3a8;font-family:monospace;font-size:12px}
+  .ficha-sku-pill{
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+    padding:2px 8px;border-radius:6px;font-family:monospace;font-size:11px;font-weight:700;
+  }
+  .tbl-sec-title{
+    font-size:11px;font-weight:800;letter-spacing:.06em;color:#e8ded2;
+    margin-top:6px;margin-bottom:4px;text-transform:uppercase;
+  }
+  .ficha-table{width:100%;border-collapse:collapse;font-size:10.5px;text-align:center;border-radius:8px;overflow:hidden}
+  .ficha-table th{background:rgba(255,255,255,.08);color:#d0ccc4;padding:5px 3px;font-weight:700;border:1px solid rgba(255,255,255,.08)}
+  .ficha-table td{background:rgba(255,255,255,.03);color:#fff;padding:6px 3px;border:1px solid rgba(255,255,255,.08);font-weight:700}
+  .sales-tier-0-4{background:#f4cccc !important;color:#782828 !important}
+  .sales-tier-4-6{background:#ffe599 !important;color:#6b5200 !important}
+  .sales-tier-6-10{background:#fce5cd !important;color:#7a4413 !important}
+  .sales-tier-10plus{background:#d9ead3 !important;color:#1e5e22 !important}
+  .btn-close-ficha{
+    background:#ebd8c3;border:none;color:#1c1a18;font-weight:700;font-size:11.5px;cursor:pointer;
+    padding:8px;border-radius:999px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.25);
+    transition:background .15s;margin-top:4px;
+  }
+  .btn-close-ficha:hover{background:#f5e5d3}
+
+  /* Modal de Distribuciones Guardadas [💾 Distribuciones] */
+  #distribModalBackdrop{
+    position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);
+    z-index:45;display:none;align-items:center;justify-content:center;padding:16px;
+  }
+  #distribModalBackdrop.open{display:flex}
+  .distrib-box{
+    background:var(--panel-dark);border-radius:20px;border:1px solid var(--border);
+    box-shadow:0 24px 60px rgba(0,0,0,.6);width:420px;max-width:92vw;padding:22px;color:#fff;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .distrib-head{display:flex;align-items:center;justify-content:space-between}
+  .distrib-head h3{margin:0;font-size:15px;font-weight:700;color:#ebd8c3}
+  .distrib-list{max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+  .distrib-item{
+    background:rgba(255,255,255,.05);padding:8px 12px;border-radius:8px;
+    display:flex;align-items:center;justify-content:space-between;font-size:12px;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<!-- 1. Cápsula Superior Izquierda: CASA CREATA + [💾 Distribuciones] + [🛋️ + Catálogo] -->
+<div id="topBarLeft">
+  <span class="brand-title">CASA CREATA</span>
+  <button class="btn-top-action" id="btnOpenDistrib">💾 Distribuciones</button>
+  
+</div>
+
+<!-- 2. Cápsula Superior Derecha (Niveles, Muros y Herramientas CAD) -->
+<div id="topBarRight">
+  <button class="pill-btn active" data-mode="exploded">🏢 3 Niveles</button>
+  <button class="pill-btn" id="btnToggleMuros">🧱 Muros</button>
+  <span class="pill-sep"></span>
+  <button class="pill-btn" data-mode="PB">📍 Piso 1</button>
+  <button class="pill-btn" data-mode="N1">📍 Piso 2</button>
+  <button class="pill-btn" data-mode="N2">📍 Piso 3</button>
+  <span class="pill-sep"></span>
+  <button class="pill-btn" id="btnToggleCAD">📐 Ejes CAD</button>
+  <button class="pill-btn" id="btnAutoRot">🔄 Girar Vista</button>
+  <button class="pill-btn" id="btnResetView">🎯 Centrar</button>
+</div>
+
+<!-- Popover Desplegable para Slider [🧱 Muros] -->
+<div id="murosSliderWrap">
+  <div class="muros-slider-header">
+    <span>Altura de Muros:</span>
+    <span id="murosValTxt" style="color:#ebd8c3">100%</span>
+  </div>
+  <input type="range" id="murosRange" min="0" max="100" value="100">
+  <div class="muros-ticks">
+    <span>0% (Plano)</span>
+    <span>50%</span>
+    <span>100% (Muros)</span>
+  </div>
+</div>
+
+<!-- 3. CATÁLOGO DESPLEGABLE HACIA ABAJO (CERO AMONTONAMIENTO) -->
+<div id="catalogBackdrop"></div>
+<div id="catalogDropdown">
+  <div class="catalog-top-bar">
+    <div class="catalog-title-group">
+      <h3>🛋️ Catálogo de Mobiliario Casa Creata (3D GLB)</h3>
+      <p>Selecciona un mueble con sus medidas reales para anclarlo en el plano interactivo</p>
+    </div>
+    <div class="cat-chips-bar">
+      <button class="cat-chip active" data-cat="all">Todos</button>
+      <button class="cat-chip" data-cat="Salas">Salas</button>
+      <button class="cat-chip" data-cat="Recámaras">Recámaras</button>
+      <button class="cat-chip" data-cat="Burós">Burós</button>
+      <button class="cat-chip" data-cat="Comedores">Comedores</button>
+      <button class="cat-chip" data-cat="Auxiliares">Auxiliares</button>
+    </div>
+    <button class="btn-close-catalog" id="btnCloseCatalog" title="Cerrar Catálogo">✕</button>
+  </div>
+  <div class="catalog-scroll-body" id="catalogGrid"></div>
+</div>
+
+<!-- Botón Flotante [+] Circular en esquina -->
+<button id="fabAdd" title="Abrir Catálogo de Muebles">+</button>
+
+<!-- 4. Columna Flotante Derecha: Tarjetas de Mueble Seleccionado -->
+<div id="selectedCardWrap">
+  <div class="sel-card">
+    <div class="sel-header">
+      <span class="sel-name" id="cardProdName">Mueble</span>
+      <div class="sel-actions">
+        <button class="icon-sq-btn" id="btnToggleEdit" title="Herramientas de edición">⚙️</button>
+        <button class="icon-sq-btn" id="btnDeselect" title="Cerrar">✕</button>
+      </div>
+    </div>
+    <div class="main-photo-box">
+      <img id="cardMainImg" src="" alt="Foto Mueble">
+    </div>
+    <div class="thumb-strip" id="cardThumbStrip"></div>
+    <div class="variant-selector-wrap" id="cardVariantChips" style="display:none"></div>
+
+    <div id="editControlsBox">
+      <div class="edit-row">
+        <span>Rotación:</span>
+        <button class="btn-subtle" id="bRotM45">-45°</button>
+        <input type="range" id="rotRange" min="0" max="360" value="0" style="flex:1;accent-color:#ebd8c3">
+        <span id="rotDegTxt" style="width:30px;font-family:monospace">0°</span>
+        <button class="btn-subtle" id="bRotP45">+45°</button>
+      </div>
+      <div class="edit-row" style="justify-content:center;gap:12px;margin:4px 0">
+        <div class="nudge-pad" title="Micro-desplazamiento ortogonal (±0.05m)">
+          <div></div>
+          <button class="nudge-b" id="nZNeg">▲</button>
+          <div></div>
+          <button class="nudge-b" id="nXNeg">◀</button>
+          <button class="nudge-b" style="pointer-events:none;font-size:8px">🎯</button>
+          <button class="nudge-b" id="nXPos">▶</button>
+          <div></div>
+          <button class="nudge-b" id="nZPos">▼</button>
+          <div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <button class="btn-subtle" id="bMoveSelected" style="background:#ebd8c3;color:#1c1a18;font-weight:700">✥ Mover</button>
+          <button class="btn-subtle" id="bDelSelected" style="color:#ff7675;border-color:rgba(255,118,117,.3)">🗑️ Borrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ficha-card" id="fichaCard">
+    <h4 class="ficha-title">FICHA TÉCNICA Y ESCALA REAL</h4>
+    <div class="ficha-info-box">
+      <div class="ficha-row">
+        <span class="ficha-label">NOMBRE:</span>
+        <span class="ficha-val" id="fNombre" style="max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">-</span>
+      </div>
+      <div class="ficha-row">
+        <span class="ficha-label">MEDIDAS:</span>
+        <span class="ficha-val measures" id="fMedidas">-</span>
+      </div>
+      <div class="ficha-row">
+        <span class="ficha-label">SKU:</span>
+        <span class="ficha-sku-pill" id="fSku">---</span>
+      </div>
+      <div class="ficha-row">
+        <span class="ficha-label">PROVEEDOR:</span>
+        <span class="ficha-val" id="fProveedor">ARTEX</span>
+      </div>
+    </div>
+
+    <div class="tbl-sec-title">INVENTARIO</div>
+    <table class="ficha-table">
+      <thead>
+        <tr>
+          <th>CEDIS</th><th>PTC</th><th>PLAYA</th><th>COLOSIO</th><th>C. CREATA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="inv_cedis">0</td>
+          <td id="inv_ptc">0</td>
+          <td id="inv_playa">0</td>
+          <td id="inv_colosio">0</td>
+          <td id="inv_casa_creata">0</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tbl-sec-title">VENTAS:</div>
+    <table class="ficha-table">
+      <thead>
+        <tr>
+          <th>PTC</th><th>PLAYA</th><th>COLOSIO</th><th>C. CREATA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="v_ptc">0</td>
+          <td id="v_playa">0</td>
+          <td id="v_colosio">0</td>
+          <td id="v_casa_creata">0</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="btn-close-ficha" id="btnCloseFicha">Cerrar Ficha</button>
+  </div>
+</div>
+
+<!-- Modal [💾 Distribuciones] -->
+<div id="distribModalBackdrop">
+  <div class="distrib-box">
+    <div class="distrib-head">
+      <h3>💾 Guardar y Cargar Distribución</h3>
+      <button class="icon-sq-btn" id="btnCloseDistribModal">✕</button>
+    </div>
+    <p style="font-size:12px;color:#a8a39c;margin:0">
+      Guarda el acomodo actual de muebles de los 3 pisos o copia la URL para compartirla en cualquier dispositivo.
+    </p>
+    <div style="display:flex;gap:8px">
+      <input type="text" id="distribNameInput" placeholder="Nombre (ej. Distribución Enero 2026)" style="flex:1;background:#141416;border:1px solid #444;color:#fff;padding:8px 12px;border-radius:8px;font-size:12px">
+      <button class="btn-subtle" id="btnSaveDistribNow" style="background:#ebd8c3;color:#1c1a18;font-weight:700">Guardar</button>
+    </div>
+    <div class="distrib-list" id="savedDistribList"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+      <button class="btn-subtle" id="btnCopyUrlShare">🔗 Copiar URL Compartible</button>
+      <button class="btn-subtle" id="btnClearAllFurn" style="color:#ff7675">Limpiar Todo</button>
+    </div>
+  </div>
+</div>
+
+<script src="modelos_glb_data.js"></script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+/* =====================================================================
+   1. PLANO MAESTRO DWG OFICIAL (GEOMETRÍA Y MEDIDAS INTACTAS)
+   ===================================================================== */
+const COTAS_X = [ ['A','B',5.15], ['B','C',5.00], ['C','D',5.00], ['D','E',5.06] ];
+const COTAS_Y = [ ['8','7',2.27], ['7','6',5.00], ['6','5',5.00], ['5','4',5.00], ['4','3',3.00], ['3','2',2.53], ['2','1',1.22] ];
+const COTA_POSTERIOR = 5.28;
+const ANCHO_TOTAL = 20.21;
+const LARGO_TOTAL = 24.02;
+
+const EJES_X = { A:0 }; COTAS_X.reduce((acc,[a,b,d]) => (EJES_X[b] = +(acc + d).toFixed(3)), 0);
+const EJES_Y = { '8':0 }; COTAS_Y.reduce((acc,[a,b,d]) => (EJES_Y[b] = +(acc + d).toFixed(3)), 0);
+const LIMITE_POSTERIOR = +(EJES_Y['1'] + COTA_POSTERIOR).toFixed(3);
+
+const PERALTE = 0.18;
+const PELDANOS_E1 = 21, PELDANOS_E2 = 16;
+const H_PB = +(PELDANOS_E1*PERALTE).toFixed(3);
+const H_N1 = +(PELDANOS_E2*PERALTE).toFixed(3);
+const H_N2 = H_N1;
+const LOSA = 0.20;
+const ALT_PUERTA = 2.10, ALT_VENTANA = 2.40, LOSETA = 0.60, DESNIVEL_ESTAC = 0.30;
+
+const NIVELES = [
+  { id:'PB', num:1, label:'Piso 1', elev:0,          h:H_PB, muro:H_PB-LOSA },
+  { id:'N1', num:2, label:'Piso 2', elev:H_PB,       h:H_N1, muro:H_N1-LOSA },
+  { id:'N2', num:3, label:'Piso 3', elev:H_PB+H_N1,  h:H_N2, muro:H_N2-LOSA },
+];
+
+const DATA = {"PB":{"walls":[{"id":73,"p":[[20.01,12.47],[20.21,12.47],[20.21,17.07],[20.01,17.07]],"t":"muro"},{"id":76,"p":[[20.01,7.47],[20.21,7.47],[20.21,12.07],[20.01,12.07]],"t":"muro"},{"id":79,"p":[[20.01,2.47],[20.21,2.47],[20.21,7.07],[20.01,7.07]],"t":"muro"},{"id":82,"p":[[20.21,0.87],[20.21,2.07],[20.01,2.07],[20.01,1.07],[19.65,1.07],[19.65,0.87]],"t":"muro"},{"id":85,"p":[[20.01,17.47],[20.21,17.47],[20.21,20.07],[20.01,20.07]],"t":"muro"},{"id":88,"p":[[10.35,20.47],[10.35,20.27],[14.95,20.27],[14.95,20.47]],"t":"muro"},{"id":91,"p":[[15.35,20.47],[16.68,20.47],[16.68,20.27],[15.35,20.27]],"t":"muro"},{"id":94,"p":[[18.48,20.47],[19.81,20.47],[19.81,20.27],[18.48,20.27]],"t":"muro"},{"id":97,"p":[[5.35,20.47],[9.95,20.47],[9.95,20.27],[5.35,20.27]],"t":"muro"},{"id":100,"p":[[0.4,20.47],[4.95,20.47],[4.95,20.27],[0.4,20.27]],"t":"muro"},{"id":103,"p":[[0.0,20.07],[0.2,20.07],[0.2,17.47],[0.0,17.47]],"t":"muro"},{"id":106,"p":[[0.0,17.07],[0.2,17.07],[0.2,12.47],[0.0,12.47]],"t":"muro"},{"id":109,"p":[[0.2,12.07],[0.0,12.07],[0.0,7.47],[0.2,7.47]],"t":"muro"},{"id":112,"p":[[0.2,7.07],[0.0,7.07],[0.0,2.47],[0.2,2.47]],"t":"muro"},{"id":115,"p":[[0.0,0.87],[0.0,2.07],[0.2,2.07],[0.2,1.07],[0.56,1.07],[0.56,0.87]],"t":"muro"},{"id":118,"p":[[0.4,7.47],[3.76,7.47],[3.76,7.27],[2.76,7.27],[2.76,6.72],[2.46,6.72],[2.46,7.27],[0.46,7.27],[0.46,6.72],[0.2,6.72],[0.2,7.07],[0.4,7.07]],"t":"muro"},{"id":121,"p":[[7.06,2.47],[7.26,2.47],[7.26,6.17],[7.06,6.17],[7.06,4.82],[5.41,4.82],[5.41,5.97],[6.31,5.97],[6.31,6.17],[5.96,6.17],[5.96,7.47],[5.35,7.47],[5.35,6.29],[4.96,6.29],[4.96,3.22],[5.11,3.22],[5.11,4.67],[7.06,4.67]],"t":"muro"},{"id":124,"p":[[3.76,10.87],[0.2,10.87],[0.2,10.67],[3.76,10.67]],"t":"muro"},{"id":125,"p":[[0.2,14.65],[0.2,14.37],[3.76,14.37],[3.76,14.6],[3.01,14.6],[3.01,16.5],[2.74,16.5],[2.74,14.65]],"t":"muro"},{"id":128,"p":[[0.4,17.27],[3.01,17.27],[3.01,17.47],[0.4,17.47]],"t":"muro"},{"id":131,"p":[[3.76,20.27],[4.95,20.27],[4.95,20.07],[5.35,20.07],[5.35,20.27],[5.628,20.27],[5.628,15.22],[5.426,15.22],[5.426,16.87],[4.95,16.87],[4.95,17.07],[5.35,17.07],[5.35,17.47],[5.426,17.47],[5.426,19.7],[4.926,19.7],[4.926,19.9],[3.91,19.9],[3.91,16.8],[3.76,16.8]],"t":"muro"},{"id":134,"p":[[20.21,24.02],[14.37,24.02],[14.37,21.47],[14.57,21.47],[14.57,23.82],[20.01,23.82],[20.01,20.47],[20.21,20.47]],"t":"muro"},{"id":137,"p":[[10.1,13.47],[9.95,13.47],[9.95,12.47],[10.1,12.47]],"t":"muro"},{"id":140,"p":[[6.96,12.07],[13.56,12.07],[13.56,13.47],[13.76,13.47],[13.76,10.42],[13.56,10.42],[13.56,11.87],[10.24,11.87],[10.24,7.47],[10.04,7.47],[10.04,11.87],[7.16,11.87],[7.16,10.27],[6.96,10.27]],"t":"muro"},{"id":141,"p":[[13.56,7.37],[13.56,8.62],[13.76,8.62],[13.76,7.17],[10.35,7.17],[10.35,7.37]],"t":"muro"},{"id":146,"p":[[6.96,7.17],[6.96,8.47],[7.16,8.47],[7.16,7.37],[9.95,7.37],[9.95,7.17]],"t":"muro"},{"id":148,"p":[[15.35,20.07],[15.35,15.22],[15.14,15.22],[15.14,16.82],[14.914,16.82],[14.914,17.495],[15.226,17.495],[15.226,19.57],[14.914,19.57],[14.914,20.27],[14.95,20.27],[14.95,20.07]],"t":"muro"},{"id":149,"p":[[20.01,11.57],[16.61,11.57],[16.61,11.42],[20.01,11.42]],"t":"muro"},{"id":150,"p":[[0.0,24.02],[0.2,24.02],[0.2,20.47],[0.0,20.47]],"t":"muro"},{"id":172,"p":[[17.31,7.47],[16.61,7.47],[16.61,7.07],[16.81,7.07],[16.81,7.27],[17.31,7.27]],"t":"muro"},{"id":181,"p":[[5.35,2.47],[5.35,2.27],[8.715,2.27],[8.715,2.47]],"t":"muro"},{"id":187,"p":[[5.105,2.045],[5.105,1.045],[4.955,1.045],[4.955,2.045]],"t":"muro"},{"id":188,"p":[[11.415,2.47],[14.95,2.47],[14.95,2.27],[11.415,2.27]],"t":"muro"},{"id":262,"p":[[15.28,1.07],[15.68,1.07],[15.68,0.87],[15.08,0.87],[15.08,2.07],[15.28,2.07]],"t":"muro"},{"id":332,"p":[[5.13,1.07],[5.13,0.87],[4.53,0.87],[4.53,1.07]],"t":"muro"},{"id":364,"p":[[19.31,7.27],[19.81,7.27],[19.81,7.47],[19.31,7.47]],"t":"muro"},{"id":367,"p":[[17.31,7.47],[19.31,7.47],[19.31,7.27],[17.31,7.27]],"t":"muro"}],"cols":[{"id":2,"p":[[19.81,2.07],[20.21,2.07],[20.21,2.47],[19.81,2.47]]},{"id":5,"p":[[19.81,7.07],[20.21,7.07],[20.21,7.47],[19.81,7.47]]},{"id":8,"p":[[19.81,12.07],[20.21,12.07],[20.21,12.47],[19.81,12.47]]},{"id":11,"p":[[19.81,17.07],[20.21,17.07],[20.21,17.47],[19.81,17.47]]},{"id":14,"p":[[19.81,20.07],[20.21,20.07],[20.21,20.47],[19.81,20.47]]},{"id":17,"p":[[14.95,2.07],[15.35,2.07],[15.35,2.47],[14.95,2.47]]},{"id":20,"p":[[14.95,7.07],[15.35,7.07],[15.35,7.47],[14.95,7.47]]},{"id":23,"p":[[14.95,12.07],[15.35,12.07],[15.35,12.47],[14.95,12.47]]},{"id":26,"p":[[14.95,17.07],[15.35,17.07],[15.35,17.47],[14.95,17.47]]},{"id":29,"p":[[14.95,20.07],[15.35,20.07],[15.35,20.47],[14.95,20.47]]},{"id":32,"p":[[9.95,7.07],[10.35,7.07],[10.35,7.47],[9.95,7.47]]},{"id":35,"p":[[9.95,12.07],[10.35,12.07],[10.35,12.47],[9.95,12.47]]},{"id":38,"p":[[9.95,17.07],[10.35,17.07],[10.35,17.47],[9.95,17.47]]},{"id":41,"p":[[9.95,20.07],[10.35,20.07],[10.35,20.47],[9.95,20.47]]},{"id":44,"p":[[4.95,2.07],[5.35,2.07],[5.35,2.47],[4.95,2.47]]},{"id":46,"p":[[4.95,7.07],[5.35,7.07],[5.35,7.47],[4.95,7.47]]},{"id":49,"p":[[4.95,12.07],[5.35,12.07],[5.35,12.47],[4.95,12.47]]},{"id":52,"p":[[4.95,17.07],[5.35,17.07],[5.35,17.47],[4.95,17.47]]},{"id":55,"p":[[4.95,20.07],[5.35,20.07],[5.35,20.47],[4.95,20.47]]},{"id":58,"p":[[0.0,2.07],[0.4,2.07],[0.4,2.47],[0.0,2.47]]},{"id":61,"p":[[0.0,7.07],[0.4,7.07],[0.4,7.47],[0.0,7.47]]},{"id":64,"p":[[0.0,12.07],[0.4,12.07],[0.4,12.47],[0.0,12.47]]},{"id":67,"p":[[0.0,17.07],[0.4,17.07],[0.4,17.47],[0.0,17.47]]},{"id":70,"p":[[0.0,20.07],[0.4,20.07],[0.4,20.47],[0.0,20.47]]},{"id":161,"p":[[5.0,22.95],[5.3,22.95],[5.3,22.65],[5.0,22.65]]},{"id":162,"p":[[10.0,22.95],[10.3,22.95],[10.3,22.65],[10.0,22.65]]},{"id":175,"p":[[9.065,2.47],[8.715,2.47],[8.715,2.17],[9.065,2.17]]},{"id":176,"p":[[11.065,2.47],[11.415,2.47],[11.415,2.17],[11.065,2.17]]}],"glass":[{"id":337,"p":[[15.28,1.17],[20.01,1.17],[20.01,0.87],[15.28,0.87]]},{"id":338,"p":[[0.2,1.17],[4.93,1.17],[4.93,0.87],[0.2,0.87]]}],"low":[{"id":224,"p":[[9.065,0.68],[5.34,0.68],[5.34,2.17],[9.065,2.17]],"b":0,"h":0.45},{"id":225,"p":[[11.065,0.68],[14.94,0.68],[14.94,2.17],[11.065,2.17]],"b":0,"h":0.45},{"id":252,"p":[[20.21,0.87],[20.21,0.67],[19.65,0.67],[19.65,0.87]],"b":0,"h":0.9},{"id":265,"p":[[0.56,0.87],[0.56,0.67],[0.0,0.67],[0.0,0.87]],"b":0,"h":0.9},{"id":271,"p":[[0.46,0.67],[0.46,0.17],[0.56,0.17],[0.56,0.67]],"b":0,"h":0.45},{"id":272,"p":[[4.535,0.67],[4.535,0.17],[4.635,0.17],[4.635,0.67]],"b":0,"h":0.45},{"id":273,"p":[[0.56,0.17],[4.535,0.17],[4.535,0.67],[0.56,0.67]],"b":0,"h":0.45},{"id":274,"p":[[15.58,0.67],[15.58,0.17],[15.68,0.17],[15.68,0.67]],"b":0,"h":0.45},{"id":275,"p":[[19.65,0.67],[19.65,0.17],[19.755,0.17],[19.755,0.67]],"b":0,"h":0.45},{"id":276,"p":[[15.68,0.17],[19.65,0.17],[19.65,0.67],[15.68,0.67]],"b":0,"h":0.45}],"ducts":[],"doors":[{"h":[2.867,17.254],"o":[2.134,17.203],"c":[2.866,16.519],"r":0.735},{"h":[3.744,17.41],"o":[3.695,18.123],"c":[3.029,17.411],"r":0.715},{"h":[7.044,6.03],"o":[6.995,5.317],"c":[6.329,6.029],"r":0.715},{"h":[5.1,2.486],"o":[5.813,2.536],"c":[5.101,3.201],"r":0.715},{"h":[14.587,21.913],"o":[14.638,22.646],"c":[15.321,21.914],"r":0.734},{"h":[14.569,20.491],"o":[15.52,20.558],"c":[14.57,21.445],"r":0.954},{"h":[9.087,2.415],"o":[9.155,3.39],"c":[10.065,2.416],"r":0.978},{"h":[11.043,2.415],"o":[10.976,3.39],"c":[10.065,2.416],"r":0.978}],"rcols":[]},"N1":{"walls":[{"id":73,"p":[[20.01,12.47],[20.21,12.47],[20.21,17.07],[20.01,17.07]],"t":"muro"},{"id":76,"p":[[20.01,7.47],[20.21,7.47],[20.21,12.07],[20.01,12.07]],"t":"muro"},{"id":79,"p":[[20.01,2.47],[20.21,2.47],[20.21,7.07],[20.01,7.07]],"t":"muro"},{"id":82,"p":[[20.01,17.47],[20.21,17.47],[20.21,20.07],[20.01,20.07]],"t":"muro"},{"id":85,"p":[[5.34,20.47],[9.94,20.47],[9.94,20.27],[5.34,20.27]],"t":"muro"},{"id":88,"p":[[0.4,20.47],[3.564,20.47],[3.564,20.27],[0.4,20.27]],"t":"muro"},{"id":91,"p":[[-0.0,20.07],[0.2,20.07],[0.2,17.47],[-0.0,17.47]],"t":"muro"},{"id":94,"p":[[-0.0,17.07],[0.2,17.07],[0.2,12.47],[-0.0,12.47]],"t":"muro"},{"id":97,"p":[[0.2,12.07],[-0.0,12.07],[-0.0,7.47],[0.2,7.47]],"t":"muro"},{"id":100,"p":[[0.2,7.07],[-0.0,7.07],[-0.0,2.47],[0.2,2.47]],"t":"muro"},{"id":103,"p":[[16.49,20.47],[19.81,20.47],[19.81,20.07],[16.49,20.07]],"t":"muro"},{"id":106,"p":[[14.94,18.74],[15.14,18.74],[15.14,20.07],[14.94,20.07]],"t":"muro"},{"id":109,"p":[[0.4,7.27],[0.4,7.07],[2.0,7.07],[2.0,7.27]],"t":"muro"},{"id":112,"p":[[5.34,7.27],[5.34,7.07],[9.94,7.07],[9.94,7.27]],"t":"muro"},{"id":115,"p":[[10.34,7.27],[10.34,7.07],[14.94,7.07],[14.94,7.27]],"t":"muro"},{"id":118,"p":[[15.34,7.27],[15.34,7.07],[19.81,7.07],[19.81,7.27]],"t":"muro"},{"id":121,"p":[[5.14,17.47],[5.34,17.47],[5.34,20.07],[5.14,20.07]],"t":"tablaroca"},{"id":124,"p":[[5.14,15.015],[5.34,15.015],[5.34,17.07],[5.14,17.07]],"t":"tablaroca"},{"id":127,"p":[[2.039,20.27],[1.839,20.27],[1.839,17.27],[1.15,17.27],[1.15,17.07],[2.614,17.07],[2.614,17.27],[2.039,17.27]],"t":"tablaroca"},{"id":130,"p":[[3.364,17.07],[3.564,17.07],[3.564,20.27],[3.364,20.27]],"t":"tablaroca"},{"id":133,"p":[[0.2,15.87],[0.2,15.67],[3.14,15.67],[3.14,15.87]],"t":"muro"},{"id":137,"p":[[5.14,12.47],[5.34,12.47],[5.34,13.215],[5.14,13.215]],"t":"tablaroca"},{"id":140,"p":[[5.34,12.47],[9.94,12.47],[9.94,12.27],[5.34,12.27]],"t":"tablaroca"},{"id":143,"p":[[10.34,12.47],[14.94,12.47],[14.94,12.27],[10.34,12.27]],"t":"tablaroca"},{"id":146,"p":[[14.94,17.185],[15.14,17.185],[15.14,15.614],[11.34,15.614],[11.34,14.644],[11.14,14.644],[11.14,15.614],[10.14,15.614],[10.14,12.47],[9.94,12.47],[9.94,15.814],[14.94,15.814]],"t":"tablaroca"},{"id":151,"p":[[14.94,12.47],[15.14,12.47],[15.14,14.864],[14.94,14.864]],"t":"tablaroca"},{"id":154,"p":[[11.14,12.47],[11.34,12.47],[11.34,13.844],[11.14,13.844]],"t":"tablaroca"},{"id":157,"p":[[0.4,12.47],[3.14,12.47],[3.14,12.27],[0.4,12.27]],"t":"tablaroca"},{"id":160,"p":[[20.01,1.07],[20.21,1.07],[20.21,2.07],[20.01,2.07]],"t":"muro"},{"id":163,"p":[[-0.0,2.07],[0.2,2.07],[0.2,1.07],[-0.0,1.07]],"t":"muro"},{"id":166,"p":[[12.38,-0.0],[12.38,0.2],[15.08,0.2],[15.08,1.07],[15.68,1.07],[15.68,0.67],[15.28,0.67],[15.28,-0.0]],"t":"muro"},{"id":167,"p":[[7.83,-0.0],[4.93,-0.0],[4.93,0.67],[4.53,0.67],[4.53,1.07],[5.13,1.07],[5.13,0.2],[7.83,0.2]],"t":"muro"},{"id":170,"p":[[20.21,1.07],[20.21,0.67],[19.65,0.67],[19.65,1.07]],"t":"muro"},{"id":184,"p":[[0.56,1.07],[0.56,0.67],[-0.0,0.67],[-0.0,1.07]],"t":"muro"},{"id":245,"p":[[0.4,23.82],[0.4,24.02],[-0.0,24.02],[-0.0,20.47],[0.2,20.47],[0.2,23.82]],"t":"muro"},{"id":246,"p":[[5.935,23.82],[5.935,24.02],[2.9,24.02],[2.9,23.82]],"t":"muro"},{"id":247,"p":[[12.12,23.82],[12.12,24.02],[8.435,24.02],[8.435,23.82]],"t":"muro"},{"id":248,"p":[[13.97,24.02],[13.97,23.82],[14.37,23.82],[14.37,24.02]],"t":"muro"},{"id":266,"p":[[14.57,20.47],[14.57,23.82],[20.01,23.82],[20.01,20.47],[20.21,20.47],[20.21,24.02],[14.37,24.02],[14.37,20.47],[10.34,20.47],[10.34,20.27],[14.94,20.27],[14.94,20.47]],"t":"muro"},{"id":272,"p":[[17.25,12.27],[17.25,12.07],[19.81,12.07],[19.81,12.27]],"t":"muro"},{"id":274,"p":[[15.34,12.27],[15.34,12.07],[15.45,12.07],[15.45,12.27]],"t":"muro"},{"id":276,"p":[[15.45,12.27],[17.25,12.27],[17.25,12.07],[15.45,12.07]],"t":"muro"},{"id":277,"p":[[14.94,18.74],[15.14,18.74],[15.14,17.185],[14.94,17.185]],"t":"muro"},{"id":311,"p":[[13.57,28.52],[14.37,28.52],[14.37,28.27],[13.57,28.27]],"t":"muro"},{"id":364,"p":[[10.34,8.27],[10.34,7.47],[10.15,7.47],[10.15,8.27]],"t":"muro"},{"id":365,"p":[[10.34,10.07],[10.15,10.07],[10.15,12.07],[10.34,12.07]],"t":"muro"},{"id":366,"p":[[10.15,10.07],[10.34,10.07],[10.34,8.27],[10.15,8.27]],"t":"muro"}],"cols":[{"id":11,"p":[[19.81,2.07],[20.21,2.07],[20.21,2.47],[19.81,2.47]]},{"id":14,"p":[[19.81,7.07],[20.21,7.07],[20.21,7.47],[19.81,7.47]]},{"id":17,"p":[[19.81,12.07],[20.21,12.07],[20.21,12.47],[19.81,12.47]]},{"id":20,"p":[[19.81,17.07],[20.21,17.07],[20.21,17.47],[19.81,17.47]]},{"id":23,"p":[[19.81,20.07],[20.21,20.07],[20.21,20.47],[19.81,20.47]]},{"id":26,"p":[[14.94,7.07],[15.34,7.07],[15.34,7.47],[14.94,7.47]]},{"id":29,"p":[[14.94,12.07],[15.34,12.07],[15.34,12.47],[14.94,12.47]]},{"id":32,"p":[[14.94,20.07],[15.34,20.07],[15.34,20.47],[14.94,20.47]]},{"id":35,"p":[[9.94,7.07],[10.34,7.07],[10.34,7.47],[9.94,7.47]]},{"id":38,"p":[[9.94,12.07],[10.34,12.07],[10.34,12.47],[9.94,12.47]]},{"id":41,"p":[[9.94,20.07],[10.34,20.07],[10.34,20.47],[9.94,20.47]]},{"id":44,"p":[[4.94,7.07],[5.34,7.07],[5.34,7.47],[4.94,7.47]]},{"id":47,"p":[[4.94,12.07],[5.34,12.07],[5.34,12.47],[4.94,12.47]]},{"id":50,"p":[[4.94,17.07],[5.34,17.07],[5.34,17.47],[4.94,17.47]]},{"id":53,"p":[[4.94,20.07],[5.34,20.07],[5.34,20.47],[4.94,20.47]]},{"id":56,"p":[[-0.0,2.07],[0.4,2.07],[0.4,2.47],[-0.0,2.47]]},{"id":59,"p":[[-0.0,7.07],[0.4,7.07],[0.4,7.47],[-0.0,7.47]]},{"id":62,"p":[[-0.0,12.07],[0.4,12.07],[0.4,12.47],[-0.0,12.47]]},{"id":65,"p":[[-0.0,17.07],[0.4,17.07],[0.4,17.47],[-0.0,17.47]]},{"id":68,"p":[[-0.0,20.07],[0.4,20.07],[0.4,20.47],[-0.0,20.47]]}],"glass":[{"id":172,"p":[[15.68,1.07],[19.65,1.07],[19.65,0.87],[15.68,0.87]]},{"id":173,"p":[[4.53,0.87],[0.56,0.87],[0.56,1.07],[4.53,1.07]]},{"id":180,"p":[[7.83,0.2],[12.38,0.2],[12.38,-0.0],[7.83,-0.0]]},{"id":253,"p":[[0.4,24.02],[2.9,24.02],[2.9,23.82],[0.4,23.82]]},{"id":254,"p":[[5.935,24.02],[8.435,24.02],[8.435,23.82],[5.935,23.82]]},{"id":255,"p":[[12.12,24.02],[13.97,24.02],[13.97,23.82],[12.12,23.82]]},{"id":278,"p":[[5.14,15.015],[5.34,15.015],[5.34,13.215],[5.14,13.215]]},{"id":279,"p":[[3.14,12.47],[4.94,12.47],[4.94,12.27],[3.14,12.27]]},{"id":303,"p":[[10.14,13.629],[10.14,13.529],[11.14,13.529],[11.14,13.629]]},{"id":305,"p":[[3.564,17.17],[3.564,17.07],[4.94,17.07],[4.94,17.17]]}],"low":[{"id":188,"p":[[7.83,-0.8],[12.38,-0.8],[12.38,-0.0],[7.83,-0.0]],"b":-0.35,"h":0.5}],"ducts":[{"id":136,"p":[[10.14,12.47],[11.14,12.47],[11.14,13.529],[10.14,13.529]]}],"doors":[{"h":[0.416,17.21],"o":[0.466,17.923],"c":[1.131,17.211],"r":0.715},{"h":[3.348,17.21],"o":[3.299,17.923],"c":[2.633,17.211],"r":0.715},{"h":[11.066,14.627],"o":[10.305,14.574],"c":[11.065,13.864],"r":0.763}],"rcols":[{"c":[7.83,2.27],"r":0.2},{"c":[12.38,2.27],"r":0.2},{"c":[4.83,2.27],"r":0.2},{"c":[15.38,2.27],"r":0.2}]},"N2":{"walls":[{"id":17,"p":[[10.34,20.47],[14.94,20.47],[14.94,20.32],[10.34,20.32]],"t":"muro"},{"id":23,"p":[[15.09,20.07],[15.09,17.47],[14.94,17.47],[14.94,20.07]],"t":"muro"},{"id":26,"p":[[10.09,15.48],[10.09,12.47],[9.94,12.47],[9.94,15.87],[10.09,15.87],[10.09,15.63],[12.99,15.63],[12.99,17.22],[13.14,17.22],[13.14,15.48]],"t":"muro"},{"id":29,"p":[[10.34,12.47],[14.94,12.47],[14.94,12.32],[10.34,12.32]],"t":"muro"},{"id":32,"p":[[14.94,17.07],[14.94,15.63],[13.94,15.63],[13.94,15.48],[15.09,15.48],[15.09,17.07]],"t":"muro"},{"id":35,"p":[[15.09,14.68],[15.09,12.47],[14.94,12.47],[14.94,14.68]],"t":"muro"},{"id":38,"p":[[9.94,16.87],[10.09,16.87],[10.09,17.07],[12.19,17.07],[12.19,17.22],[10.09,17.22],[10.09,20.07],[9.94,20.07]],"t":"muro"},{"id":89,"p":[[20.01,12.47],[20.21,12.47],[20.21,17.07],[20.01,17.07]],"t":"muro"},{"id":92,"p":[[20.01,7.47],[20.21,7.47],[20.21,12.07],[20.01,12.07]],"t":"muro"},{"id":95,"p":[[20.01,17.47],[20.21,17.47],[20.21,20.07],[20.01,20.07]],"t":"muro"},{"id":98,"p":[[5.34,20.47],[9.94,20.47],[9.94,20.27],[5.34,20.27]],"t":"muro"},{"id":101,"p":[[0.4,20.47],[4.94,20.47],[4.94,20.27],[0.4,20.27]],"t":"muro"},{"id":104,"p":[[-0.0,20.07],[0.2,20.07],[0.2,17.47],[-0.0,17.47]],"t":"muro"},{"id":107,"p":[[-0.0,17.07],[0.2,17.07],[0.2,12.47],[-0.0,12.47]],"t":"muro"},{"id":110,"p":[[0.2,12.07],[-0.0,12.07],[-0.0,7.47],[0.2,7.47]],"t":"muro"},{"id":113,"p":[[0.4,7.27],[0.4,7.07],[4.94,7.07],[4.94,7.27]],"t":"muro"},{"id":116,"p":[[5.34,7.27],[5.34,7.07],[9.94,7.07],[9.94,7.27]],"t":"muro"},{"id":119,"p":[[10.34,7.27],[10.34,7.07],[14.94,7.07],[14.94,7.27]],"t":"muro"},{"id":122,"p":[[15.34,7.27],[15.34,7.07],[19.81,7.07],[19.81,7.27]],"t":"muro"},{"id":287,"p":[[14.37,24.02],[14.37,20.47],[14.57,20.47],[14.57,23.82],[20.01,23.82],[20.01,20.47],[20.21,20.47],[20.21,24.02]],"t":"muro"},{"id":291,"p":[[13.97,24.02],[13.97,23.82],[14.37,23.82],[14.37,24.02]],"t":"muro"},{"id":329,"p":[[11.72,24.02],[11.72,20.47],[11.87,20.47],[11.87,23.82],[12.12,23.82],[12.12,24.02]],"t":"muro"}],"cols":[{"id":2,"p":[[14.94,12.07],[15.34,12.07],[15.34,12.47],[14.94,12.47]]},{"id":5,"p":[[14.94,17.07],[15.34,17.07],[15.34,17.47],[14.94,17.47]]},{"id":8,"p":[[14.94,20.07],[15.34,20.07],[15.34,20.47],[14.94,20.47]]},{"id":11,"p":[[9.94,12.07],[10.34,12.07],[10.34,12.47],[9.94,12.47]]},{"id":14,"p":[[9.94,20.07],[10.34,20.07],[10.34,20.47],[9.94,20.47]]},{"id":42,"p":[[19.81,7.07],[20.21,7.07],[20.21,7.47],[19.81,7.47]]},{"id":45,"p":[[19.81,12.07],[20.21,12.07],[20.21,12.47],[19.81,12.47]]},{"id":48,"p":[[19.81,17.07],[20.21,17.07],[20.21,17.47],[19.81,17.47]]},{"id":51,"p":[[19.81,20.07],[20.21,20.07],[20.21,20.47],[19.81,20.47]]},{"id":54,"p":[[14.94,7.07],[15.34,7.07],[15.34,7.47],[14.94,7.47]]},{"id":57,"p":[[14.94,12.07],[15.34,12.07],[15.34,12.47],[14.94,12.47]]},{"id":60,"p":[[14.94,20.07],[15.34,20.07],[15.34,20.47],[14.94,20.47]]},{"id":63,"p":[[9.94,7.07],[10.34,7.07],[10.34,7.47],[9.94,7.47]]},{"id":68,"p":[[9.94,20.07],[10.34,20.07],[10.34,20.47],[9.94,20.47]]},{"id":71,"p":[[4.94,7.07],[5.34,7.07],[5.34,7.47],[4.94,7.47]]},{"id":74,"p":[[4.94,20.07],[5.34,20.07],[5.34,20.47],[4.94,20.47]]},{"id":77,"p":[[-0.0,7.07],[0.4,7.07],[0.4,7.47],[-0.0,7.47]]},{"id":80,"p":[[-0.0,12.07],[0.4,12.07],[0.4,12.47],[-0.0,12.47]]},{"id":83,"p":[[-0.0,17.07],[0.4,17.07],[0.4,17.47],[-0.0,17.47]]},{"id":86,"p":[[-0.0,20.07],[0.4,20.07],[0.4,20.47],[-0.0,20.47]]},{"id":188,"p":[[13.04,9.87],[13.44,9.87],[13.44,10.27],[13.04,10.27]]},{"id":193,"p":[[7.99,9.87],[8.39,9.87],[8.39,10.27],[7.99,10.27]]},{"id":198,"p":[[10.515,9.87],[10.915,9.87],[10.915,10.27],[10.515,10.27]]},{"id":205,"p":[[7.99,19.87],[8.39,19.87],[8.39,20.27],[7.99,20.27]]},{"id":208,"p":[[7.99,16.57],[8.39,16.57],[8.39,16.97],[7.99,16.97]]},{"id":213,"p":[[7.99,13.27],[8.39,13.27],[8.39,13.67],[7.99,13.67]]}],"glass":[{"id":41,"p":[[9.94,16.87],[10.09,16.87],[10.09,15.87],[9.94,15.87]]},{"id":294,"p":[[12.12,24.02],[13.97,24.02],[13.97,23.82],[12.12,23.82]]}],"low":[{"id":125,"p":[[15.08,0.2],[15.08,0.87],[20.21,0.87],[20.21,0.67],[15.28,0.67],[15.28,0.0],[4.93,0.0],[4.93,0.67],[-0.0,0.67],[-0.0,0.87],[5.13,0.87],[5.13,0.2]],"b":0,"h":1.0},{"id":129,"p":[[0.46,0.17],[4.635,0.17],[4.635,0.67],[0.46,0.67]],"b":-0.35,"h":0.5},{"id":132,"p":[[15.58,0.17],[19.755,0.17],[19.755,0.67],[15.58,0.67]],"b":-0.35,"h":0.5},{"id":133,"p":[[7.73,0.0],[12.48,0.0],[12.48,-0.8],[7.73,-0.8]],"b":-0.35,"h":0.5},{"id":257,"p":[[11.72,23.82],[11.72,24.02],[-0.0,24.02],[-0.0,20.47],[0.2,20.47],[0.2,23.82]],"b":0,"h":1.0}],"ducts":[{"id":20,"p":[[10.09,12.47],[11.14,12.47],[11.14,13.53],[10.09,13.53]]}],"doors":[{"h":[13.157,15.629],"o":[13.21,16.39],"c":[13.92,15.63],"r":0.763},{"h":[14.941,15.463],"o":[14.18,15.41],"c":[14.94,14.7],"r":0.763},{"h":[12.973,17.072],"o":[12.92,16.31],"c":[12.21,17.07],"r":0.763}],"rcols":[]}};
+
+const LOSA_PB = [[0,0.67],[20.21,0.67],[20.21,24.02],[0,24.02]];
+const LOSA_SUP = [[0,0.67],[4.53,0.67],[4.53,0],[15.68,0],[15.68,0.67],[20.21,0.67],[20.21,24.02],[0,24.02]];
+const HUECO_E1 = [[15.29,20.88],[20.01,20.88],[20.01,23.82],[15.29,23.82]];
+const HUECO_E2 = [[12.37,21.27],[14.37,21.27],[14.37,23.82],[12.37,23.82]];
+
+const ESC1 = [
+  [18.81,21.46,20.01,21.75,1],[18.81,21.75,20.01,22.04,2],[18.81,22.04,20.01,22.33,3],[18.81,22.33,20.01,22.62,4],
+  [18.81,22.62,20.01,23.82,5],
+  [18.52,22.62,18.81,23.82,6],[18.23,22.62,18.52,23.82,7],[17.94,22.62,18.23,23.82,8],[17.65,22.62,17.94,23.82,9],
+  [17.36,22.62,17.65,23.82,10],[17.07,22.62,17.36,23.82,11],[16.78,22.62,17.07,23.82,12],[16.49,22.62,16.78,23.82,13],
+  [15.29,22.62,16.49,23.82,14],
+  [15.29,22.33,16.49,22.62,15],[15.29,22.04,16.49,22.33,16],[15.29,21.75,16.49,22.04,17],[15.29,21.46,16.49,21.75,18],
+  [15.29,21.17,16.49,21.46,19],[15.29,20.88,16.49,21.17,20],[15.29,20.47,16.49,20.88,21],
+];
+const ESC2 = [
+  [13.57,21.27,14.37,21.52,1],[13.57,21.52,14.37,21.77,2],[13.57,21.77,14.37,22.02,3],[13.57,22.02,14.37,22.27,4],
+  [13.57,22.27,14.37,22.52,5],[13.57,22.52,14.37,22.77,6],[13.57,22.77,14.37,23.02,7],
+  [12.37,23.02,14.37,23.82,8],
+  [12.37,22.77,13.17,23.02,9],[12.37,22.52,13.17,22.77,10],[12.37,22.27,13.17,22.52,11],[12.37,22.02,13.17,22.27,12],
+  [12.37,21.77,13.17,22.02,13],[12.37,21.52,13.17,21.77,14],[12.37,21.27,13.17,21.52,15],[12.37,20.47,13.17,21.27,16],
+];
+
+const CAJONES_FRENTE = [
+  ['E-1',0.76,3.529],['E-2',3.529,6.297],['E-3',6.297,9.065],['E-4',11.065,13.834],['E-5',13.834,16.602],['E-6',16.602,19.41]
+];
+const CAJON_Y0 = -6.11, CAJON_Y1 = -0.81;
+const CAJONES_FONDO = [['E-7',1.563],['E-8',6.713],['E-9',12.293]];
+
+/* =====================================================================
+   2. ESCENA THREE.JS, ILUMINACIÓN OMNIDIRECCIONAL (CERO SOMBRAS NEGRAS)
+   ===================================================================== */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xdad6cf);
+
+const CENTER = new THREE.Vector3(EJES_X.E/2, 3.2, -EJES_Y['1']/2);
+const camera = new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 0.1, 500);
+camera.position.set(CENTER.x + 32, 28, CENTER.z + 42);
+
+// HEADLIGHT: Luz direccional frontal vinculada a la cámara para eliminar cualquier sombra oscura
+const headlight = new THREE.DirectionalLight(0xffffff, 1.35);
+headlight.position.set(0, 0, 1);
+camera.add(headlight);
+scene.add(camera);
+
+const controls = new OrbitControls(camera, canvas);
+controls.target.copy(CENTER);
+controls.enableDamping = true;
+controls.maxPolarAngle = Math.PI * 0.49;
+controls.autoRotate = false;
+controls.autoRotateSpeed = 1.6;
+
+// Iluminación ambiental y hemisférica amplia y luminosa
+const ambLight = new THREE.AmbientLight(0xffffff, 1.85);
+scene.add(ambLight);
+const hemiLight = new THREE.HemisphereLight(0xfffdf7, 0xdfd9cf, 1.25);
+scene.add(hemiLight);
+
+// 4 Luces diagonales suaves desde las 4 esquinas superiores para luz envolvente 360°
+const dL1 = new THREE.DirectionalLight(0xfffaf0, 0.6); dL1.position.set(30, 45, 30); scene.add(dL1);
+const dL2 = new THREE.DirectionalLight(0xfffaf0, 0.5); dL2.position.set(-30, 45, 30); scene.add(dL2);
+const dL3 = new THREE.DirectionalLight(0xfffaf0, 0.6); dL3.position.set(30, 45, -30); scene.add(dL3);
+const dL4 = new THREE.DirectionalLight(0xfffaf0, 0.5); dL4.position.set(-30, 45, -30); scene.add(dL4);
+
+// Materiales Oficiales: Muros interiores beige (#cfbeaa), exteriores gris (#7c7873)
+const M = {
+  wallInt: new THREE.MeshStandardMaterial({ color: 0xcfbeaa, roughness:0.85, metalness:0.02 }),
+  wallExt: new THREE.MeshStandardMaterial({ color: 0x7c7873, roughness:0.90, metalness:0.02 }),
+  poche: new THREE.MeshStandardMaterial({ color: 0x2d2b28, roughness:0.95 }),
+  col: new THREE.MeshStandardMaterial({ color: 0xcfbeaa, roughness:0.85 }),
+  slabSide: new THREE.MeshStandardMaterial({ color: 0x948f87, roughness:0.95 }),
+  glass: new THREE.MeshStandardMaterial({ color: 0x9dbec9, roughness:0.1, transparent:true, opacity:0.25, side:THREE.DoubleSide, depthWrite:false }),
+  stone: new THREE.MeshStandardMaterial({ color: 0xb5afa5, roughness:0.95 }),
+  stair: new THREE.MeshStandardMaterial({ color: 0xd8d2c7, roughness:0.9 }),
+  asphalt: new THREE.MeshStandardMaterial({ color: 0x5e5c58, roughness:0.98 }),
+  walk: new THREE.MeshStandardMaterial({ color: 0xb8b2a7, roughness:0.98 }),
+  duct: new THREE.MeshStandardMaterial({ color: 0xcfbeaa, roughness:0.9, transparent:true, opacity:0.5 }),
+  leaf: new THREE.MeshStandardMaterial({ color: 0x937c62, roughness:0.7 }),
+  edge: new THREE.LineBasicMaterial({ color: 0x5a5650, transparent:true, opacity:0.35 }),
+  whiteLine: new THREE.LineBasicMaterial({ color: 0xffffff }),
+  arc: new THREE.LineBasicMaterial({ color: 0x7c6e5e })
+};
+
+function tileTexture(){
+  const s=256, cv=document.createElement('canvas'); cv.width=cv.height=s;
+  const g=cv.getContext('2d'); g.fillStyle='#f5f1e8'; g.fillRect(0,0,s,s);
+  for(let i=0;i<800;i++){ g.fillStyle=`rgba(160,150,135,${Math.random()*0.03})`; g.fillRect(Math.random()*s,Math.random()*s,2,2); }
+  g.strokeStyle='rgba(160,150,135,.45)'; g.lineWidth=2; g.strokeRect(1,1,s-2,s-2);
+  const t=new THREE.CanvasTexture(cv); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(1/LOSETA,1/LOSETA);
+  t.colorSpace=THREE.SRGBColorSpace; return t;
+}
+M.floor = new THREE.MeshStandardMaterial({ color:0xffffff, map:tileTexture(), roughness:0.88 });
+
+const shapeOf = (pts) => new THREE.Shape(pts.map(p=>new THREE.Vector2(p[0],p[1])));
+
+// Almacén global de muros para control del Slider [🧱 Muros]
+const allWallMeshes = [];
+const allWallEdges = [];
+
+function prism(pts, base, height, mats, group, holes=[], edges=true, isWall=false){
+  const sh = shapeOf(pts); holes.forEach(h=>sh.holes.push(new THREE.Path(h.map(p=>new THREE.Vector2(p[0],p[1])))));
+  const g = new THREE.ExtrudeGeometry(sh,{ depth:height, bevelEnabled:false });
+  g.rotateX(-Math.PI/2); g.translate(0,base,0);
+  const m = new THREE.Mesh(g, mats); group.add(m);
+  if(isWall){
+    m.userData.isWall = true;
+    m.userData.baseElevation = base;
+    allWallMeshes.push(m);
+  }
+  if(edges){
+    const e = new THREE.LineSegments(new THREE.EdgesGeometry(g,30),M.edge);
+    group.add(e);
+    if(isWall){
+      e.userData.isWallEdge = true;
+      allWallEdges.push(e);
+    }
+  }
+  return m;
+}
+
+function box(x0,y0,x1,y1,base,top,mat,group,edges=true,isWall=false){
+  return prism([[x0,y0],[x1,y0],[x1,y1],[x0,y1]], base, top-base, mat, group, [], edges, isWall);
+}
+const P3 = (x,y,h=0) => new THREE.Vector3(x,h,-y);
+
+/* =====================================================================
+   3. CONSTRUCCIÓN DE NIVELES Y CONTROL DE MUROS
+   ===================================================================== */
+const levelGroups = {}, floorMeshes = {};
+const curY = { PB:0, N1:H_PB, N2:H_PB+H_N1 };
+const targetY = { PB:0, N1:H_PB, N2:H_PB+H_N1 };
+let activeWorkingLevel = 'PB';
+let currentFloorMode = 'exploded';
+
+// Precalcular obstáculos 2D (muros y columnas) para el sistema de colisiones
+const LEVEL_OBSTACLES = { PB:[], N1:[], N2:[] };
+['PB','N1','N2'].forEach(lvl => {
+  const d = DATA[lvl]; if(!d) return;
+  (d.walls || []).forEach(w => {
+    const xs = w.p.map(pt => pt[0]);
+    const zs = w.p.map(pt => -pt[1]);
+    LEVEL_OBSTACLES[lvl].push({ minX: Math.min(...xs), maxX: Math.max(...xs), minZ: Math.min(...zs), maxZ: Math.max(...zs) });
+  });
+  (d.cols || []).forEach(c => {
+    const xs = c.p.map(pt => pt[0]);
+    const zs = c.p.map(pt => -pt[1]);
+    LEVEL_OBSTACLES[lvl].push({ minX: Math.min(...xs), maxX: Math.max(...xs), minZ: Math.min(...zs), maxZ: Math.max(...zs) });
+  });
+});
+
+function buildBuilding(){
+  // Terreno, banqueta y estacionamiento
+  const siteGrp = new THREE.Group(); scene.add(siteGrp);
+  box(-4,-8,24.21,28,-0.32,-0.30,M.asphalt,siteGrp,false);
+  box(-0.6,-6.8,20.81,0.67,-0.30,-0.15,M.walk,siteGrp);
+
+  CAJONES_FRENTE.forEach(([id,x0,x1]) => {
+    const g=new THREE.BufferGeometry().setFromPoints([P3(x0,-CAJON_Y0,-0.29),P3(x0,-CAJON_Y1,-0.29),P3(x1,-CAJON_Y1,-0.29),P3(x1,-CAJON_Y0,-0.29)]);
+    siteGrp.add(new THREE.Line(g,M.whiteLine));
+  });
+
+  NIVELES.forEach(L => {
+    const grp = new THREE.Group();
+    grp.position.y = L.elev;
+    scene.add(grp);
+    levelGroups[L.id] = grp;
+
+    // Losa de piso
+    const ptsLosa = (L.id==='PB') ? LOSA_PB : LOSA_SUP;
+    const holes = (L.id==='N1') ? [HUECO_E1] : (L.id==='N2' ? [HUECO_E2] : []);
+    const fMesh = prism(ptsLosa, 0, LOSA, [M.floor, M.slabSide], grp, holes, true, false);
+    fMesh.userData.isFloor = true;
+    fMesh.userData.level = L.id;
+    floorMeshes[L.id] = fMesh;
+
+    const d = DATA[L.id]; if(!d) return;
+
+    // Muros (Registrados para control de altura del slider [🧱 Muros])
+    (d.walls||[]).forEach(w => {
+      const mat = (w.t==='tablaroca') ? M.wallInt : M.wallInt;
+      prism(w.p, LOSA, L.muro, mat, grp, [], true, true);
+    });
+
+    // Columnas
+    (d.cols||[]).forEach(c => {
+      prism(c.p, LOSA, L.muro, M.col, grp, [], true, true);
+    });
+
+    // Vidrios y ventanales
+    (d.glass||[]).forEach(g => {
+      prism(g.p, LOSA, ALT_VENTANA, M.glass, grp, [], false, false);
+    });
+
+    // Muretes bajos
+    (d.low||[]).forEach(lw => {
+      prism(lw.p, LOSA+(lw.b||0), lw.h, M.stone, grp, [], true, false);
+    });
+
+    // Puertas
+    (d.doors||[]).forEach(dr => {
+      const g = new THREE.BufferGeometry().setFromPoints([P3(dr.h[0],dr.h[1],LOSA+0.01),P3(dr.o[0],dr.o[1],LOSA+0.01)]);
+      grp.add(new THREE.Line(g,M.leaf));
+    });
+
+    // Escaleras
+    const escSteps = (L.id==='PB') ? ESC1 : (L.id==='N1' ? ESC2 : []);
+    escSteps.forEach(([x0,y0,x1,y1,idx]) => {
+      const hStep = idx * PERALTE;
+      box(x0,y0,x1,y1, LOSA, LOSA+hStep, M.stair, grp);
+    });
+  });
+}
+buildBuilding();
+
+/* =====================================================================
+   4. CONTROL DEL SLIDER [🧱 Muros] (0 a 100%)
+   ==================================================================== */
+const murosWrap = document.getElementById('murosSliderWrap');
+const btnToggleMuros = document.getElementById('btnToggleMuros');
+const murosRange = document.getElementById('murosRange');
+const murosValTxt = document.getElementById('murosValTxt');
+
+btnToggleMuros.addEventListener('click', () => {
+  const isOpen = murosWrap.classList.toggle('open');
+  btnToggleMuros.classList.toggle('active', isOpen);
+});
+
+murosRange.addEventListener('input', (e) => {
+  const val = parseInt(e.target.value);
+  murosValTxt.textContent = val + '%';
+  const scaleY = val / 100;
+  allWallMeshes.forEach(m => {
+    m.scale.y = Math.max(scaleY, 0.0001);
+    m.visible = scaleY > 0.01;
+  });
+  allWallEdges.forEach(ed => {
+    ed.scale.y = Math.max(scaleY, 0.0001);
+    ed.visible = scaleY > 0.01;
+  });
+});
+
+/* =====================================================================
+   5. NAVEGACIÓN Y ANCLAJE DE PISOS (PISO 1, 2, 3 O 3 NIVELES)
+   ===================================================================== */
+function setFloorMode(mode){
+  currentFloorMode = mode;
+  document.querySelectorAll('#topBarRight .pill-btn').forEach(b => {
+    if(b.dataset.mode) b.classList.toggle('active', b.dataset.mode === mode);
+  });
+
+  if(mode === 'exploded'){
+    activeWorkingLevel = 'PB';
+    NIVELES.forEach(L => {
+      targetY[L.id] = (L.id==='PB') ? 0 : (L.id==='N1' ? H_PB + 4.5 : H_PB + H_N1 + 9.0);
+      levelGroups[L.id].visible = true;
+    });
+  } else {
+    activeWorkingLevel = mode;
+    NIVELES.forEach(L => {
+      if(L.id === mode){
+        targetY[L.id] = 0;
+        levelGroups[L.id].visible = true;
+      } else {
+        targetY[L.id] = (L.num < NIVELES.find(x=>x.id===mode).num) ? -15 : 25;
+        levelGroups[L.id].visible = false;
+      }
+    });
+  }
+}
+
+document.querySelectorAll('#topBarRight .pill-btn[data-mode]').forEach(btn => {
+  btn.addEventListener('click', () => setFloorMode(btn.dataset.mode));
+});
+
+// Ejes CAD
+const cadAxesGroup = new THREE.Group(); scene.add(cadAxesGroup);
+let cadVisible = true;
+function buildCADAxes(){
+  const matLine = new THREE.LineDashedMaterial({ color:0x6b6357, dashSize:0.6, gapSize:0.3 });
+  COTAS_X.forEach(([a,b,d]) => {
+    const x = EJES_X[b];
+    const pts = [new THREE.Vector3(x, 0.05, 4), new THREE.Vector3(x, 0.05, -LARGO_TOTAL - 2)];
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    const line = new THREE.Line(geo, matLine); line.computeLineDistances();
+    cadAxesGroup.add(line);
+  });
+}
+buildCADAxes();
+
+document.getElementById('btnToggleCAD').addEventListener('click', e => {
+  cadVisible = !cadVisible;
+  cadAxesGroup.visible = cadVisible;
+  e.currentTarget.classList.toggle('active', cadVisible);
+});
+
+let autoRotating = false;
+document.getElementById('btnAutoRot').addEventListener('click', e => {
+  autoRotating = !autoRotating;
+  controls.autoRotate = autoRotating;
+  e.currentTarget.classList.toggle('active', autoRotating);
+});
+
+document.getElementById('btnResetView').addEventListener('click', () => {
+  camera.position.set(CENTER.x + 32, 28, CENTER.z + 42);
+  controls.target.copy(CENTER);
+  controls.update();
+});
+
+/* =====================================================================
+   6. CARGA Y CALIBRACIÓN DE MODELOS 3D (LUMINOSIDAD Y MATERIALES REALES)
+   ===================================================================== */
+const gltfLoader = new GLTFLoader();
+const RAW_CATALOG = window.CATALOGO_PRODUCTOS || [];
+const placedFurniture = [];
+let selectedFurniture = null;
+
+function loadGLB(glbName, cb){
+  const encoded = encodeURIComponent(glbName);
+  gltfLoader.load('glb/' + encoded, cb, undefined, (err) => {
+    gltfLoader.load('../PRODUCTOS/TIPO GLB/' + encoded, cb, undefined, (err2) => {
+      console.error('Error cargando modelo GLB:', glbName, err2);
+    });
+  });
+}
+
+function getSalesTierColor(num){
+  if(num <= 4) return 0xf4cccc; // Rojo suave
+  if(num <= 6) return 0xffe599; // Amarillo suave
+  if(num <= 10) return 0xfce5cd; // Naranja suave
+  return 0xd9ead3; // Verde suave
+}
+
+function getSalesClass(num){
+  if(num <= 4) return 'sales-tier-0-4';
+  if(num <= 6) return 'sales-tier-4-6';
+  if(num <= 10) return 'sales-tier-6-10';
+  return 'sales-tier-10plus';
+}
+
+function createFurnitureInstance(item, callback){
+  const group = new THREE.Group();
+  group.userData.item = item;
+  group.userData.isFurniture = true;
+
+  loadGLB(item.glb, (gltf) => {
+    const raw = gltf.scene;
+    const b1 = new THREE.Box3().setFromObject(raw);
+    const size1 = new THREE.Vector3(); b1.getSize(size1);
+
+    const targetX = item.dim_m[0];
+    const targetZ = item.dim_m[1];
+    const targetY = item.dim_m[2];
+
+    let sx = targetX / (size1.x || 1);
+    let sy = targetY / (size1.y || 1);
+    let sz = targetZ / (size1.z || 1);
+
+    if(size1.x > 0.05 && size1.z > 0.05){
+      const currentRatio = size1.x / size1.z;
+      const targetRatio = targetX / targetZ;
+      if(Math.abs(currentRatio - targetRatio) > 0.35){
+        const uniformS = (sx + sz) / 2;
+        sx = uniformS; sz = uniformS;
+      }
+    }
+
+    const wrapper = new THREE.Group();
+    wrapper.add(raw);
+    wrapper.scale.set(sx, sy, sz);
+    wrapper.updateMatrixWorld(true);
+
+    const b2 = new THREE.Box3().setFromObject(wrapper);
+    const center2 = new THREE.Vector3(); b2.getCenter(center2);
+    // Anclaje al ras exacto del suelo (cero hundimiento, cero flotar)
+    wrapper.position.set(-center2.x, -b2.min.y, -center2.z);
+
+    // Calibración de materiales PBR (cero sombras negras, texturas y maderas vibrantes)
+    wrapper.traverse(c => {
+      if(c.isMesh){
+        c.userData.parentFurniture = group;
+        if(c.material){
+          c.material.metalness = Math.min(c.material.metalness || 0, 0.12);
+          c.material.roughness = THREE.MathUtils.clamp(c.material.roughness || 0.65, 0.3, 0.85);
+          if(c.material.map) c.material.map.colorSpace = THREE.SRGBColorSpace;
+          c.material.needsUpdate = true;
+        }
+      }
+    });
+    group.add(wrapper);
+
+    // Halo circular tenue inferior según ventas
+    const salesNum = item.ventas.casa_creata || 0;
+    const haloColor = getSalesTierColor(salesNum);
+    const radius = Math.max(item.dim_m[0], item.dim_m[1]) * 0.55;
+    const haloGeo = new THREE.RingGeometry(0.01, radius, 32);
+    haloGeo.rotateX(-Math.PI/2);
+    const haloMat = new THREE.MeshBasicMaterial({ color: haloColor, transparent:true, opacity:0.32, side:THREE.DoubleSide, depthWrite:false });
+    const haloMesh = new THREE.Mesh(haloGeo, haloMat);
+    haloMesh.position.y = 0.01;
+    group.add(haloMesh);
+
+    // Invisible Click-Box para selección 100% inmediata
+    const clickGeo = new THREE.BoxGeometry(Math.max(item.dim_m[0], 0.6), Math.max(item.dim_m[2], 0.6), Math.max(item.dim_m[1], 0.6));
+    clickGeo.translate(0, Math.max(item.dim_m[2], 0.6)/2, 0);
+    const clickBox = new THREE.Mesh(clickGeo, new THREE.MeshBasicMaterial({ visible:false }));
+    clickBox.userData.parentFurniture = group;
+    clickBox.userData.isClickProxy = true;
+    group.add(clickBox);
+
+    if(callback) callback(group);
+  });
+  return group;
+}
+
+/* =====================================================================
+   7. SISTEMA DE COLISIONES REAL: PAREDES, PISO Y ENTRE MUEBLES
+   ===================================================================== */
+function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
+  const dimX = item.dim_m[0], dimZ = item.dim_m[1];
+  const halfX = (Math.abs(dimX/2 * Math.cos(rotY)) + Math.abs(dimZ/2 * Math.sin(rotY))) * 0.96;
+  const halfZ = (Math.abs(dimX/2 * Math.sin(rotY)) + Math.abs(dimZ/2 * Math.cos(rotY))) * 0.96;
+
+  const fMinX = posX - halfX;
+  const fMaxX = posX + halfX;
+  const fMinZ = posZ - halfZ;
+  const fMaxZ = posZ + halfZ;
+
+  // 1. Límite de muros perimetrales
+  if(fMinX < 0.25 || fMaxX > 19.96 || fMinZ < -23.82 || fMaxZ > -0.25){
+    return { collides: true, reason: 'Pared perimetral exterior' };
+  }
+
+  // 2. Colisión con Muros y Columnas del piso activo
+  const obs = LEVEL_OBSTACLES[level] || [];
+  for(let i = 0; i < obs.length; i++){
+    const b = obs[i];
+    if(fMaxX > b.minX + 0.05 && fMinX < b.maxX - 0.05 &&
+       fMaxZ > b.minZ + 0.05 && fMinZ < b.maxZ - 0.05){
+      return { collides: true, reason: 'Pared o columna' };
+    }
+  }
+
+  // 3. Colisión entre Muebles en el mismo piso
+  for(let i = 0; i < placedFurniture.length; i++){
+    const f = placedFurniture[i];
+    if(f === ignoreFurniture) continue;
+    if(f.userData.level !== level) continue;
+    const it = f.userData.item;
+    const rY = f.rotation.y;
+    const fHx = (Math.abs(it.dim_m[0]/2 * Math.cos(rY)) + Math.abs(it.dim_m[1]/2 * Math.sin(rY))) * 0.92;
+    const fHz = (Math.abs(it.dim_m[0]/2 * Math.sin(rY)) + Math.abs(it.dim_m[1]/2 * Math.cos(rY))) * 0.92;
+
+    if(fMaxX > f.position.x - fHx && fMinX < f.position.x + fHx &&
+       fMaxZ > f.position.z - fHz && fMinZ < f.position.z + fHz){
+      return { collides: true, reason: 'Mueble ya colocado' };
+    }
+  }
+
+  return { collides: false };
+}
+
+/* =====================================================================
+   8. COLOCACIÓN DE MUEBLES (SIN BANNER MOLESTO, CON GHOST INTELIGENTE)
+   ===================================================================== */
+let placingItem = null;
+let movingFurniture = null;
+let movingOrig = null;
+let ghostMesh = null;
+let ghostRot = 0;
+let isCurrentColliding = false;
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function createGhost(item, rot=0){
+  if(ghostMesh) scene.remove(ghostMesh);
+  const g = new THREE.Group();
+  const dx = item.dim_m[0], dy = item.dim_m[2], dz = item.dim_m[1];
+  const boxGeo = new THREE.BoxGeometry(dx, dy, dz);
+  boxGeo.translate(0, dy/2, 0);
+
+  const boxMat = new THREE.MeshBasicMaterial({ color:0x22ee88, transparent:true, opacity:0.35, depthWrite:false });
+  const mesh = new THREE.Mesh(boxGeo, boxMat);
+  mesh.name = 'ghostBox';
+  g.add(mesh);
+
+  const edge = new THREE.LineSegments(new THREE.EdgesGeometry(boxGeo), new THREE.LineBasicMaterial({ color:0x22ee88, linewidth:2 }));
+  edge.name = 'ghostEdge';
+  g.add(edge);
+
+  ghostRot = rot;
+  g.rotation.y = ghostRot;
+  scene.add(g);
+  ghostMesh = g;
+}
+
+function updateGhostColor(collides){
+  if(!ghostMesh) return;
+  isCurrentColliding = collides;
+  const box = ghostMesh.getObjectByName('ghostBox');
+  const edge = ghostMesh.getObjectByName('ghostEdge');
+  if(collides){
+    if(box) box.material.color.setHex(0xff3333);
+    if(edge) edge.material.color.setHex(0xff0000);
+    canvas.style.cursor = 'not-allowed';
+  } else {
+    if(box) box.material.color.setHex(0x22ee88);
+    if(edge) edge.material.color.setHex(0x00ff88);
+    canvas.style.cursor = 'crosshair';
+  }
+}
+
+function startPlacing(item){
+  placingItem = item;
+  movingFurniture = null;
+  createGhost(item, 0);
+  closeCatalogDropdown();
+  deselectFurniture();
+}
+
+function cancelPlacing(){
+  if(movingFurniture){
+    movingFurniture.visible = true;
+    if(movingOrig){
+      movingFurniture.position.copy(movingOrig.pos);
+      movingFurniture.rotation.y = movingOrig.rot;
+    }
+    selectFurniture(movingFurniture);
+    movingFurniture = null;
+  }
+  placingItem = null;
+  if(ghostMesh){ scene.remove(ghostMesh); ghostMesh = null; }
+  canvas.style.cursor = 'default';
+}
+
+function getFloorIntersection(e){
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+
+  const fm = floorMeshes[activeWorkingLevel];
+  const grp = levelGroups[activeWorkingLevel];
+  if(fm && grp && grp.visible){
+    const hits = raycaster.intersectObject(fm, false);
+    if(hits.length > 0) return { pt: hits[0].point, level: activeWorkingLevel };
+  }
+  const planeY = grp ? grp.position.y : 0.02;
+  const plane = new THREE.Plane(new THREE.Vector3(0,1,0), -planeY);
+  const pt = new THREE.Vector3();
+  if(raycaster.ray.intersectPlane(plane, pt)){
+    return { pt, level: activeWorkingLevel };
+  }
+  return null;
+}
+
+let ptrDownPos = { x:0, y:0 };
+canvas.addEventListener('pointerdown', e => { ptrDownPos = { x:e.clientX, y:e.clientY }; });
+
+canvas.addEventListener('pointermove', e => {
+  if(!placingItem || !ghostMesh) return;
+  const hit = getFloorIntersection(e);
+  if(hit){
+    const grp = levelGroups[hit.level];
+    ghostMesh.position.set(hit.pt.x, grp.position.y + 0.02, hit.pt.z);
+    ghostMesh.rotation.y = ghostRot;
+
+    // Verificar colisión en vivo con paredes, límites y muebles
+    const col = checkCollision(hit.pt.x, hit.pt.z, ghostRot, placingItem, hit.level, movingFurniture);
+    updateGhostColor(col.collides);
+  }
+});
+
+canvas.addEventListener('pointerup', e => {
+  if(e.button !== 0) return;
+  if(Math.hypot(e.clientX - ptrDownPos.x, e.clientY - ptrDownPos.y) > 6) return;
+
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+  if(placingItem){
+    const hit = getFloorIntersection(e);
+    if(hit){
+      const grp = levelGroups[hit.level];
+      const posX = hit.pt.x, posZ = hit.pt.z, rotY = ghostRot;
+
+      // Anclaje al piso asegurado sin bloqueos falsos
+      canvas.style.cursor = 'default';
+
+      if(movingFurniture){
+        const furn = movingFurniture;
+        movingFurniture = null;
+        placingItem = null;
+        if(ghostMesh){ scene.remove(ghostMesh); ghostMesh = null; }
+        canvas.style.cursor = 'default';
+
+        if(furn.parent !== grp){
+          if(furn.parent) furn.parent.remove(furn);
+          grp.add(furn);
+        }
+        furn.userData.level = hit.level;
+        furn.position.set(posX, 0.02, posZ);
+        furn.rotation.y = rotY;
+        furn.visible = true;
+        selectFurniture(furn);
+        recordHistory('move', furn);
+        saveStateToUrl();
+      } else {
+        const itemToPlace = placingItem;
+        cancelPlacing();
+        createFurnitureInstance(itemToPlace, (instance) => {
+          instance.userData.level = hit.level;
+          instance.position.set(posX, 0.02, posZ);
+          instance.rotation.y = rotY;
+          grp.add(instance);
+          placedFurniture.push(instance);
+          selectFurniture(instance);
+          recordHistory('add', instance);
+          saveStateToUrl();
+        });
+      }
+    }
+    return;
+  }
+
+  // Selección de mueble precisa al hacer clic
+  raycaster.setFromCamera(mouse, camera);
+  const targets = [];
+  placedFurniture.forEach(f => {
+    if(f.visible && f.parent && f.parent.visible){
+      f.traverse(c => { if(c.isMesh && !c.userData.isFloor) targets.push(c); });
+    }
+  });
+
+  const hits = raycaster.intersectObjects(targets, false);
+  if(hits.length > 0){
+    const furn = hits[0].object.userData.parentFurniture;
+    if(furn) selectFurniture(furn);
+  } else {
+    if(e.clientX < innerWidth - 360) deselectFurniture();
+  }
+});
+
+/* =====================================================================
+   9. SELECCIÓN, FICHA TÉCNICA Y EDICIÓN
+   ===================================================================== */
+const cardWrap = document.getElementById('selectedCardWrap');
+const selHighlight = new THREE.Group(); scene.add(selHighlight);
+
+function selectFurniture(furn){
+  selectedFurniture = furn;
+  const item = furn.userData.item;
+
+  if(furn.userData.level && currentFloorMode !== 'exploded' && currentFloorMode !== furn.userData.level){
+    setFloorMode(furn.userData.level);
+  }
+
+  document.getElementById('cardProdName').textContent = item.short_name || item.name;
+  document.getElementById('fNombre').textContent = item.name;
+  document.getElementById('fMedidas').textContent = `${item.dim_cm[0]} × ${item.dim_cm[1]} × ${item.dim_cm[2]} cm (${(item.dim_cm[0]/100).toFixed(2)}×${(item.dim_cm[1]/100).toFixed(2)}m)`;
+  document.getElementById('fSku').textContent = item.sku;
+  document.getElementById('fProveedor').textContent = item.proveedor || 'ARTEX';
+
+  const mainImg = document.getElementById('cardMainImg');
+  mainImg.src = item.thumb || item.photo;
+  mainImg.className = item.flip ? 'flipped' : '';
+
+  const strip = document.getElementById('cardThumbStrip');
+  strip.innerHTML = '';
+  (item.gallery || [item.photo]).slice(0, 5).forEach((url, i) => {
+    const b = document.createElement('div');
+    b.className = 'thumb-box' + (i===0 ? ' active' : '');
+    b.innerHTML = `<img src="${(i===0 && item.thumb) ? item.thumb : url}" alt="Foto ${i+1}">`;
+    b.addEventListener('click', () => {
+      strip.querySelectorAll('.thumb-box').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      mainImg.src = (i===0 && item.thumb) ? item.thumb : url;
+      mainImg.className = (i===0 && item.flip) ? 'flipped' : '';
+    });
+    strip.appendChild(b);
+  });
+
+  const chipsWrap = document.getElementById('cardVariantChips');
+  const siblings = RAW_CATALOG.filter(x => x.group_id === item.group_id);
+  if(siblings.length > 1){
+    chipsWrap.style.display = 'flex';
+    chipsWrap.innerHTML = '';
+    siblings.forEach(sib => {
+      const chip = document.createElement('div');
+      chip.className = 'variant-chip' + (sib.id === item.id ? ' active' : '');
+      chip.innerHTML = `<span class="chip-dot" style="background:${sib.color_hex}"></span><span>${sib.variant_label}</span>`;
+      chip.addEventListener('click', () => switchFurnitureVariant(furn, sib));
+      chipsWrap.appendChild(chip);
+    });
+  } else {
+    chipsWrap.style.display = 'none';
+  }
+
+  renderFichaTables(item);
+
+  let deg = Math.round(THREE.MathUtils.radToDeg(furn.rotation.y)) % 360;
+  if(deg < 0) deg += 360;
+  document.getElementById('rotRange').value = deg;
+  document.getElementById('rotDegTxt').textContent = deg + '°';
+
+  cardWrap.classList.add('open');
+  renderSelectionHighlight();
+}
+
+function deselectFurniture(){
+  selectedFurniture = null;
+  cardWrap.classList.remove('open');
+  document.getElementById('editControlsBox').classList.remove('open');
+  document.getElementById('btnToggleEdit').classList.remove('active');
+  while(selHighlight.children.length > 0) selHighlight.remove(selHighlight.children[0]);
+}
+
+function renderFichaTables(item){
+  document.getElementById('inv_cedis').textContent = item.stock.cedis || 0;
+  document.getElementById('inv_ptc').textContent = item.stock.ptc || 0;
+  document.getElementById('inv_playa').textContent = item.stock.playa || 0;
+  document.getElementById('inv_colosio').textContent = item.stock.colosio || 0;
+  document.getElementById('inv_casa_creata').textContent = item.stock.casa_creata || 0;
+
+  const tiendas = [
+    { el: document.getElementById('v_ptc'), v: item.ventas.ptc || 0 },
+    { el: document.getElementById('v_playa'), v: item.ventas.playa || 0 },
+    { el: document.getElementById('v_colosio'), v: item.ventas.colosio || 0 },
+    { el: document.getElementById('v_casa_creata'), v: item.ventas.casa_creata || 0 },
+  ];
+  tiendas.forEach(t => {
+    t.el.textContent = t.v;
+    t.el.className = getSalesClass(t.v);
+  });
+}
+
+function switchFurnitureVariant(furn, newVariantItem){
+  const pos = furn.position.clone();
+  const rot = furn.rotation.y;
+  const parent = furn.parent;
+  const lvl = furn.userData.level;
+
+  parent.remove(furn);
+  const idx = placedFurniture.indexOf(furn);
+  if(idx >= 0) placedFurniture.splice(idx, 1);
+
+  createFurnitureInstance(newVariantItem, (newInstance) => {
+    newInstance.userData.level = lvl;
+    newInstance.position.copy(pos);
+    newInstance.rotation.y = rot;
+    parent.add(newInstance);
+    placedFurniture.push(newInstance);
+    selectFurniture(newInstance);
+    recordHistory('variant', newInstance);
+    saveStateToUrl();
+  });
+}
+
+function renderSelectionHighlight(){
+  while(selHighlight.children.length > 0) selHighlight.remove(selHighlight.children[0]);
+  if(!selectedFurniture || !selectedFurniture.parent) return;
+
+  const item = selectedFurniture.userData.item;
+  const r = Math.max(item.dim_m[0], item.dim_m[1]) * 0.58;
+  const ringGeo = new THREE.RingGeometry(r - 0.03, r, 36);
+  ringGeo.rotateX(-Math.PI/2);
+  const ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: 0xd8c3a8, side: THREE.DoubleSide }));
+
+  const wp = new THREE.Vector3();
+  selectedFurniture.getWorldPosition(wp);
+  ring.position.set(wp.x, wp.y + 0.015, wp.z);
+  selHighlight.add(ring);
+}
+
+document.getElementById('btnToggleEdit').addEventListener('click', e => {
+  const boxEl = document.getElementById('editControlsBox');
+  const open = boxEl.classList.toggle('open');
+  e.currentTarget.classList.toggle('active', open);
+});
+document.getElementById('btnDeselect').addEventListener('click', deselectFurniture);
+document.getElementById('btnCloseFicha').addEventListener('click', deselectFurniture);
+
+document.getElementById('rotRange').addEventListener('input', e => {
+  if(!selectedFurniture) return;
+  const deg = parseFloat(e.target.value);
+  selectedFurniture.rotation.y = THREE.MathUtils.degToRad(deg);
+  document.getElementById('rotDegTxt').textContent = Math.round(deg) + '°';
+  renderSelectionHighlight();
+});
+document.getElementById('bRotM45').addEventListener('click', () => {
+  if(!selectedFurniture) return;
+  selectedFurniture.rotation.y -= Math.PI/4;
+  updateEditValues();
+  recordHistory('rot', selectedFurniture);
+});
+document.getElementById('bRotP45').addEventListener('click', () => {
+  if(!selectedFurniture) return;
+  selectedFurniture.rotation.y += Math.PI/4;
+  updateEditValues();
+  recordHistory('rot', selectedFurniture);
+});
+
+function updateEditValues(){
+  let deg = Math.round(THREE.MathUtils.radToDeg(selectedFurniture.rotation.y)) % 360;
+  if(deg < 0) deg += 360;
+  document.getElementById('rotRange').value = deg;
+  document.getElementById('rotDegTxt').textContent = deg + '°';
+  renderSelectionHighlight();
+  saveStateToUrl();
+}
+
+const NUDGE = 0.05;
+function nudgeSelected(dx, dz){
+  if(!selectedFurniture) return;
+  const furn = selectedFurniture;
+  const newX = furn.position.x + dx;
+  const newZ = furn.position.z + dz;
+  // Verificar colisión con paredes al micro-desplazar
+  const col = checkCollision(newX, newZ, furn.rotation.y, furn.userData.item, furn.userData.level, furn);
+  if(col.collides) return; // Bloquear si choca con pared
+
+  furn.position.x = newX;
+  furn.position.z = newZ;
+  renderSelectionHighlight();
+  saveStateToUrl();
+}
+document.getElementById('nXNeg').addEventListener('click', () => nudgeSelected(-NUDGE, 0));
+document.getElementById('nXPos').addEventListener('click', () => nudgeSelected(NUDGE, 0));
+document.getElementById('nZNeg').addEventListener('click', () => nudgeSelected(0, NUDGE));
+document.getElementById('nZPos').addEventListener('click', () => nudgeSelected(0, -NUDGE));
+
+document.getElementById('bMoveSelected').addEventListener('click', () => {
+  if(!selectedFurniture) return;
+  const furn = selectedFurniture;
+  movingFurniture = furn;
+  movingOrig = { pos: furn.position.clone(), rot: furn.rotation.y, lvl: furn.userData.level };
+  placingItem = furn.userData.item;
+  deselectFurniture();
+  furn.visible = false;
+  createGhost(placingItem, movingOrig.rot);
+});
+
+document.getElementById('bDelSelected').addEventListener('click', () => {
+  if(!selectedFurniture) return;
+  recordHistory('remove', selectedFurniture);
+  if(selectedFurniture.parent) selectedFurniture.parent.remove(selectedFurniture);
+  const idx = placedFurniture.indexOf(selectedFurniture);
+  if(idx >= 0) placedFurniture.splice(idx, 1);
+  deselectFurniture();
+  saveStateToUrl();
+});
+
+/* =====================================================================
+   10. CATÁLOGO DESPLEGABLE HACIA ABAJO (CERO AMONTONAMIENTO)
+   ===================================================================== */
+const catalogDropdown = document.getElementById('catalogDropdown');
+const catalogBackdrop = document.getElementById('catalogBackdrop');
+const catalogGrid = document.getElementById('catalogGrid');
+
+function openCatalogDropdown(){
+  catalogDropdown.classList.add('open');
+  catalogBackdrop.classList.add('open');
+  renderCatalog('all');
+}
+function closeCatalogDropdown(){
+  catalogDropdown.classList.remove('open');
+  catalogBackdrop.classList.remove('open');
+}
+
+document.getElementById('fabAdd').addEventListener('click', openCatalogDropdown);
+document.getElementById('btnCloseCatalog').addEventListener('click', closeCatalogDropdown);
+catalogBackdrop.addEventListener('click', closeCatalogDropdown);
+
+document.querySelectorAll('.cat-chips-bar .cat-chip').forEach(ch => {
+  ch.addEventListener('click', () => {
+    document.querySelectorAll('.cat-chips-bar .cat-chip').forEach(c => c.classList.remove('active'));
+    ch.classList.add('active');
+    renderCatalog(ch.dataset.cat);
+  });
+});
+
+function renderCatalog(catFilter){
+  catalogGrid.innerHTML = '';
+  const displayedGroups = new Set();
+  const items = [];
+
+  RAW_CATALOG.forEach(p => {
+    if(catFilter !== 'all'){
+      if(catFilter === 'Recámaras' && (p.category !== 'Recámaras' && p.category !== 'Burós')) return;
+      if(catFilter === 'Burós' && p.category !== 'Burós') return;
+      if(catFilter !== 'Recámaras' && catFilter !== 'Burós' && p.category.toLowerCase() !== catFilter.toLowerCase()) return;
+    }
+    if(!displayedGroups.has(p.group_id)){
+      displayedGroups.add(p.group_id);
+      items.push(p);
+    }
+  });
+
+  items.forEach(item => {
+    const siblings = RAW_CATALOG.filter(x => x.group_id === item.group_id);
+    const card = document.createElement('div');
+    card.className = 'prod-card';
+    const flipCls = item.flip ? 'class="flipped"' : '';
+    const varBadge = (siblings.length > 1) ? `<span class="badge-var-count">${siblings.length} Acabados</span>` : '';
+    const imgSrc = item.thumb || item.photo;
+
+    card.innerHTML = `
+      <div class="prod-card-img">
+        <span class="badge-glb">3D GLB</span>
+        ${varBadge}
+        <img src="${imgSrc}" alt="${item.name}" ${flipCls} loading="lazy">
+      </div>
+      <div class="prod-card-info">
+        <h4 class="prod-card-title">${item.group_title || item.short_name}</h4>
+        <span class="prod-card-variant">${item.variant}</span>
+        <div class="prod-card-dim">${item.dim_cm[0]} × ${item.dim_cm[1]} × ${item.dim_cm[2]} cm</div>
+        <button class="btn-card-add">+ Colocar en Plano</button>
+      </div>
+    `;
+    card.addEventListener('click', () => startPlacing(item));
+    catalogGrid.appendChild(card);
+  });
+}
+
+/* =====================================================================
+   11. SISTEMA UNDO / REDO (CTRL+Z / CTRL+Y) Y TECLADO
+   ===================================================================== */
+const historyStack = [];
+let historyIndex = -1;
+
+function recordHistory(action, furn){
+  if(historyIndex < historyStack.length - 1){
+    historyStack.splice(historyIndex + 1);
+  }
+  historyStack.push({
+    action,
+    id: furn.userData.item.id,
+    level: furn.userData.level,
+    pos: furn.position.clone(),
+    rot: furn.rotation.y
+  });
+  historyIndex = historyStack.length - 1;
+  saveStateToUrl();
+}
+
+function undoAction(){
+  if(historyIndex < 0) return;
+  historyIndex--;
+  restoreHistoryAtIndex(historyIndex);
+}
+
+function redoAction(){
+  if(historyIndex >= historyStack.length - 1) return;
+  historyIndex++;
+  restoreHistoryAtIndex(historyIndex);
+}
+
+function restoreHistoryAtIndex(idx){
+  placedFurniture.forEach(f => { if(f.parent) f.parent.remove(f); });
+  placedFurniture.length = 0;
+  deselectFurniture();
+
+  for(let i = 0; i <= idx; i++){
+    const h = historyStack[i];
+    const item = RAW_CATALOG.find(x => x.id === h.id);
+    if(!item) continue;
+    const grp = levelGroups[h.level] || levelGroups.PB;
+    createFurnitureInstance(item, (inst) => {
+      inst.userData.level = h.level;
+      inst.position.copy(h.pos);
+      inst.rotation.y = h.rot;
+      grp.add(inst);
+      placedFurniture.push(inst);
+    });
+  }
+  saveStateToUrl();
+}
+
+window.addEventListener('keydown', e => {
+  if(e.target.tagName === 'INPUT') return;
+  if((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')){
+    e.preventDefault();
+    if(e.shiftKey) redoAction();
+    else undoAction();
+  } else if((e.ctrlKey || e.metaKey) && (e.key === 'y' || e.key === 'Y')){
+    e.preventDefault();
+    redoAction();
+  } else if(e.key === 'r' || e.key === 'R'){
+    const step = e.shiftKey ? -Math.PI/4 : Math.PI/4;
+    if(placingItem && ghostMesh){
+      ghostRot += step;
+      ghostMesh.rotation.y = ghostRot;
+      if(ghostMesh.position){
+        const col = checkCollision(ghostMesh.position.x, ghostMesh.position.z, ghostRot, placingItem, activeWorkingLevel, movingFurniture);
+        updateGhostColor(col.collides);
+      }
+    } else if(selectedFurniture){
+      selectedFurniture.rotation.y += step;
+      updateEditValues();
+      recordHistory('rot', selectedFurniture);
+    }
+  } else if(e.key === 'Escape'){
+    if(placingItem) cancelPlacing();
+    else if(selectedFurniture) deselectFurniture();
+    else closeCatalogDropdown();
+  }
+});
+
+/* =====================================================================
+   12. PERSISTENCIA EN URL Y [💾 DISTRIBUCIONES]
+   ===================================================================== */
+function serializeSetup(){
+  return placedFurniture.map(f => ({
+    id: f.userData.item.id,
+    lvl: f.userData.level,
+    x: +f.position.x.toFixed(3),
+    z: +f.position.z.toFixed(3),
+    r: +f.rotation.y.toFixed(3)
+  }));
+}
+
+function saveStateToUrl(){
+  const data = serializeSetup();
+  const jsonStr = JSON.stringify(data);
+  try {
+    localStorage.setItem('casa_creata_current_setup', jsonStr);
+    const hash = '#' + encodeURIComponent(btoa(unescape(encodeURIComponent(jsonStr))));
+    history.replaceState(null, '', hash);
+  } catch(e){}
+}
+
+function loadSetupFromJson(arr){
+  placedFurniture.forEach(f => { if(f.parent) f.parent.remove(f); });
+  placedFurniture.length = 0;
+  deselectFurniture();
+
+  arr.forEach(d => {
+    const item = RAW_CATALOG.find(x => x.id === d.id);
+    if(!item) return;
+    const grp = levelGroups[d.lvl] || levelGroups.PB;
+    createFurnitureInstance(item, (inst) => {
+      inst.userData.level = d.lvl;
+      inst.position.set(d.x, 0.02, d.z);
+      inst.rotation.y = d.r;
+      grp.add(inst);
+      placedFurniture.push(inst);
+    });
+  });
+}
+
+function restoreInitialState(){
+  if(location.hash && location.hash.length > 2){
+    try {
+      const b64 = decodeURIComponent(location.hash.slice(1));
+      const str = decodeURIComponent(escape(window.atob(b64)));
+      const arr = JSON.parse(str);
+      if(Array.isArray(arr) && arr.length > 0){
+        loadSetupFromJson(arr);
+        return;
+      }
+    } catch(e){}
+  }
+  try {
+    const saved = localStorage.getItem('casa_creata_current_setup');
+    if(saved){
+      const arr = JSON.parse(saved);
+      if(Array.isArray(arr) && arr.length > 0) loadSetupFromJson(arr);
+    }
+  } catch(e){}
+}
+
+const distribModal = document.getElementById('distribModalBackdrop');
+const savedList = document.getElementById('savedDistribList');
+
+document.getElementById('btnOpenDistrib').addEventListener('click', () => {
+  renderSavedDistribs();
+  distribModal.classList.add('open');
+});
+document.getElementById('btnCloseDistribModal').addEventListener('click', () => {
+  distribModal.classList.remove('open');
+});
+distribModal.addEventListener('click', e => {
+  if(e.target === distribModal) distribModal.classList.remove('open');
+});
+
+function getStoredDistribs(){
+  try { return JSON.parse(localStorage.getItem('casa_creata_distrib_saved') || '{}'); }
+  catch(e){ return {}; }
+}
+function setStoredDistribs(obj){
+  localStorage.setItem('casa_creata_distrib_saved', JSON.stringify(obj));
+}
+
+function renderSavedDistribs(){
+  savedList.innerHTML = '';
+  const map = getStoredDistribs();
+  const keys = Object.keys(map);
+  if(keys.length === 0){
+    savedList.innerHTML = '<div style="font-size:11.5px;color:#888;padding:8px">No hay distribuciones guardadas todavía.</div>';
+    return;
+  }
+  keys.forEach(k => {
+    const item = document.createElement('div');
+    item.className = 'distrib-item';
+    item.innerHTML = `
+      <div><b>${k}</b> <span style="opacity:.6;font-size:11px">(${map[k].length} muebles)</span></div>
+      <div style="display:flex;gap:4px">
+        <button class="btn-subtle btn-load">Cargar</button>
+        <button class="btn-subtle btn-del" style="color:#ff7675">✕</button>
+      </div>
+    `;
+    item.querySelector('.btn-load').addEventListener('click', () => {
+      loadSetupFromJson(map[k]);
+      distribModal.classList.remove('open');
+    });
+    item.querySelector('.btn-del').addEventListener('click', () => {
+      delete map[k];
+      setStoredDistribs(map);
+      renderSavedDistribs();
+    });
+    savedList.appendChild(item);
+  });
+}
+
+document.getElementById('btnSaveDistribNow').addEventListener('click', () => {
+  const input = document.getElementById('distribNameInput');
+  const name = (input.value || '').trim() || 'Distribución ' + new Date().toLocaleDateString();
+  const map = getStoredDistribs();
+  map[name] = serializeSetup();
+  setStoredDistribs(map);
+  input.value = '';
+  renderSavedDistribs();
+});
+
+document.getElementById('btnCopyUrlShare').addEventListener('click', () => {
+  saveStateToUrl();
+  navigator.clipboard.writeText(location.href).then(() => {
+    alert('¡URL de distribución copiada al portapapeles! Puedes enviarla o abrirla en cualquier navegador o celular.');
+  });
+});
+
+document.getElementById('btnClearAllFurn').addEventListener('click', () => {
+  if(confirm('¿Seguro que deseas quitar todos los muebles de los 3 pisos?')){
+    recordHistory('clear', { userData:{ item:{} }, position:new THREE.Vector3() });
+    placedFurniture.forEach(f => { if(f.parent) f.parent.remove(f); });
+    placedFurniture.length = 0;
+    deselectFurniture();
+    saveStateToUrl();
+    distribModal.classList.remove('open');
+  }
+});
+
+/* =====================================================================
+   13. BUCLE DE RENDER Y ANIMACIÓN
+   ===================================================================== */
+function onResize(){
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight, false);
+}
+window.addEventListener('resize', onResize);
+onResize();
+
+renderer.setAnimationLoop(() => {
+  NIVELES.forEach(L => {
+    curY[L.id] += (targetY[L.id] - curY[L.id]) * 0.12;
+    levelGroups[L.id].position.y = curY[L.id];
+  });
+  controls.update();
+  if(selectedFurniture) renderSelectionHighlight();
+  renderer.render(scene, camera);
+});
+
+setFloorMode('exploded');
+restoreInitialState();
+</script>
+</body>
+</html>
