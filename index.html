@@ -324,30 +324,10 @@
   .ficha-table{width:100%;border-collapse:collapse;font-size:10.5px;text-align:center;border-radius:8px;overflow:hidden}
   .ficha-table th{background:rgba(255,255,255,.08);color:#d0ccc4;padding:5px 3px;font-weight:700;border:1px solid rgba(255,255,255,.08)}
   .ficha-table td{background:rgba(255,255,255,.03);color:#fff;padding:6px 3px;border:1px solid rgba(255,255,255,.08);font-weight:700}
-  .sales-tier-0-4{background:#ea9999 !important;color:#4a1212 !important;font-weight:700}
-  .sales-tier-4-6{background:#ffd966 !important;color:#4a3800 !important;font-weight:700}
-  .sales-tier-6-10{background:#f9cb9c !important;color:#7c2d12 !important;font-weight:700}
-  .sales-tier-10plus{background:#b6d7a8 !important;color:#14532d !important;font-weight:700}
-  .active-store-cell{
-    outline: 2.5px solid #ffffff !important;
-    outline-offset: -2.5px;
-    box-shadow: 0 0 12px rgba(255,255,255,0.55) !important;
-    font-weight: 900 !important;
-  }
-  .active-store-th{
-    background: var(--store-color, #10b981) !important;
-    color: #ffffff !important;
-    font-weight: 800 !important;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-  }
-  .active-store-cell-inv{
-    outline: 2px solid var(--store-color, #10b981) !important;
-    outline-offset: -2px;
-    font-weight: 800 !important;
-  }
-  #fichaStoreBadge{
-    transition: all .2s ease;
-  }
+  .sales-tier-baja, .sales-tier-0-4{background:#f4cccc !important;color:#4a1212 !important;font-weight:700}
+  .sales-tier-baja-media, .sales-tier-4-6{background:#ffe599 !important;color:#4a3800 !important;font-weight:700}
+  .sales-tier-alta-media, .sales-tier-6-10{background:#fce5cd !important;color:#7a4413 !important;font-weight:700}
+  .sales-tier-alta, .sales-tier-10plus{background:#d9ead3 !important;color:#1e5e22 !important;font-weight:700}
   .btn-close-ficha{
     background:#ebd8c3;border:none;color:#1c1a18;font-weight:700;font-size:11.5px;cursor:pointer;
     padding:8px;border-radius:999px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.25);
@@ -691,10 +671,7 @@
   </div>
 
   <div class="ficha-card" id="fichaCard">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-      <h4 class="ficha-title" style="margin:0">FICHA TÉCNICA Y ESCALA REAL</h4>
-    </div>
-    <div id="fichaStoreBadge" style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;margin-bottom:8px;"></div>
+    <h4 class="ficha-title">FICHA TÉCNICA Y ESCALA REAL</h4>
     <div class="ficha-info-box">
       <div class="ficha-row">
         <span class="ficha-label">NOMBRE:</span>
@@ -718,7 +695,7 @@
     <table class="ficha-table">
       <thead>
         <tr>
-          <th>CEDIS</th><th id="th_inv_ptc">PTC</th><th id="th_inv_playa">PLAYA</th><th id="th_inv_colosio">COLOSIO</th><th id="th_inv_casa_creata">C. CREATA</th>
+          <th>CEDIS</th><th>PTC</th><th>PLAYA</th><th>COLOSIO</th><th>C. CREATA</th>
         </tr>
       </thead>
       <tbody>
@@ -736,7 +713,7 @@
     <table class="ficha-table">
       <thead>
         <tr>
-          <th id="th_v_ptc">PTC</th><th id="th_v_playa">PLAYA</th><th id="th_v_colosio">COLOSIO</th><th id="th_v_casa_creata">C. CREATA</th>
+          <th>PTC</th><th>PLAYA</th><th>COLOSIO</th><th>C. CREATA</th>
         </tr>
       </thead>
       <tbody>
@@ -1346,63 +1323,64 @@ function loadGLB(glbName, cb){
 
 function getSalesColorData(salesCount){
   const n = Number(salesCount) || 0;
-  if(n <= 4){
+  if(n <= 3){
     return {
-      tier: '0-4',
-      hexNum: 0xea9999,
-      hexStr: '#ea9999',
-      border: 'rgba(224, 102, 102, 0.45)',
-      badgeBg: '#ea9999',
-      badgeText: '#7f1d1d',
-      tint: 'rgba(234, 153, 153, 0.18)'
+      tier: 'BAJA',
+      hexNum: 0xf4cccc,
+      hexStr: '#f4cccc',
+      border: 'rgba(244, 204, 204, 0.45)',
+      badgeBg: '#f4cccc',
+      badgeText: '#4a1212',
+      tint: 'rgba(244, 204, 204, 0.18)'
     };
   }
-  if(n <= 6){
+  if(n <= 5){
     return {
-      tier: '5-6',
-      hexNum: 0xffd966,
-      hexStr: '#ffd966',
-      border: 'rgba(241, 194, 50, 0.5)',
-      badgeBg: '#ffd966',
-      badgeText: '#78350f',
-      tint: 'rgba(255, 217, 102, 0.20)'
+      tier: 'BAJA-MEDIA',
+      hexNum: 0xffe599,
+      hexStr: '#ffe599',
+      border: 'rgba(255, 229, 153, 0.5)',
+      badgeBg: '#ffe599',
+      badgeText: '#4a3800',
+      tint: 'rgba(255, 229, 153, 0.20)'
     };
   }
-  if(n <= 10){
+  if(n <= 9){
     return {
-      tier: '7-10',
-      hexNum: 0xf9cb9c,
-      hexStr: '#f9cb9c',
-      border: 'rgba(230, 145, 56, 0.5)',
-      badgeBg: '#f9cb9c',
-      badgeText: '#7c2d12',
-      tint: 'rgba(249, 203, 156, 0.22)'
+      tier: 'ALTA-MEDIA',
+      hexNum: 0xfce5cd,
+      hexStr: '#fce5cd',
+      border: 'rgba(252, 229, 205, 0.5)',
+      badgeBg: '#fce5cd',
+      badgeText: '#7a4413',
+      tint: 'rgba(252, 229, 205, 0.22)'
     };
   }
   return {
-    tier: '10+',
-    hexNum: 0xb6d7a8,
-    hexStr: '#b6d7a8',
-    border: 'rgba(106, 168, 79, 0.5)',
-    badgeBg: '#b6d7a8',
-    badgeText: '#14532d',
-    tint: 'rgba(182, 215, 168, 0.22)'
+    tier: 'ALTA',
+    hexNum: 0xd9ead3,
+    hexStr: '#d9ead3',
+    border: 'rgba(217, 234, 211, 0.5)',
+    badgeBg: '#d9ead3',
+    badgeText: '#1e5e22',
+    tint: 'rgba(217, 234, 211, 0.22)'
   };
 }
 
 function getSalesTierColor(num){
-  // Tonos +30% más vivos y definidos sobre el piso blanco arquitectónico
-  if(num <= 4) return 0xea9999; // Rojo vivo
-  if(num <= 6) return 0xffd966; // Amarillo/Oro vivo
-  if(num <= 10) return 0xf9cb9c; // Naranja vivo
-  return 0xb6d7a8; // Verde vivo
+  const n = Number(num) || 0;
+  if(n <= 3) return 0xf4cccc; // 0: BAJA (Rosa pastel)
+  if(n <= 5) return 0xffe599; // 4: BAJA-MEDIA (Amarillo pastel)
+  if(n <= 9) return 0xfce5cd; // 6: ALTA-MEDIA (Durazno pastel)
+  return 0xd9ead3; // 10: ALTA (Verde pastel)
 }
 
 function getSalesClass(num){
-  if(num <= 4) return 'sales-tier-0-4';
-  if(num <= 6) return 'sales-tier-4-6';
-  if(num <= 10) return 'sales-tier-6-10';
-  return 'sales-tier-10plus';
+  const n = Number(num) || 0;
+  if(n <= 3) return 'sales-tier-baja';
+  if(n <= 5) return 'sales-tier-baja-media';
+  if(n <= 9) return 'sales-tier-alta-media';
+  return 'sales-tier-alta';
 }
 
 function createFurnitureInstance(item, callback){
@@ -1881,59 +1859,19 @@ function renderFichaTables(item){
   document.getElementById('inv_colosio').textContent = stock.colosio || 0;
   document.getElementById('inv_casa_creata').textContent = stock.casa_creata || 0;
 
-  const invTiendas = [
-    { key: 'ptc', el: document.getElementById('inv_ptc'), th: document.getElementById('th_inv_ptc') },
-    { key: 'playa', el: document.getElementById('inv_playa'), th: document.getElementById('th_inv_playa') },
-    { key: 'colosio', el: document.getElementById('inv_colosio'), th: document.getElementById('th_inv_colosio') },
-    { key: 'casa_creata', el: document.getElementById('inv_casa_creata'), th: document.getElementById('th_inv_casa_creata') },
-  ];
-  invTiendas.forEach(t => {
-    if(t.el){
-      if(t.key === currentStore){
-        t.el.classList.add('active-store-cell-inv');
-      } else {
-        t.el.classList.remove('active-store-cell-inv');
-      }
-    }
-    if(t.th){
-      if(t.key === currentStore){
-        t.th.classList.add('active-store-th');
-      } else {
-        t.th.classList.remove('active-store-th');
-      }
-    }
-  });
-
   const tiendas = [
-    { key: 'ptc', el: document.getElementById('v_ptc'), th: document.getElementById('th_v_ptc'), v: ventas.ptc || 0 },
-    { key: 'playa', el: document.getElementById('v_playa'), th: document.getElementById('th_v_playa'), v: ventas.playa || 0 },
-    { key: 'colosio', el: document.getElementById('v_colosio'), th: document.getElementById('th_v_colosio'), v: ventas.colosio || 0 },
-    { key: 'casa_creata', el: document.getElementById('v_casa_creata'), th: document.getElementById('th_v_casa_creata'), v: ventas.casa_creata || 0 },
+    { key: 'ptc', el: document.getElementById('v_ptc'), v: ventas.ptc || 0 },
+    { key: 'playa', el: document.getElementById('v_playa'), v: ventas.playa || 0 },
+    { key: 'colosio', el: document.getElementById('v_colosio'), v: ventas.colosio || 0 },
+    { key: 'casa_creata', el: document.getElementById('v_casa_creata'), v: ventas.casa_creata || 0 },
   ];
   tiendas.forEach(t => {
     if(t.el){
       t.el.textContent = t.v;
-      t.el.className = getSalesClass(t.v) + (t.key === currentStore ? ' active-store-cell' : '');
-    }
-    if(t.th){
-      if(t.key === currentStore){
-        t.th.classList.add('active-store-th');
-      } else {
-        t.th.classList.remove('active-store-th');
-      }
+      // El color se asigna EXCLUSIVAMENTE a la cantidad de piezas vendidas
+      t.el.className = getSalesClass(t.v);
     }
   });
-
-  const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
-  const storeSales = (ventas && ventas[currentStore] !== undefined) ? ventas[currentStore] : 0;
-  const salesTier = getSalesColorData(storeSales);
-  const badge = document.getElementById('fichaStoreBadge');
-  if(badge){
-    badge.style.background = salesTier.badgeBg;
-    badge.style.color = salesTier.badgeText;
-    badge.style.border = `1px solid ${salesTier.border}`;
-    badge.innerHTML = `🏪 Tienda Activa: <b>${storeCfg.name.toUpperCase()}</b> • <b>${storeSales}</b> ventas (${salesTier.tier})`;
-  }
 }
 
 function switchFurnitureVariant(furn, newVariantItem){
