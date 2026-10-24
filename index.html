@@ -847,7 +847,12 @@ scene.add(camera);
 const controls = new OrbitControls(camera, canvas);
 controls.target.copy(CENTER);
 controls.enableDamping = true;
-controls.maxPolarAngle = Math.PI * 0.49;
+controls.dampingFactor = 0.08;
+controls.zoomToCursor = true;
+controls.minDistance = 1.8;
+controls.maxDistance = 140.0;
+controls.minPolarAngle = 0.05;
+controls.maxPolarAngle = Math.PI * 0.485;
 controls.autoRotate = false;
 controls.autoRotateSpeed = 1.6;
 
@@ -1055,6 +1060,7 @@ function setFloorMode(mode){
       targetY[L.id] = (L.id==='PB') ? 0 : (L.id==='N1' ? H_PB + 4.5 : H_PB + H_N1 + 9.0);
       levelGroups[L.id].visible = true;
     });
+    controls.target.y = 6.5;
   } else {
     activeWorkingLevel = mode;
     NIVELES.forEach(L => {
@@ -1066,7 +1072,9 @@ function setFloorMode(mode){
         levelGroups[L.id].visible = false;
       }
     });
+    controls.target.y = 1.4;
   }
+  controls.update();
 }
 
 document.querySelectorAll('#topBarRight .pill-btn[data-mode]').forEach(btn => {
@@ -1156,18 +1164,44 @@ document.getElementById('btnAutoRot').addEventListener('click', e => {
   e.currentTarget.classList.toggle('active', autoRotating);
 });
 
-// Botón CENTRAR: se centra en producto seleccionado si existe, o en la maqueta general
+let cameraAnim = null;
+
+function animateCameraTo(destCamPos, destTargetPos, duration = 450){
+  const startCamPos = camera.position.clone();
+  const startTarget = controls.target.clone();
+  let startTime = null;
+
+  cameraAnim = {
+    update: (now) => {
+      if(!startTime) startTime = now;
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      // Easing suave cúbico hacia el destino
+      const ease = 1 - Math.pow(1 - progress, 3);
+
+      camera.position.lerpVectors(startCamPos, destCamPos, ease);
+      controls.target.lerpVectors(startTarget, destTargetPos, ease);
+      controls.update();
+
+      if(progress >= 1){
+        cameraAnim = null;
+      }
+    }
+  };
+}
+
+// Botón CENTRAR: vuelo suave e interpolado al producto seleccionado o a la vista general
 document.getElementById('btnResetView').addEventListener('click', () => {
   if(selectedFurniture && selectedFurniture.parent){
     const wp = new THREE.Vector3();
     selectedFurniture.getWorldPosition(wp);
-    controls.target.copy(wp);
-    camera.position.set(wp.x + 3.2, wp.y + 2.8, wp.z + 4.0);
-    controls.update();
+    const destTarget = new THREE.Vector3(wp.x, wp.y + 0.4, wp.z);
+    const destCam = new THREE.Vector3(wp.x + 3.8, wp.y + 2.8, wp.z + 4.2);
+    animateCameraTo(destCam, destTarget, 500);
   } else {
-    camera.position.set(CENTER.x + 32, 28, CENTER.z + 42);
-    controls.target.copy(CENTER);
-    controls.update();
+    const destCam = new THREE.Vector3(CENTER.x + 32, 28, CENTER.z + 42);
+    const destTarget = CENTER.clone();
+    animateCameraTo(destCam, destTarget, 550);
   }
 });
 
@@ -1486,7 +1520,15 @@ function getFloorIntersection(e){
 }
 
 let ptrDownPos = { x:0, y:0 };
+let activePointers = new Map();
+let isMultiTouch = false;
+
 canvas.addEventListener('pointerdown', e => {
+  activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if(activePointers.size > 1){
+    isMultiTouch = true;
+  }
+  if(cameraAnim) cameraAnim = null; // Cancela vuelo si el usuario interactúa
   ptrDownPos = { x: e.clientX, y: e.clientY };
 
   // ALT + Clic / Arrastrar para CLONAR de inmediato
@@ -1547,8 +1589,19 @@ canvas.addEventListener('pointermove', e => {
   }
 });
 
-canvas.addEventListener('pointerup', e => {
+canvas.addEventListener('pointercancel', e => {
+  activePointers.delete(e.pointerId);
+  if(activePointers.size === 0) isMultiTouch = false;
   controls.enabled = true;
+});
+
+canvas.addEventListener('pointerup', e => {
+  activePointers.delete(e.pointerId);
+  controls.enabled = true;
+  if(isMultiTouch){
+    if(activePointers.size === 0) isMultiTouch = false;
+    return; // Evita clics accidentales durante pinch-to-zoom en móvil
+  }
   if(e.button !== 0) return;
   const maxMove = (e.pointerType === 'touch') ? 18 : 6;
   if(Math.hypot(e.clientX - ptrDownPos.x, e.clientY - ptrDownPos.y) > maxMove) return;
@@ -2208,7 +2261,8 @@ function onResize(){
 window.addEventListener('resize', onResize);
 onResize();
 
-renderer.setAnimationLoop(() => {
+renderer.setAnimationLoop((now) => {
+  if(cameraAnim) cameraAnim.update(now);
   NIVELES.forEach(L => {
     curY[L.id] += (targetY[L.id] - curY[L.id]) * 0.12;
     levelGroups[L.id].position.y = curY[L.id];
