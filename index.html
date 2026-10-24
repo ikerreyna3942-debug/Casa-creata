@@ -869,18 +869,10 @@ function createFurnitureInstance(item, callback){
     const targetZ = item.dim_m[1];
     const targetY = item.dim_m[2];
 
+    // Escala métrica 1:1 exacta de Google Sheets (Frente = targetX, Fondo = targetZ, Alto = targetY)
     let sx = targetX / (size1.x || 1);
     let sy = targetY / (size1.y || 1);
     let sz = targetZ / (size1.z || 1);
-
-    if(size1.x > 0.05 && size1.z > 0.05){
-      const currentRatio = size1.x / size1.z;
-      const targetRatio = targetX / targetZ;
-      if(Math.abs(currentRatio - targetRatio) > 0.35){
-        const uniformS = (sx + sz) / 2;
-        sx = uniformS; sz = uniformS;
-      }
-    }
 
     const wrapper = new THREE.Group();
     wrapper.add(raw);
@@ -1188,7 +1180,7 @@ function selectFurniture(furn){
   (item.gallery || [item.photo]).slice(0, 5).forEach((url, i) => {
     const b = document.createElement('div');
     b.className = 'thumb-box' + (i===0 ? ' active' : '');
-    b.innerHTML = `<img src="${(i===0 && item.thumb) ? item.thumb : url}" alt="Foto ${i+1}">`;
+    b.innerHTML = `<img src="${url}" alt="Foto ${i+1}">`;
     b.addEventListener('click', () => {
       strip.querySelectorAll('.thumb-box').forEach(x => x.classList.remove('active'));
       b.classList.add('active');
