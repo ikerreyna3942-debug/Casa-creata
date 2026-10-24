@@ -120,6 +120,73 @@
   .catalog-scroll-body::-webkit-scrollbar{width:8px}
   .catalog-scroll-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:4px}
 
+  
+  /* Popover Flotante de Elegir Tienda */
+  .store-dropdown-popover {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 220px;
+    background: rgba(22, 22, 26, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    padding: 8px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 99999;
+  }
+  .store-dropdown-popover.open {
+    display: flex;
+  }
+  .store-menu-header {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    color: #a09a90;
+    padding: 4px 8px 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 2px;
+  }
+  .store-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: 9px;
+    cursor: pointer;
+    color: #f3f3f3;
+    transition: background .14s ease;
+  }
+  .store-menu-item:hover {
+    background: rgba(255, 255, 255, 0.10);
+  }
+  .store-menu-item.active {
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+  }
+  .store-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    flex: none;
+    box-shadow: 0 0 6px currentColor;
+  }
+  .store-menu-text {
+    display: flex;
+    flex-direction: column;
+  }
+  .store-menu-text b {
+    font-size: 12px;
+    line-height: 1.2;
+    color: #ffffff;
+  }
+  .store-menu-sub {
+    font-size: 9.5px;
+    color: #8e8a84;
+  }
+
   /* Tarjeta de Mueble en el Catálogo Desplegable */
   .prod-card{
     background:#ffffff;border-radius:14px;overflow:hidden;cursor:pointer;
@@ -129,10 +196,10 @@
   }
   .prod-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(0,0,0,.4);border-color:#d8c3a8}
   .prod-card-img{
-    width:100%;height:135px;background:#ffffff;display:flex;align-items:center;justify-content:center;
-    padding:10px;position:relative;overflow:hidden;border-bottom:1px solid #f0f0f0;flex:none;
+    width:100%;height:140px;background:#ffffff;display:flex;align-items:center;justify-content:center;
+    padding:0;position:relative;overflow:hidden;border-bottom:none;flex:none;border-radius:14px 14px 0 0;
   }
-  .prod-card-img img{max-width:100%;max-height:100%;object-fit:contain}
+  .prod-card-img img{width:100%;height:100%;object-fit:contain;padding:4px}
   .prod-card-img img.flipped{transform:scaleX(-1)}
   .badge-glb{
     position:absolute;top:8px;left:8px;background:rgba(28,26,24,.88);color:#d8c3a8;
@@ -483,15 +550,7 @@
   <button class="pill-btn" data-mode="N1">📍 Piso 2</button>
   <button class="pill-btn" data-mode="N2">📍 Piso 3</button>
   <span class="pill-sep"></span>
-  <div class="store-selector-wrap">
-    <button class="pill-btn" id="btnSelectStore" title="Elegir tienda para ver ventas">🏪 Tienda: <b id="lblActiveStore">COLOSIO</b> ▾</button>
-    <div id="storeDropdownMenu" class="store-menu-popover">
-      <div class="store-menu-item active" data-store="colosio"><span class="store-dot" style="background:#10b981"></span> Colosio</div>
-      <div class="store-menu-item" data-store="playa"><span class="store-dot" style="background:#06b6d4"></span> Playa</div>
-      <div class="store-menu-item" data-store="ptc"><span class="store-dot" style="background:#f59e0b"></span> PTC</div>
-      <div class="store-menu-item" data-store="casa_creata"><span class="store-dot" style="background:#a855f7"></span> Casa Creata</div>
-    </div>
-  </div>
+  <button class="pill-btn" id="btnSelectStore" title="Elegir tienda para ver ventas">🏪 Tienda: <b id="lblActiveStore">COLOSIO</b> ▾</button>
   <button class="pill-btn" id="btnAutoRot">🔄 Girar Vista</button>
   <button class="pill-btn" id="btnResetView">🎯 Centrar</button>
 </div>
@@ -509,6 +568,39 @@
     <span>100% (Muros)</span>
   </div>
 </div>
+<!-- Menú Flotante Desplegable para [🏪 Elegir Tienda] -->
+<div id="storeDropdownMenu" class="store-dropdown-popover">
+  <div class="store-menu-header">SELECCIONAR TIENDA</div>
+  <div class="store-menu-item active" data-store="colosio">
+    <span class="store-dot" style="background:#10b981; color:#10b981"></span>
+    <div class="store-menu-text">
+      <b>Colosio</b>
+      <span class="store-menu-sub">Ver ventas y semáforo Colosio</span>
+    </div>
+  </div>
+  <div class="store-menu-item" data-store="playa">
+    <span class="store-dot" style="background:#06b6d4; color:#06b6d4"></span>
+    <div class="store-menu-text">
+      <b>Playa</b>
+      <span class="store-menu-sub">Ver ventas y semáforo Playa</span>
+    </div>
+  </div>
+  <div class="store-menu-item" data-store="ptc">
+    <span class="store-dot" style="background:#f59e0b; color:#f59e0b"></span>
+    <div class="store-menu-text">
+      <b>PTC</b>
+      <span class="store-menu-sub">Ver ventas y semáforo PTC</span>
+    </div>
+  </div>
+  <div class="store-menu-item" data-store="casa_creata">
+    <span class="store-dot" style="background:#a855f7; color:#a855f7"></span>
+    <div class="store-menu-text">
+      <b>Casa Creata</b>
+      <span class="store-menu-sub">Ver ventas y semáforo Casa Creata</span>
+    </div>
+  </div>
+</div>
+
 
 <!-- 3. CATÁLOGO DESPLEGABLE HACIA ABAJO (CERO AMONTONAMIENTO) -->
 <div id="catalogBackdrop"></div>
@@ -1004,11 +1096,17 @@ function setStore(storeKey){
     el.classList.toggle('active', el.dataset.store === storeKey);
   });
 
-  // Actualizar el color de todos los contornos de muebles en la maqueta 3D
+  // Actualizar el color de los contornos de muebles en la maqueta según sus ventas en esta tienda específica
   placedFurniture.forEach(f => {
+    const item = f.userData.item;
+    if(!item) return;
+    const liveData = (liveSheetsDb && (liveSheetsDb[item.sku] || liveSheetsDb[item.name])) || item;
+    const salesCount = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
+    const tier = getSalesColorData(salesCount);
+
     f.traverse(c => {
       if(c.userData && c.userData.isContour){
-        if(c.material) c.material.color.setHex(cfg.colorNum);
+        if(c.material) c.material.color.setHex(tier.hexNum);
       }
     });
   });
@@ -1025,7 +1123,19 @@ const storeMenu = document.getElementById('storeDropdownMenu');
 if(btnStore && storeMenu){
   btnStore.addEventListener('click', (e) => {
     e.stopPropagation();
-    storeMenu.classList.toggle('open');
+    const isOpen = storeMenu.classList.contains('open');
+    if(isOpen){
+      storeMenu.classList.remove('open');
+    } else {
+      const rect = btnStore.getBoundingClientRect();
+      storeMenu.style.top = (rect.bottom + 8) + 'px';
+      let leftPos = rect.left;
+      if(leftPos + 220 > window.innerWidth - 12){
+        leftPos = window.innerWidth - 232;
+      }
+      storeMenu.style.left = Math.max(12, leftPos) + 'px';
+      storeMenu.classList.add('open');
+    }
   });
   document.addEventListener('click', () => {
     storeMenu.classList.remove('open');
@@ -1076,6 +1186,53 @@ function loadGLB(glbName, cb){
       console.error('Error cargando modelo GLB:', glbName, err2);
     });
   });
+}
+
+
+function getSalesColorData(salesCount){
+  const n = Number(salesCount) || 0;
+  if(n <= 4){
+    return {
+      tier: '0-4',
+      hexNum: 0xea9999,
+      hexStr: '#ea9999',
+      border: 'rgba(224, 102, 102, 0.45)',
+      badgeBg: '#ea9999',
+      badgeText: '#7f1d1d',
+      tint: 'rgba(234, 153, 153, 0.18)'
+    };
+  }
+  if(n <= 6){
+    return {
+      tier: '5-6',
+      hexNum: 0xffd966,
+      hexStr: '#ffd966',
+      border: 'rgba(241, 194, 50, 0.5)',
+      badgeBg: '#ffd966',
+      badgeText: '#78350f',
+      tint: 'rgba(255, 217, 102, 0.20)'
+    };
+  }
+  if(n <= 10){
+    return {
+      tier: '7-10',
+      hexNum: 0xf9cb9c,
+      hexStr: '#f9cb9c',
+      border: 'rgba(230, 145, 56, 0.5)',
+      badgeBg: '#f9cb9c',
+      badgeText: '#7c2d12',
+      tint: 'rgba(249, 203, 156, 0.22)'
+    };
+  }
+  return {
+    tier: '10+',
+    hexNum: 0xb6d7a8,
+    hexStr: '#b6d7a8',
+    border: 'rgba(106, 168, 79, 0.5)',
+    badgeBg: '#b6d7a8',
+    badgeText: '#14532d',
+    tint: 'rgba(182, 215, 168, 0.22)'
+  };
 }
 
 function getSalesTierColor(num){
@@ -1149,8 +1306,11 @@ function createFurnitureInstance(item, callback){
       new THREE.Vector3(-hw, 0.006, -hd)
     ];
     const contourLineGeo = new THREE.BufferGeometry().setFromPoints(contourPts);
-    const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
-    const contourLineMat = new THREE.LineBasicMaterial({ color: storeCfg.colorNum, transparent: true, opacity: 0.85 });
+    const liveData = (liveSheetsDb && (liveSheetsDb[item.sku] || liveSheetsDb[item.name])) || item;
+    const storeSales = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
+    const salesTier = getSalesColorData(storeSales);
+
+    const contourLineMat = new THREE.LineBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 0.85 });
     const contourLineMesh = new THREE.Line(contourLineGeo, contourLineMat);
     contourLineMesh.userData.parentFurniture = group;
     contourLineMesh.userData.isContour = true;
@@ -1158,7 +1318,7 @@ function createFurnitureInstance(item, callback){
 
     const fillGeo = new THREE.PlaneGeometry(cW, cD);
     fillGeo.rotateX(-Math.PI/2);
-    const fillMat = new THREE.MeshBasicMaterial({ color: storeCfg.colorNum, transparent: true, opacity: 0.12, side: THREE.DoubleSide, depthWrite: false });
+    const fillMat = new THREE.MeshBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 0.16, side: THREE.DoubleSide, depthWrite: false });
     const fillMesh = new THREE.Mesh(fillGeo, fillMat);
     fillMesh.position.y = 0.005;
     fillMesh.userData.parentFurniture = group;
@@ -1759,14 +1919,15 @@ function renderCatalog(catFilter){
     const liveData = (liveSheetsDb && (liveSheetsDb[item.sku] || liveSheetsDb[item.name])) || item;
     const storeSales = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
     const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
+    const salesTier = getSalesColorData(storeSales);
 
     card.innerHTML = `
       <div class="prod-card-img">
         ${varBadge}
         <img src="${imgSrc}" alt="${item.name}" ${flipCls} loading="lazy">
       </div>
-      <div class="prod-card-info">
-        <div class="prod-store-badge">Ventas ${storeCfg.name.toUpperCase()}: <b>${storeSales}</b></div>
+      <div class="prod-card-info" style="background: ${salesTier.tint}; border-top: 2px solid ${salesTier.border};">
+        <div class="prod-store-badge" style="background: ${salesTier.badgeBg}; color: ${salesTier.badgeText}; border: 1px solid ${salesTier.border};">Ventas ${storeCfg.name.toUpperCase()}: <b>${storeSales}</b></div>
         <h4 class="prod-card-title">${item.group_title || item.short_name}</h4>
         <span class="prod-card-variant">${item.variant}</span>
         <div class="prod-card-dim">${item.dim_cm[0]} × ${item.dim_cm[1]} × ${item.dim_cm[2]} cm</div>
