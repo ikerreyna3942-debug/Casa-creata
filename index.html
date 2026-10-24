@@ -910,11 +910,11 @@ function createFurnitureInstance(item, callback){
     const salesNum = item.ventas.casa_creata || 0;
     const haloColor = getSalesTierColor(salesNum);
     const radius = Math.max(item.dim_m[0], item.dim_m[1]) * 0.55;
-    const haloGeo = new THREE.RingGeometry(0.01, radius, 32);
+    const haloGeo = new THREE.CircleGeometry(radius, 32);
     haloGeo.rotateX(-Math.PI/2);
-    const haloMat = new THREE.MeshBasicMaterial({ color: haloColor, transparent:true, opacity:0.32, side:THREE.DoubleSide, depthWrite:false });
+    const haloMat = new THREE.MeshBasicMaterial({ color: haloColor, transparent:true, opacity:0.42, side:THREE.DoubleSide, depthWrite:false });
     const haloMesh = new THREE.Mesh(haloGeo, haloMat);
-    haloMesh.position.y = 0.01;
+    haloMesh.position.y = 0.005;
     group.add(haloMesh);
 
     // Invisible Click-Box para selección 100% inmediata
@@ -1062,7 +1062,7 @@ function getFloorIntersection(e){
     const hits = raycaster.intersectObject(fm, false);
     if(hits.length > 0) return { pt: hits[0].point, level: activeWorkingLevel };
   }
-  const planeY = grp ? grp.position.y : 0.02;
+  const planeY = (grp ? grp.position.y : 0) + LOSA;
   const plane = new THREE.Plane(new THREE.Vector3(0,1,0), -planeY);
   const pt = new THREE.Vector3();
   if(raycaster.ray.intersectPlane(plane, pt)){
@@ -1079,7 +1079,7 @@ canvas.addEventListener('pointermove', e => {
   const hit = getFloorIntersection(e);
   if(hit){
     const grp = levelGroups[hit.level];
-    ghostMesh.position.set(hit.pt.x, grp.position.y + 0.02, hit.pt.z);
+    ghostMesh.position.set(hit.pt.x, grp.position.y + LOSA, hit.pt.z);
     ghostMesh.rotation.y = ghostRot;
 
     // Verificar colisión en vivo con paredes, límites y muebles
@@ -1117,7 +1117,7 @@ canvas.addEventListener('pointerup', e => {
           grp.add(furn);
         }
         furn.userData.level = hit.level;
-        furn.position.set(posX, 0.02, posZ);
+        furn.position.set(posX, LOSA, posZ);
         furn.rotation.y = rotY;
         furn.visible = true;
         selectFurniture(furn);
@@ -1128,7 +1128,7 @@ canvas.addEventListener('pointerup', e => {
         cancelPlacing();
         createFurnitureInstance(itemToPlace, (instance) => {
           instance.userData.level = hit.level;
-          instance.position.set(posX, 0.02, posZ);
+          instance.position.set(posX, LOSA, posZ);
           instance.rotation.y = rotY;
           grp.add(instance);
           placedFurniture.push(instance);
@@ -1558,7 +1558,7 @@ function loadSetupFromJson(arr){
     const grp = levelGroups[d.lvl] || levelGroups.PB;
     createFurnitureInstance(item, (inst) => {
       inst.userData.level = d.lvl;
-      inst.position.set(d.x, 0.02, d.z);
+      inst.position.set(d.x, LOSA, d.z);
       inst.rotation.y = d.r;
       grp.add(inst);
       placedFurniture.push(inst);
