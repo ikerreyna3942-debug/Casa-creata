@@ -324,10 +324,10 @@
   .ficha-table{width:100%;border-collapse:collapse;font-size:10.5px;text-align:center;border-radius:8px;overflow:hidden}
   .ficha-table th{background:rgba(255,255,255,.08);color:#d0ccc4;padding:5px 3px;font-weight:700;border:1px solid rgba(255,255,255,.08)}
   .ficha-table td{background:rgba(255,255,255,.03);color:#fff;padding:6px 3px;border:1px solid rgba(255,255,255,.08);font-weight:700}
-  .sales-tier-baja, .sales-tier-0-4{background:#f4cccc !important;color:#4a1212 !important;font-weight:700}
-  .sales-tier-baja-media, .sales-tier-4-6{background:#ffe599 !important;color:#4a3800 !important;font-weight:700}
-  .sales-tier-alta-media, .sales-tier-6-10{background:#fce5cd !important;color:#7a4413 !important;font-weight:700}
-  .sales-tier-alta, .sales-tier-10plus{background:#d9ead3 !important;color:#1e5e22 !important;font-weight:700}
+  .sales-tier-baja, .sales-tier-0-4{background:#e47a7a !important;color:#3b0f0f !important;font-weight:700}
+  .sales-tier-baja-media, .sales-tier-4-6{background:#f9d770 !important;color:#4a3800 !important;font-weight:700}
+  .sales-tier-alta-media, .sales-tier-6-10{background:#f3c391 !important;color:#5a2b0a !important;font-weight:700}
+  .sales-tier-alta, .sales-tier-10plus{background:#add09e !important;color:#144418 !important;font-weight:700}
   .btn-close-ficha{
     background:#ebd8c3;border:none;color:#1c1a18;font-weight:700;font-size:11.5px;cursor:pointer;
     padding:8px;border-radius:999px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.25);
@@ -1326,53 +1326,53 @@ function getSalesColorData(salesCount){
   if(n <= 3){
     return {
       tier: 'BAJA',
-      hexNum: 0xf4cccc,
-      hexStr: '#f4cccc',
-      border: 'rgba(244, 204, 204, 0.45)',
-      badgeBg: '#f4cccc',
-      badgeText: '#4a1212',
-      tint: 'rgba(244, 204, 204, 0.18)'
+      hexNum: 0xe47a7a,
+      hexStr: '#e47a7a',
+      border: 'rgba(228, 122, 122, 0.65)',
+      badgeBg: '#e47a7a',
+      badgeText: '#3b0f0f',
+      tint: 'rgba(228, 122, 122, 0.25)'
     };
   }
   if(n <= 5){
     return {
       tier: 'BAJA-MEDIA',
-      hexNum: 0xffe599,
-      hexStr: '#ffe599',
-      border: 'rgba(255, 229, 153, 0.5)',
-      badgeBg: '#ffe599',
+      hexNum: 0xf9d770,
+      hexStr: '#f9d770',
+      border: 'rgba(249, 215, 112, 0.70)',
+      badgeBg: '#f9d770',
       badgeText: '#4a3800',
-      tint: 'rgba(255, 229, 153, 0.20)'
+      tint: 'rgba(249, 215, 112, 0.28)'
     };
   }
   if(n <= 9){
     return {
       tier: 'ALTA-MEDIA',
-      hexNum: 0xfce5cd,
-      hexStr: '#fce5cd',
-      border: 'rgba(252, 229, 205, 0.5)',
-      badgeBg: '#fce5cd',
-      badgeText: '#7a4413',
-      tint: 'rgba(252, 229, 205, 0.22)'
+      hexNum: 0xf3c391,
+      hexStr: '#f3c391',
+      border: 'rgba(243, 195, 145, 0.70)',
+      badgeBg: '#f3c391',
+      badgeText: '#5a2b0a',
+      tint: 'rgba(243, 195, 145, 0.30)'
     };
   }
   return {
     tier: 'ALTA',
-    hexNum: 0xd9ead3,
-    hexStr: '#d9ead3',
-    border: 'rgba(217, 234, 211, 0.5)',
-    badgeBg: '#d9ead3',
-    badgeText: '#1e5e22',
-    tint: 'rgba(217, 234, 211, 0.22)'
+    hexNum: 0xadd09e,
+    hexStr: '#add09e',
+    border: 'rgba(173, 208, 158, 0.70)',
+    badgeBg: '#add09e',
+    badgeText: '#144418',
+    tint: 'rgba(173, 208, 158, 0.30)'
   };
 }
 
 function getSalesTierColor(num){
   const n = Number(num) || 0;
-  if(n <= 3) return 0xf4cccc; // 0: BAJA (Rosa pastel)
-  if(n <= 5) return 0xffe599; // 4: BAJA-MEDIA (Amarillo pastel)
-  if(n <= 9) return 0xfce5cd; // 6: ALTA-MEDIA (Durazno pastel)
-  return 0xd9ead3; // 10: ALTA (Verde pastel)
+  if(n <= 3) return 0xe47a7a; // 0: BAJA (+40% vivo)
+  if(n <= 5) return 0xf9d770; // 4: BAJA-MEDIA (+40% vivo)
+  if(n <= 9) return 0xf3c391; // 6: ALTA-MEDIA (+40% vivo)
+  return 0xadd09e; // 10: ALTA (+40% vivo)
 }
 
 function getSalesClass(num){
