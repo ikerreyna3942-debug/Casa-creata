@@ -10,6 +10,44 @@
 <title>CASA CREATA · Showroom 3D Interactivo</title>
 <style>
   :root{
+
+  :root {
+    --store-color: #10b981;
+    --store-tint: rgba(16, 185, 129, 0.12);
+    --store-border: rgba(16, 185, 129, 0.35);
+  }
+
+  /* Popover Selector de Tienda */
+  .store-selector-wrap { position: relative; display: inline-flex; }
+  .store-menu-popover {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    background: rgba(18, 18, 22, 0.98); backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 12px;
+    padding: 6px; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
+    display: none; flex-direction: column; gap: 3px; z-index: 50; min-width: 145px;
+  }
+  .store-menu-popover.open { display: flex; }
+  .store-menu-item {
+    padding: 7px 11px; border-radius: 8px; font-size: 11.5px; font-weight: 600;
+    color: #e2ded8; cursor: pointer; display: flex; align-items: center; gap: 8px;
+    transition: all 0.15s ease;
+  }
+  .store-menu-item:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+  .store-menu-item.active { background: rgba(255, 255, 255, 0.22); color: #fff; font-weight: 700; }
+  .store-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+
+  /* Recuadro tenue de venta en tarjeta de producto */
+  .prod-store-badge {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700;
+    color: #fff; background: var(--store-color); padding: 2px 8px; border-radius: 999px;
+    width: fit-content; margin-bottom: 4px; box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  }
+  .store-highlighted-sale {
+    border: 2px solid var(--store-color) !important;
+    background: var(--store-tint) !important;
+    color: #fff !important; font-weight: 800 !important;
+  }
+
     --bg:#0e0f12;
     --bar-bg:rgba(30,30,34,.96);
     --btn-pill:#353539;
@@ -139,7 +177,7 @@
     position:absolute;top:8px;right:8px;background:rgba(40,40,45,.9);color:#fff;
     font-size:9.5px;font-weight:600;padding:2px 7px;border-radius:5px;
   }
-  .prod-card-info{padding:12px;display:flex;flex-direction:column;gap:3px;flex:1;background:#fff}
+  .prod-card-info{padding:12px;display:flex;flex-direction:column;gap:3px;flex:1;background:var(--store-tint);border-top:1px solid var(--store-border);border-radius:0 0 14px 14px;transition:background .2s ease,border-color .2s ease}
   .prod-card-title{font-size:12.5px;font-weight:800;margin:0;color:#1c1a18;line-height:1.25}
   .prod-card-variant{font-size:10.5px;color:#7a756f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .prod-card-dim{font-size:10.5px;font-weight:700;color:#9e6a32;margin-top:auto;padding-top:4px}
@@ -480,7 +518,15 @@
   <button class="pill-btn" data-mode="N1">📍 Piso 2</button>
   <button class="pill-btn" data-mode="N2">📍 Piso 3</button>
   <span class="pill-sep"></span>
-  <button class="pill-btn" id="btnToggleCAD">📐 Ejes CAD</button>
+  <div class="store-selector-wrap">
+    <button class="pill-btn" id="btnSelectStore" title="Elegir tienda para ver ventas">🏪 Tienda: <b id="lblActiveStore">COLOSIO</b> ▾</button>
+    <div id="storeDropdownMenu" class="store-menu-popover">
+      <div class="store-menu-item active" data-store="colosio"><span class="store-dot" style="background:#10b981"></span> Colosio</div>
+      <div class="store-menu-item" data-store="playa"><span class="store-dot" style="background:#06b6d4"></span> Playa</div>
+      <div class="store-menu-item" data-store="ptc"><span class="store-dot" style="background:#f59e0b"></span> PTC</div>
+      <div class="store-menu-item" data-store="casa_creata"><span class="store-dot" style="background:#a855f7"></span> Casa Creata</div>
+    </div>
+  </div>
   <button class="pill-btn" id="btnAutoRot">🔄 Girar Vista</button>
   <button class="pill-btn" id="btnResetView">🎯 Centrar</button>
 </div>
@@ -970,26 +1016,54 @@ document.querySelectorAll('#topBarRight .pill-btn[data-mode]').forEach(btn => {
   btn.addEventListener('click', () => setFloorMode(btn.dataset.mode));
 });
 
-// Ejes CAD
-const cadAxesGroup = new THREE.Group(); scene.add(cadAxesGroup);
-let cadVisible = true;
-function buildCADAxes(){
-  const matLine = new THREE.LineDashedMaterial({ color:0x6b6357, dashSize:0.6, gapSize:0.3 });
-  COTAS_X.forEach(([a,b,d]) => {
-    const x = EJES_X[b];
-    const pts = [new THREE.Vector3(x, 0.05, 4), new THREE.Vector3(x, 0.05, -LARGO_TOTAL - 2)];
-    const geo = new THREE.BufferGeometry().setFromPoints(pts);
-    const line = new THREE.Line(geo, matLine); line.computeLineDistances();
-    cadAxesGroup.add(line);
+// Configuración y selector de tienda activa
+const STORE_CONFIG = {
+  colosio: { name: 'Colosio', color: '#10b981', colorNum: 0x10b981, tint: 'rgba(16, 185, 129, 0.12)', border: 'rgba(16, 185, 129, 0.35)' },
+  playa: { name: 'Playa', color: '#06b6d4', colorNum: 0x06b6d4, tint: 'rgba(6, 182, 212, 0.12)', border: 'rgba(6, 182, 212, 0.35)' },
+  ptc: { name: 'PTC', color: '#f59e0b', colorNum: 0xf59e0b, tint: 'rgba(245, 158, 11, 0.12)', border: 'rgba(245, 158, 11, 0.35)' },
+  casa_creata: { name: 'Casa Creata', color: '#a855f7', colorNum: 0xa855f7, tint: 'rgba(168, 85, 247, 0.12)', border: 'rgba(168, 85, 247, 0.35)' }
+};
+let currentStore = 'colosio';
+
+function setStore(storeKey){
+  if(!STORE_CONFIG[storeKey]) return;
+  currentStore = storeKey;
+  const cfg = STORE_CONFIG[storeKey];
+  const lbl = document.getElementById('lblActiveStore');
+  if(lbl) lbl.textContent = cfg.name.toUpperCase();
+  document.documentElement.style.setProperty('--store-color', cfg.color);
+  document.documentElement.style.setProperty('--store-tint', cfg.tint);
+  document.documentElement.style.setProperty('--store-border', cfg.border);
+
+  document.querySelectorAll('.store-menu-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.store === storeKey);
+  });
+
+  renderCatalogCards(currentCategoryFilter);
+  if(selectedFurniture){
+    renderFichaTables(selectedFurniture.userData.item);
+    renderSelectionHighlight();
+  }
+}
+
+const btnStore = document.getElementById('btnSelectStore');
+const storeMenu = document.getElementById('storeDropdownMenu');
+if(btnStore && storeMenu){
+  btnStore.addEventListener('click', (e) => {
+    e.stopPropagation();
+    storeMenu.classList.toggle('open');
+  });
+  document.addEventListener('click', () => {
+    storeMenu.classList.remove('open');
+  });
+  document.querySelectorAll('.store-menu-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setStore(item.dataset.store);
+      storeMenu.classList.remove('open');
+    });
   });
 }
-buildCADAxes();
-
-document.getElementById('btnToggleCAD').addEventListener('click', e => {
-  cadVisible = !cadVisible;
-  cadAxesGroup.visible = cadVisible;
-  e.currentTarget.classList.toggle('active', cadVisible);
-});
 
 let autoRotating = false;
 document.getElementById('btnAutoRot').addEventListener('click', e => {
@@ -998,10 +1072,19 @@ document.getElementById('btnAutoRot').addEventListener('click', e => {
   e.currentTarget.classList.toggle('active', autoRotating);
 });
 
+// Botón CENTRAR: se centra en producto seleccionado si existe, o en la maqueta general
 document.getElementById('btnResetView').addEventListener('click', () => {
-  camera.position.set(CENTER.x + 32, 28, CENTER.z + 42);
-  controls.target.copy(CENTER);
-  controls.update();
+  if(selectedFurniture && selectedFurniture.parent){
+    const wp = new THREE.Vector3();
+    selectedFurniture.getWorldPosition(wp);
+    controls.target.copy(wp);
+    camera.position.set(wp.x + 3.2, wp.y + 2.8, wp.z + 4.0);
+    controls.update();
+  } else {
+    camera.position.set(CENTER.x + 32, 28, CENTER.z + 42);
+    controls.target.copy(CENTER);
+    controls.update();
+  }
 });
 
 /* =====================================================================
@@ -1079,25 +1162,30 @@ function createFurnitureInstance(item, callback){
     });
     group.add(wrapper);
 
-    // Halo circular inferior 30% más fuerte y nítido según ventas
-    const salesNum = item.ventas.casa_creata || 0;
-    const haloColor = getSalesTierColor(salesNum);
-    const radius = Math.max(item.dim_m[0], item.dim_m[1]) * 0.55;
-    const haloGeo = new THREE.CircleGeometry(radius, 36);
-    haloGeo.rotateX(-Math.PI/2);
-    // Disco central con opacidad aumentada 30% (0.65)
-    const haloMat = new THREE.MeshBasicMaterial({ color: haloColor, transparent:true, opacity:0.65, side:THREE.DoubleSide, depthWrite:false });
-    const haloMesh = new THREE.Mesh(haloGeo, haloMat);
-    haloMesh.position.y = 0.005;
-    group.add(haloMesh);
+    // Contorno rectangular del producto (15% más grande en lugar de círculo)
+    const cW = (item.dim_m[0] || 1) * 1.15;
+    const cD = (item.dim_m[1] || 1) * 1.15;
+    const hw = cW / 2;
+    const hd = cD / 2;
+    const contourPts = [
+      new THREE.Vector3(-hw, 0.006, -hd),
+      new THREE.Vector3(hw, 0.006, -hd),
+      new THREE.Vector3(hw, 0.006, hd),
+      new THREE.Vector3(-hw, 0.006, hd),
+      new THREE.Vector3(-hw, 0.006, -hd)
+    ];
+    const contourLineGeo = new THREE.BufferGeometry().setFromPoints(contourPts);
+    const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
+    const contourLineMat = new THREE.LineBasicMaterial({ color: storeCfg.colorNum, transparent: true, opacity: 0.85 });
+    const contourLineMesh = new THREE.Line(contourLineGeo, contourLineMat);
+    group.add(contourLineMesh);
 
-    // Anillo exterior de contorno para máxima definición arquitectónica
-    const haloRingGeo = new THREE.RingGeometry(radius - 0.03, radius, 36);
-    haloRingGeo.rotateX(-Math.PI/2);
-    const haloRingMat = new THREE.MeshBasicMaterial({ color: haloColor, transparent:true, opacity:0.88, side:THREE.DoubleSide, depthWrite:false });
-    const haloRingMesh = new THREE.Mesh(haloRingGeo, haloRingMat);
-    haloRingMesh.position.y = 0.006;
-    group.add(haloRingMesh);
+    const fillGeo = new THREE.PlaneGeometry(cW, cD);
+    fillGeo.rotateX(-Math.PI/2);
+    const fillMat = new THREE.MeshBasicMaterial({ color: storeCfg.colorNum, transparent: true, opacity: 0.12, side: THREE.DoubleSide, depthWrite: false });
+    const fillMesh = new THREE.Mesh(fillGeo, fillMat);
+    fillMesh.position.y = 0.005;
+    group.add(fillMesh);
 
     // Invisible Click-Box para selección 100% inmediata
     const clickGeo = new THREE.BoxGeometry(Math.max(item.dim_m[0], 0.6), Math.max(item.dim_m[2], 0.6), Math.max(item.dim_m[1], 0.6));
@@ -1117,41 +1205,47 @@ function createFurnitureInstance(item, callback){
    ===================================================================== */
 function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
   const dimX = item.dim_m[0], dimZ = item.dim_m[1];
-  const halfX = (Math.abs(dimX/2 * Math.cos(rotY)) + Math.abs(dimZ/2 * Math.sin(rotY))) * 0.96;
-  const halfZ = (Math.abs(dimX/2 * Math.sin(rotY)) + Math.abs(dimZ/2 * Math.cos(rotY))) * 0.96;
+  const halfX = (Math.abs(dimX/2 * Math.cos(rotY)) + Math.abs(dimZ/2 * Math.sin(rotY)));
+  const halfZ = (Math.abs(dimX/2 * Math.sin(rotY)) + Math.abs(dimZ/2 * Math.cos(rotY)));
+
+  const GAP = 0.01; // Tolerancia exacta de 1 cm como referencia
 
   const fMinX = posX - halfX;
   const fMaxX = posX + halfX;
   const fMinZ = posZ - halfZ;
   const fMaxZ = posZ + halfZ;
 
-  // 1. Límite de muros perimetrales
-  if(fMinX < 0.25 || fMaxX > 19.96 || fMinZ < -23.82 || fMaxZ > -0.25){
+  // 1. Límite de muros perimetrales exteriores (con margen de 1 cm)
+  const W_MIN_X = 0.20 + GAP;
+  const W_MAX_X = 20.01 - GAP;
+  const W_MIN_Z = -23.82 + GAP;
+  const W_MAX_Z = -0.20 - GAP;
+  if(fMinX < W_MIN_X || fMaxX > W_MAX_X || fMinZ < W_MIN_Z || fMaxZ > W_MAX_Z){
     return { collides: true, reason: 'Pared perimetral exterior' };
   }
 
-  // 2. Colisión con Muros y Columnas del piso activo
+  // 2. Colisión con Muros y Columnas del piso activo (con margen de 1 cm)
   const obs = LEVEL_OBSTACLES[level] || [];
   for(let i = 0; i < obs.length; i++){
     const b = obs[i];
-    if(fMaxX > b.minX + 0.05 && fMinX < b.maxX - 0.05 &&
-       fMaxZ > b.minZ + 0.05 && fMinZ < b.maxZ - 0.05){
+    if(fMaxX > (b.minX - GAP) && fMinX < (b.maxX + GAP) &&
+       fMaxZ > (b.minZ - GAP) && fMinZ < (b.maxZ + GAP)){
       return { collides: true, reason: 'Pared o columna' };
     }
   }
 
-  // 3. Colisión entre Muebles en el mismo piso
+  // 3. Colisión entre Muebles en el mismo piso (con margen de 1 cm)
   for(let i = 0; i < placedFurniture.length; i++){
     const f = placedFurniture[i];
     if(f === ignoreFurniture) continue;
     if(f.userData.level !== level) continue;
     const it = f.userData.item;
     const rY = f.rotation.y;
-    const fHx = (Math.abs(it.dim_m[0]/2 * Math.cos(rY)) + Math.abs(it.dim_m[1]/2 * Math.sin(rY))) * 0.92;
-    const fHz = (Math.abs(it.dim_m[0]/2 * Math.sin(rY)) + Math.abs(it.dim_m[1]/2 * Math.cos(rY))) * 0.92;
+    const fHx = (Math.abs(it.dim_m[0]/2 * Math.cos(rY)) + Math.abs(it.dim_m[1]/2 * Math.sin(rY)));
+    const fHz = (Math.abs(it.dim_m[0]/2 * Math.sin(rY)) + Math.abs(it.dim_m[1]/2 * Math.cos(rY)));
 
-    if(fMaxX > f.position.x - fHx && fMinX < f.position.x + fHx &&
-       fMaxZ > f.position.z - fHz && fMinZ < f.position.z + fHz){
+    if(fMaxX > (f.position.x - fHx - GAP) && fMinX < (f.position.x + fHx + GAP) &&
+       fMaxZ > (f.position.z - fHz - GAP) && fMinZ < (f.position.z + fHz + GAP)){
       return { collides: true, reason: 'Mueble ya colocado' };
     }
   }
@@ -1336,7 +1430,30 @@ canvas.addEventListener('pointerup', e => {
   const hits = raycaster.intersectObjects(targets, false);
   if(hits.length > 0){
     const furn = hits[0].object.userData.parentFurniture;
-    if(furn) selectFurniture(furn);
+    if(furn){
+      if(e.altKey){
+        // ALT + arrastrar para clonar producto
+        createFurnitureInstance(furn.userData.item, (clone) => {
+          clone.userData.level = furn.userData.level;
+          clone.position.copy(furn.position);
+          clone.rotation.y = furn.rotation.y;
+          const grp = levelGroups[furn.userData.level] || levelGroups.PB;
+          grp.add(clone);
+          placedFurniture.push(clone);
+          recordHistory('add', clone);
+          saveStateToUrl();
+
+          movingFurniture = clone;
+          movingOrig = { pos: clone.position.clone(), rot: clone.rotation.y, lvl: clone.userData.level };
+          placingItem = clone.userData.item;
+          deselectFurniture();
+          clone.visible = false;
+          createGhost(placingItem, movingOrig.rot);
+        });
+      } else {
+        selectFurniture(furn);
+      }
+    }
   } else {
     if(e.clientX < innerWidth - 360) deselectFurniture();
   }
@@ -1360,7 +1477,7 @@ function selectFurniture(furn){
   document.getElementById('fNombre').textContent = item.name;
   document.getElementById('fMedidas').textContent = `${item.dim_cm[0]} × ${item.dim_cm[1]} × ${item.dim_cm[2]} cm (${(item.dim_cm[0]/100).toFixed(2)}×${(item.dim_cm[1]/100).toFixed(2)}m)`;
   document.getElementById('fSku').textContent = item.sku;
-  document.getElementById('fProveedor').textContent = item.proveedor || 'ARTEX';
+  document.getElementById('fProveedor').textContent = item.proveedor || '';
 
   const mainImg = document.getElementById('cardMainImg');
   mainImg.src = item.thumb || item.photo;
@@ -1368,7 +1485,7 @@ function selectFurniture(furn){
 
   const strip = document.getElementById('cardThumbStrip');
   strip.innerHTML = '';
-  (item.gallery || [item.photo]).slice(0, 5).forEach((url, i) => {
+  (item.gallery || [item.photo]).forEach((url, i) => {
     const b = document.createElement('div');
     b.className = 'thumb-box' + (i===0 ? ' active' : '');
     b.innerHTML = `<img src="${url}" alt="Foto ${i+1}">`;
@@ -1417,21 +1534,29 @@ function deselectFurniture(){
 }
 
 function renderFichaTables(item){
-  document.getElementById('inv_cedis').textContent = item.stock.cedis || 0;
-  document.getElementById('inv_ptc').textContent = item.stock.ptc || 0;
-  document.getElementById('inv_playa').textContent = item.stock.playa || 0;
-  document.getElementById('inv_colosio').textContent = item.stock.colosio || 0;
-  document.getElementById('inv_casa_creata').textContent = item.stock.casa_creata || 0;
+  const live = (liveSheetsDb && (liveSheetsDb[item.sku] || liveSheetsDb[item.name])) || item;
+  const stock = live.stock || item.stock || {};
+  const ventas = live.ventas || item.ventas || {};
+
+  document.getElementById('inv_cedis').textContent = stock.cedis || 0;
+  document.getElementById('inv_ptc').textContent = stock.ptc || 0;
+  document.getElementById('inv_playa').textContent = stock.playa || 0;
+  document.getElementById('inv_colosio').textContent = stock.colosio || 0;
+  document.getElementById('inv_casa_creata').textContent = stock.casa_creata || 0;
 
   const tiendas = [
-    { el: document.getElementById('v_ptc'), v: item.ventas.ptc || 0 },
-    { el: document.getElementById('v_playa'), v: item.ventas.playa || 0 },
-    { el: document.getElementById('v_colosio'), v: item.ventas.colosio || 0 },
-    { el: document.getElementById('v_casa_creata'), v: item.ventas.casa_creata || 0 },
+    { key: 'ptc', el: document.getElementById('v_ptc'), v: ventas.ptc || 0 },
+    { key: 'playa', el: document.getElementById('v_playa'), v: ventas.playa || 0 },
+    { key: 'colosio', el: document.getElementById('v_colosio'), v: ventas.colosio || 0 },
+    { key: 'casa_creata', el: document.getElementById('v_casa_creata'), v: ventas.casa_creata || 0 },
   ];
   tiendas.forEach(t => {
     t.el.textContent = t.v;
-    t.el.className = getSalesClass(t.v);
+    if(t.key === currentStore){
+      t.el.className = 'store-highlighted-sale';
+    } else {
+      t.el.className = getSalesClass(t.v);
+    }
   });
 }
 
@@ -1462,15 +1587,38 @@ function renderSelectionHighlight(){
   if(!selectedFurniture || !selectedFurniture.parent) return;
 
   const item = selectedFurniture.userData.item;
-  const r = Math.max(item.dim_m[0], item.dim_m[1]) * 0.58;
-  const ringGeo = new THREE.RingGeometry(r - 0.03, r, 36);
-  ringGeo.rotateX(-Math.PI/2);
-  const ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: 0xd8c3a8, side: THREE.DoubleSide }));
+  const cW = (item.dim_m[0] || 1) * 1.15; // Contorno 15% más grande que el producto
+  const cD = (item.dim_m[1] || 1) * 1.15;
+  const hw = cW / 2;
+  const hd = cD / 2;
+
+  const outlinePts = [
+    new THREE.Vector3(-hw, 0.015, -hd),
+    new THREE.Vector3(hw, 0.015, -hd),
+    new THREE.Vector3(hw, 0.015, hd),
+    new THREE.Vector3(-hw, 0.015, hd),
+    new THREE.Vector3(-hw, 0.015, -hd)
+  ];
+  const outlineGeo = new THREE.BufferGeometry().setFromPoints(outlinePts);
+  const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
+  const lineMat = new THREE.LineBasicMaterial({ color: storeCfg.colorNum, linewidth: 3 });
+  const line = new THREE.Line(outlineGeo, lineMat);
+
+  const fillGeo = new THREE.PlaneGeometry(cW, cD);
+  fillGeo.rotateX(-Math.PI/2);
+  const fillMat = new THREE.MeshBasicMaterial({ color: storeCfg.colorNum, transparent: true, opacity: 0.22, side: THREE.DoubleSide, depthWrite: false });
+  const fill = new THREE.Mesh(fillGeo, fillMat);
+  fill.position.y = 0.012;
+
+  const grp = new THREE.Group();
+  grp.add(line);
+  grp.add(fill);
 
   const wp = new THREE.Vector3();
   selectedFurniture.getWorldPosition(wp);
-  ring.position.set(wp.x, wp.y + 0.015, wp.z);
-  selHighlight.add(ring);
+  grp.position.set(wp.x, wp.y, wp.z);
+  grp.rotation.y = selectedFurniture.rotation.y;
+  selHighlight.add(grp);
 }
 
 document.getElementById('btnToggleEdit').addEventListener('click', e => {
@@ -1605,13 +1753,17 @@ function renderCatalog(catFilter){
     const varBadge = (siblings.length > 1) ? `<span class="badge-var-count">${siblings.length} Acabados</span>` : '';
     const imgSrc = item.thumb || item.photo;
 
+    const liveData = (liveSheetsDb && (liveSheetsDb[item.sku] || liveSheetsDb[item.name])) || item;
+    const storeSales = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
+    const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
+
     card.innerHTML = `
       <div class="prod-card-img">
-        <span class="badge-glb">3D GLB</span>
         ${varBadge}
         <img src="${imgSrc}" alt="${item.name}" ${flipCls} loading="lazy">
       </div>
       <div class="prod-card-info">
+        <div class="prod-store-badge">Ventas ${storeCfg.name.toUpperCase()}: <b>${storeSales}</b></div>
         <h4 class="prod-card-title">${item.group_title || item.short_name}</h4>
         <span class="prod-card-variant">${item.variant}</span>
         <div class="prod-card-dim">${item.dim_cm[0]} × ${item.dim_cm[1]} × ${item.dim_cm[2]} cm</div>
@@ -1679,6 +1831,28 @@ function restoreHistoryAtIndex(idx){
 
 window.addEventListener('keydown', e => {
   if(e.target.tagName === 'INPUT') return;
+
+  // Interacción de productos seleccionados con teclado
+  if(selectedFurniture && !e.ctrlKey && !e.metaKey){
+    if(e.key === 'Delete' || e.key === 'Del'){
+      e.preventDefault();
+      document.getElementById('bDelSelected').click();
+      return;
+    }
+    const STEP = 0.05; // 5 cm de movimiento por tecla
+    let dx = 0, dz = 0;
+    if(e.key === 'ArrowUp') dz = -STEP;
+    else if(e.key === 'ArrowDown') dz = STEP;
+    else if(e.key === 'ArrowLeft') dx = -STEP;
+    else if(e.key === 'ArrowRight') dx = STEP;
+
+    if(dx !== 0 || dz !== 0){
+      e.preventDefault();
+      nudgeSelected(dx, dz);
+      return;
+    }
+  }
+
   if((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')){
     e.preventDefault();
     if(e.shiftKey) redoAction();
@@ -1882,6 +2056,61 @@ renderer.setAnimationLoop(() => {
 
 setFloorMode('exploded');
 restoreInitialState();
+
+// Sincronización en vivo automática de Google Sheets (Ficha técnica y ventas)
+let liveSheetsDb = window.FULL_SHEETS_DB || {};
+async function fetchLiveSheetsData(){
+  const SPREADSHEET_ID = '18FMqtvQkSjhmrVzeuuR1ZDfU8IeDCF41D6myHMsNxRM';
+  const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=DATOS%20G.&t=${Date.now()}`;
+  try {
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const txt = await res.text();
+    const jsonMatch = txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);/);
+    if(!jsonMatch || !jsonMatch[1]) return;
+    const data = JSON.parse(jsonMatch[1]);
+    const table = data.table;
+    if(!table || !table.rows) return;
+    table.rows.forEach(r => {
+      if(!r.c) return;
+      const getVal = (idx) => (r.c[idx] && r.c[idx].v !== null && r.c[idx].v !== undefined) ? r.c[idx].v : '';
+      const sku = String(getVal(0)).trim();
+      const nom = String(getVal(1)).trim();
+      if(!sku && !nom) return;
+      const parseZ = (val) => {
+        const s = String(val).replace(/[^0-9\-]/g, '').trim();
+        return (s && s !== '-') ? Math.max(0, parseInt(s, 10) || 0) : 0;
+      };
+      const entry = {
+        sku: sku,
+        nombre: nom,
+        proveedor: String(getVal(14)).trim(),
+        stock: {
+          cedis: parseZ(getVal(17)),
+          playa: parseZ(getVal(18)),
+          colosio: parseZ(getVal(19)),
+          ptc: parseZ(getVal(20)),
+          casa_creata: parseZ(getVal(21))
+        },
+        ventas: {
+          casa_creata: parseZ(getVal(22)),
+          playa: parseZ(getVal(23)),
+          colosio: parseZ(getVal(24)),
+          ptc: parseZ(getVal(25))
+        }
+      };
+      liveSheetsDb[sku] = entry;
+      if(nom) liveSheetsDb[nom] = entry;
+    });
+    console.log('✅ Google Sheets Live Sync: datos sincronizados en tiempo real.');
+    if(selectedFurniture) renderFichaTables(selectedFurniture.userData.item);
+  } catch(e) {
+    // Si la hoja aún no es pública o no hay red, opera normalmente con la base de datos local
+  }
+}
+fetchLiveSheetsData();
+setInterval(fetchLiveSheetsData, 30000);
+
 </script>
 </body>
 </html>
