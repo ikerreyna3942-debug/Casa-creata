@@ -9,55 +9,20 @@
 <meta name="theme-color" content="#0e0f12">
 <title>CASA CREATA · Showroom 3D Interactivo</title>
 <style>
-  :root{
-
   :root {
+    --bg: #0e0f12;
+    --bar-bg: rgba(30, 30, 34, 0.96);
+    --btn-pill: #353539;
+    --btn-pill-active: #ebd8c3;
+    --btn-pill-active-text: #1c1a18;
+    --fg: #f5f3ef;
+    --mut: #9e9a93;
+    --acc: #d8c3a8;
+    --panel-dark: #202024;
+    --border: rgba(255, 255, 255, 0.14);
     --store-color: #10b981;
-    --store-tint: rgba(16, 185, 129, 0.12);
-    --store-border: rgba(16, 185, 129, 0.35);
-  }
-
-  /* Popover Selector de Tienda */
-  .store-selector-wrap { position: relative; display: inline-flex; }
-  .store-menu-popover {
-    position: absolute; top: calc(100% + 8px); right: 0;
-    background: rgba(18, 18, 22, 0.98); backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 12px;
-    padding: 6px; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
-    display: none; flex-direction: column; gap: 3px; z-index: 50; min-width: 145px;
-  }
-  .store-menu-popover.open { display: flex; }
-  .store-menu-item {
-    padding: 7px 11px; border-radius: 8px; font-size: 11.5px; font-weight: 600;
-    color: #e2ded8; cursor: pointer; display: flex; align-items: center; gap: 8px;
-    transition: all 0.15s ease;
-  }
-  .store-menu-item:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
-  .store-menu-item.active { background: rgba(255, 255, 255, 0.22); color: #fff; font-weight: 700; }
-  .store-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
-
-  /* Recuadro tenue de venta en tarjeta de producto */
-  .prod-store-badge {
-    display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700;
-    color: #fff; background: var(--store-color); padding: 2px 8px; border-radius: 999px;
-    width: fit-content; margin-bottom: 4px; box-shadow: 0 2px 6px rgba(0,0,0,.2);
-  }
-  .store-highlighted-sale {
-    border: 2px solid var(--store-color) !important;
-    background: var(--store-tint) !important;
-    color: #fff !important; font-weight: 800 !important;
-  }
-
-    --bg:#0e0f12;
-    --bar-bg:rgba(30,30,34,.96);
-    --btn-pill:#353539;
-    --btn-pill-active:#ebd8c3;
-    --btn-pill-active-text:#1c1a18;
-    --fg:#f5f3ef;
-    --mut:#9e9a93;
-    --acc:#d8c3a8;
-    --panel-dark:#202024;
-    --border:rgba(255,255,255,.14);
+    --store-tint: rgba(16, 185, 129, 0.14);
+    --store-border: rgba(16, 185, 129, 0.38);
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;background:var(--bg);overflow:hidden;font-family:"Inter","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -1039,6 +1004,15 @@ function setStore(storeKey){
     el.classList.toggle('active', el.dataset.store === storeKey);
   });
 
+  // Actualizar el color de todos los contornos de muebles en la maqueta 3D
+  placedFurniture.forEach(f => {
+    f.traverse(c => {
+      if(c.userData && c.userData.isContour){
+        if(c.material) c.material.color.setHex(cfg.colorNum);
+      }
+    });
+  });
+
   renderCatalogCards(currentCategoryFilter);
   if(selectedFurniture){
     renderFichaTables(selectedFurniture.userData.item);
@@ -1178,6 +1152,8 @@ function createFurnitureInstance(item, callback){
     const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
     const contourLineMat = new THREE.LineBasicMaterial({ color: storeCfg.colorNum, transparent: true, opacity: 0.85 });
     const contourLineMesh = new THREE.Line(contourLineGeo, contourLineMat);
+    contourLineMesh.userData.parentFurniture = group;
+    contourLineMesh.userData.isContour = true;
     group.add(contourLineMesh);
 
     const fillGeo = new THREE.PlaneGeometry(cW, cD);
@@ -1185,6 +1161,8 @@ function createFurnitureInstance(item, callback){
     const fillMat = new THREE.MeshBasicMaterial({ color: storeCfg.colorNum, transparent: true, opacity: 0.12, side: THREE.DoubleSide, depthWrite: false });
     const fillMesh = new THREE.Mesh(fillGeo, fillMat);
     fillMesh.position.y = 0.005;
+    fillMesh.userData.parentFurniture = group;
+    fillMesh.userData.isContour = true;
     group.add(fillMesh);
 
     // Invisible Click-Box para selección 100% inmediata
@@ -1216,10 +1194,10 @@ function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
   const fMaxZ = posZ + halfZ;
 
   // 1. Límite de muros perimetrales exteriores (con margen de 1 cm)
-  const W_MIN_X = 0.20 + GAP;
-  const W_MAX_X = 20.01 - GAP;
-  const W_MIN_Z = -23.82 + GAP;
-  const W_MAX_Z = -0.20 - GAP;
+  const W_MIN_X = 0.25 + GAP;
+  const W_MAX_X = 19.96 - GAP;
+  const W_MIN_Z = -23.77 + GAP;
+  const W_MAX_Z = -0.25 - GAP;
   if(fMinX < W_MIN_X || fMaxX > W_MAX_X || fMinZ < W_MIN_Z || fMaxZ > W_MAX_Z){
     return { collides: true, reason: 'Pared perimetral exterior' };
   }
@@ -1348,7 +1326,52 @@ function getFloorIntersection(e){
 }
 
 let ptrDownPos = { x:0, y:0 };
-canvas.addEventListener('pointerdown', e => { ptrDownPos = { x:e.clientX, y:e.clientY }; });
+canvas.addEventListener('pointerdown', e => {
+  ptrDownPos = { x: e.clientX, y: e.clientY };
+
+  // ALT + Clic / Arrastrar para CLONAR de inmediato
+  if(e.button === 0 && e.altKey && !placingItem){
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+
+    const targets = [];
+    placedFurniture.forEach(f => {
+      if(f.visible && f.parent && f.parent.visible){
+        f.traverse(c => { if(c.isMesh && c.userData.parentFurniture) targets.push(c); });
+      }
+    });
+
+    const hits = raycaster.intersectObjects(targets, false);
+    if(hits.length > 0){
+      const furn = hits[0].object.userData.parentFurniture;
+      if(furn){
+        e.preventDefault();
+        e.stopPropagation();
+        controls.enabled = false;
+
+        createFurnitureInstance(furn.userData.item, (clone) => {
+          clone.userData.level = furn.userData.level;
+          clone.position.copy(furn.position);
+          clone.rotation.y = furn.rotation.y;
+          const grp = levelGroups[furn.userData.level] || levelGroups.PB;
+          grp.add(clone);
+          placedFurniture.push(clone);
+          recordHistory('add', clone);
+          saveStateToUrl();
+
+          movingFurniture = clone;
+          movingOrig = { pos: clone.position.clone(), rot: clone.rotation.y, lvl: clone.userData.level };
+          placingItem = clone.userData.item;
+          deselectFurniture();
+          clone.visible = false;
+          createGhost(placingItem, movingOrig.rot);
+        });
+      }
+    }
+  }
+});
 
 canvas.addEventListener('pointermove', e => {
   if(!placingItem || !ghostMesh) return;
@@ -1365,6 +1388,7 @@ canvas.addEventListener('pointermove', e => {
 });
 
 canvas.addEventListener('pointerup', e => {
+  controls.enabled = true;
   if(e.button !== 0) return;
   const maxMove = (e.pointerType === 'touch') ? 18 : 6;
   if(Math.hypot(e.clientX - ptrDownPos.x, e.clientY - ptrDownPos.y) > maxMove) return;
@@ -1431,28 +1455,7 @@ canvas.addEventListener('pointerup', e => {
   if(hits.length > 0){
     const furn = hits[0].object.userData.parentFurniture;
     if(furn){
-      if(e.altKey){
-        // ALT + arrastrar para clonar producto
-        createFurnitureInstance(furn.userData.item, (clone) => {
-          clone.userData.level = furn.userData.level;
-          clone.position.copy(furn.position);
-          clone.rotation.y = furn.rotation.y;
-          const grp = levelGroups[furn.userData.level] || levelGroups.PB;
-          grp.add(clone);
-          placedFurniture.push(clone);
-          recordHistory('add', clone);
-          saveStateToUrl();
-
-          movingFurniture = clone;
-          movingOrig = { pos: clone.position.clone(), rot: clone.rotation.y, lvl: clone.userData.level };
-          placingItem = clone.userData.item;
-          deselectFurniture();
-          clone.visible = false;
-          createGhost(placingItem, movingOrig.rot);
-        });
-      } else {
-        selectFurniture(furn);
-      }
+      selectFurniture(furn);
     }
   } else {
     if(e.clientX < innerWidth - 360) deselectFurniture();
