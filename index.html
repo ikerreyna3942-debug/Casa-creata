@@ -856,40 +856,9 @@ controls.maxPolarAngle = Math.PI * 0.43; // 77.4°: evita visión horizontal a r
 controls.autoRotate = false;
 controls.autoRotateSpeed = 1.6;
 
-// ZOOM INTELIGENTE HACIA EL CURSOR (Raycast directo a pisos, muebles y muros)
-canvas.addEventListener('wheel', (e) => {
-  if(cameraAnim) cameraAnim = null; // Cancela animación en curso
-
-  const rect = canvas.getBoundingClientRect();
-  const mx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-  const my = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-  const wheelRay = new THREE.Raycaster();
-  wheelRay.setFromCamera(new THREE.Vector2(mx, my), camera);
-
-  if(e.deltaY < 0){
-    // Zoom IN: si el cursor apunta a un piso, mueble o pared, lerp suave hacia ese punto
-    const targets = [];
-    Object.values(levelGroups).forEach(grp => {
-      if(grp && grp.visible){
-        grp.traverse(c => {
-          if(c.isMesh && (c.userData.isFloor || c.userData.parentFurniture || c.userData.isWall || c.userData.isCol)){
-            targets.push(c);
-          }
-        });
-      }
-    });
-    const hits = wheelRay.intersectObjects(targets, false);
-    if(hits.length > 0){
-      const hitPt = hits[0].point;
-      // Aproximación suave del pivote hacia el punto señalado (15% por scroll)
-      controls.target.lerp(hitPt, 0.15);
-    }
-  } else {
-    // Zoom OUT: retorno suave hacia el centro general del nivel activo
-    const targetCenterY = (currentFloorMode === 'exploded') ? 8.5 : 1.2;
-    const defaultCenter = new THREE.Vector3(CENTER.x, targetCenterY, CENTER.z);
-    controls.target.lerp(defaultCenter, 0.05);
-  }
+// ZOOM EN LÍNEA RECTA PURA: Cero rotaciones ni giros indeseados al hacer zoom
+canvas.addEventListener('wheel', () => {
+  if(cameraAnim) cameraAnim = null; // Interrumpe vuelo de cámara si el usuario interactúa manualmente
 }, { passive: true });
 
 // DOBLE CLIC PARA ENFOCAR HABITACIÓN O MUEBLE DE INMEDIATO
