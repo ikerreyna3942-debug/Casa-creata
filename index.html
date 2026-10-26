@@ -42,6 +42,54 @@
   }
   .btn-top-action:hover{background:rgba(255,255,255,.24);color:#fff}
   .btn-top-action.active{background:var(--btn-pill-active);color:var(--btn-pill-active-text);font-weight:700}
+  .btn-save-action{
+    background:#1b7340;
+    border:1px solid #2ecc71;
+    color:#ffffff;
+    font-weight:700;
+    box-shadow:0 2px 8px rgba(30,126,72,.4);
+  }
+  .btn-save-action:hover{
+    background:#27ae60;
+    border-color:#48e68b;
+    color:#ffffff;
+    box-shadow:0 4px 12px rgba(39,174,96,.5);
+    transform:translateY(-1px);
+  }
+  .btn-save-action.saved{
+    background:#10b981;
+    border-color:#6ee7b7;
+    box-shadow:0 0 14px rgba(16,185,129,.7);
+  }
+
+  /* Toast de confirmación de guardado */
+  .save-toast{
+    position:fixed;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%) translateY(80px);
+    background:rgba(20,22,26,.95);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(46,204,113,.5);
+    color:#f5f3ef;
+    padding:10px 22px;
+    border-radius:999px;
+    font-size:12.5px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 16px rgba(46,204,113,.3);
+    z-index:1000;
+    opacity:0;
+    pointer-events:none;
+    transition:transform .3s cubic-bezier(0.16,1,0.3,1), opacity .3s ease;
+  }
+  .save-toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+    pointer-events:auto;
+  }
 
   /* 2. Cápsula Superior Derecha (Niveles, Muros y Herramientas sin traslapes) */
   #topBarRight{
@@ -537,7 +585,8 @@
 <!-- 1. Cápsula Superior Izquierda: CASA CREATA + [💾 Distribuciones] + [🛋️ + Catálogo] -->
 <div id="topBarLeft">
   <span class="brand-title">CASA CREATA</span>
-  <button class="btn-top-action" id="btnOpenDistrib">💾 Distribuciones</button>
+  <button class="btn-top-action btn-save-action" id="btnSaveProcess" title="Guardar proceso del plano y diseño en curso (Ctrl+S)">💾 Guardar</button>
+  <button class="btn-top-action" id="btnOpenDistrib" title="Ver y cargar distribuciones guardadas">📁 Distribuciones</button>
   
 </div>
 
@@ -2281,6 +2330,88 @@ function renderSavedDistribs(){
   });
 }
 
+// =====================================================================
+// FUNCIONALIDAD DE BOTÓN [💾 GUARDAR] (PROCESO DEL PLANO Y DISEÑO)
+// =====================================================================
+let saveToastTimer = null;
+function showSaveToast(msg, icon = '💾'){
+  const toast = document.getElementById('saveToast');
+  const msgEl = document.getElementById('saveToastMsg');
+  const iconEl = document.getElementById('saveToastIcon');
+  if(!toast || !msgEl || !iconEl) return;
+  msgEl.textContent = msg;
+  iconEl.textContent = icon;
+  toast.classList.add('show');
+  if(saveToastTimer) clearTimeout(saveToastTimer);
+  saveToastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3200);
+}
+
+function saveCurrentPlanProcess(showFeedback = true){
+  const data = serializeSetup();
+  const jsonStr = JSON.stringify(data);
+  try {
+    // 1. Guardar estado del diseño actual en LocalStorage
+    localStorage.setItem('casa_creata_current_setup', jsonStr);
+
+    // 2. Guardar respaldo permanente con fecha y hora en lista de distribuciones
+    const map = getStoredDistribs();
+    const now = new Date();
+    const fecha = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const hora = now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const entryName = `Diseño Guardado (${fecha} ${hora})`;
+    map[entryName] = data;
+    map['Último diseño guardado'] = data;
+    setStoredDistribs(map);
+
+    // 3. Guardar metadatos complementarios del plano
+    const meta = {
+      timestamp: now.toISOString(),
+      furnitureCount: data.length,
+      currentStore: (typeof currentStore !== 'undefined') ? currentStore : 'colosio',
+      activeFloor: (typeof currentFloorMode !== 'undefined') ? currentFloorMode : 'exploded'
+    };
+    localStorage.setItem('casa_creata_plan_meta', JSON.stringify(meta));
+
+    // 4. Sincronizar en la URL hash para no perder nada al recargar o compartir
+    const hash = '#' + encodeURIComponent(btoa(unescape(encodeURIComponent(jsonStr))));
+    history.replaceState(null, '', hash);
+  } catch(e){
+    console.error('Error al guardar el proceso del plano:', e);
+  }
+
+  // 5. Retroalimentación visual interactiva
+  if(showFeedback){
+    const btn = document.getElementById('btnSaveProcess');
+    if(btn){
+      const origHtml = btn.innerHTML;
+      btn.innerHTML = '✓ ¡Guardado!';
+      btn.classList.add('saved');
+      setTimeout(() => {
+        btn.innerHTML = origHtml;
+        btn.classList.remove('saved');
+      }, 2200);
+    }
+    const count = data.length;
+    const countTxt = count === 1 ? '1 mueble' : `${count} muebles`;
+    showSaveToast(`¡Diseño del plano guardado correctamente! (${countTxt})`, '✅');
+  }
+}
+
+const btnSaveProcessEl = document.getElementById('btnSaveProcess');
+if(btnSaveProcessEl){
+  btnSaveProcessEl.addEventListener('click', () => saveCurrentPlanProcess(true));
+}
+
+// Atajo universal de guardado (Ctrl+S / Cmd+S)
+window.addEventListener('keydown', (e) => {
+  if((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')){
+    e.preventDefault();
+    saveCurrentPlanProcess(true);
+  }
+});
+
 document.getElementById('btnSaveDistribNow').addEventListener('click', () => {
   const input = document.getElementById('distribNameInput');
   const name = (input.value || '').trim() || 'Distribución ' + new Date().toLocaleDateString();
@@ -2397,5 +2528,12 @@ fetchLiveSheetsData();
 setInterval(fetchLiveSheetsData, 30000);
 
 </script>
+
+<!-- Toast Notificación de Guardado de Proceso -->
+<div id="saveToast" class="save-toast">
+  <span id="saveToastIcon">💾</span>
+  <span id="saveToastMsg">¡Proceso guardado!</span>
+</div>
+
 </body>
 </html>
