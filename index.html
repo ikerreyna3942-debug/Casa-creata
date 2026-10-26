@@ -1521,13 +1521,8 @@ function createFurnitureInstance(item, callback){
     fillMesh.userData.isContour = true;
     group.add(fillMesh);
 
-    // Invisible Click-Box para selección 100% inmediata
-    const clickGeo = new THREE.BoxGeometry(Math.max(item.dim_m[0], 0.6), Math.max(item.dim_m[2], 0.6), Math.max(item.dim_m[1], 0.6));
-    clickGeo.translate(0, Math.max(item.dim_m[2], 0.6)/2, 0);
-    const clickBox = new THREE.Mesh(clickGeo, new THREE.MeshBasicMaterial({ visible:false }));
-    clickBox.userData.parentFurniture = group;
-    clickBox.userData.isClickProxy = true;
-    group.add(clickBox);
+    // ClickBox deshabilitado para evitar que muebles grandes (como camas) tapen el clic de muebles contiguos (como burós)
+    // La selección se realiza con 100% de precisión milimétrica sobre las mallas 3D visuales reales.
 
     if(callback) callback(group);
   });
@@ -1726,7 +1721,11 @@ canvas.addEventListener('pointerdown', e => {
     const targets = [];
     placedFurniture.forEach(f => {
       if(f.visible && f.parent && f.parent.visible){
-        f.traverse(c => { if(c.isMesh && c.userData.parentFurniture) targets.push(c); });
+        f.traverse(c => {
+          if(c.isMesh && c.userData.parentFurniture && !c.userData.isContour && !c.userData.isClickProxy && !c.userData.isFloor){
+            targets.push(c);
+          }
+        });
       }
     });
 
@@ -1840,12 +1839,16 @@ canvas.addEventListener('pointerup', e => {
     return;
   }
 
-  // Selección de mueble precisa al hacer clic
+  // Selección de mueble precisa al hacer clic (excluyendo contornos 2D del piso para poder seleccionar burós junto a camas)
   raycaster.setFromCamera(mouse, camera);
   const targets = [];
   placedFurniture.forEach(f => {
     if(f.visible && f.parent && f.parent.visible){
-      f.traverse(c => { if(c.isMesh && !c.userData.isFloor) targets.push(c); });
+      f.traverse(c => {
+        if(c.isMesh && !c.userData.isFloor && !c.userData.isContour && !c.userData.isClickProxy){
+          targets.push(c);
+        }
+      });
     }
   });
 
@@ -2064,9 +2067,49 @@ function nudgeSelected(dx, dz){
   const furn = selectedFurniture;
   const newX = furn.position.x + dx;
   const newZ = furn.position.z + dz;
-  // Permitir adosar muebles entre sí; bloquear únicamente si choca con pared o columna
+
+  // 1. Bloquear si choca contra pared o columna
   const col = checkWallCollision(newX, newZ, furn.rotation.y, furn.userData.item, furn.userData.level);
   if(col.collides) return;
+
+  // 2. Control de no-penetración milimétrico contra la cama
+  for(let i = 0; i < placedFurniture.length; i++){
+    const f = placedFurniture[i];
+    if(f === furn || f.userData.level !== furn.userData.level) continue;
+    const it = f.userData.item;
+    const isBed = (it.category === 'Recámaras' || (it.name && it.name.toLowerCase().includes('cama')) || (it.id && it.id.includes('cama')));
+    const isBuro = (furn.userData.item.category === 'Burós' || (furn.userData.item.name && furn.userData.item.name.toLowerCase().includes('buro')) || (furn.userData.item.id && furn.userData.item.id.includes('buro')));
+
+    if(isBuro && isBed){
+      // El colchón real mide 2.25m de ancho (halfW = 1.125m)
+      const mattressHalfW = (it.dim_m[0] > 2.5) ? 1.125 : (it.dim_m[0] / 2);
+      const buroHalfW = (furn.userData.item.dim_m[0] || 0.50) / 2;
+      const buroHalfD = (furn.userData.item.dim_m[1] || 0.39) / 2;
+
+      // Límites del colchón
+      const bMinX = f.position.x - mattressHalfW;
+      const bMaxX = f.position.x + mattressHalfW;
+      const bMinZ = f.position.z - (it.dim_m[1] / 2);
+      const bMaxZ = f.position.z + (it.dim_m[1] / 2);
+
+      // Límites del buró en la nueva posición
+      const fMinX = newX - buroHalfW;
+      const fMaxX = newX + buroHalfW;
+      const fMinZ = newZ - buroHalfD;
+      const fMaxZ = newZ + buroHalfD;
+
+      // Bloquear si el buró intenta penetrar dentro del cuerpo del colchón
+      if(fMaxX > bMinX && fMinX < bMaxX && fMaxZ > (f.position.z - 0.65) && fMinZ < bMaxZ){
+        return; // Detener en el borde exacto del colchón (cero penetración)
+      }
+
+      // Bloquear si intenta penetrar dentro del respaldo de la cabecera
+      const headboardZ = f.position.z - 0.65;
+      if(newZ < headboardZ + buroHalfD && fMaxX > (f.position.x - 1.50) && fMinX < (f.position.x + 1.50)){
+        return; // Detener frente a la cabecera
+      }
+    }
+  }
 
   furn.position.x = newX;
   furn.position.z = newZ;
@@ -2106,22 +2149,23 @@ if(btnSnapToBed){
     // Detectar si el buró está al lado izquierdo o derecho
     const isLeft = furn.position.x < bed.position.x;
 
-    // El ancho del colchón King Size es de ~1.95 a 2.00m (mitad = 1.00m)
-    const mattressHalfW = (bedItem.dim_m[0] > 2.2) ? 1.00 : (bedItem.dim_m[0] / 2);
-    const buroHalfW = (buroItem.dim_m[0] || 0.5) / 2;
+    // Ancho real exacto del colchón de la Cama Santa Fe: 2.25m (halfW = 1.125m)
+    const mattressHalfW = (bedItem.dim_m[0] > 2.5) ? 1.125 : (bedItem.dim_m[0] / 2);
+    const buroHalfW = (buroItem.dim_m[0] || 0.50) / 2;
+    const buroHalfD = (buroItem.dim_m[1] || 0.39) / 2;
 
-    // Pegar exactamente al costado del colchón
-    furn.position.x = isLeft ? (bed.position.x - mattressHalfW - buroHalfW) : (bed.position.x + mattressHalfW + buroHalfW);
+    // Pegar al costado del colchón con 1 cm de separación estética (contacto perfecto sin atravesar)
+    furn.position.x = isLeft ? (bed.position.x - mattressHalfW - buroHalfW - 0.01) : (bed.position.x + mattressHalfW + buroHalfW + 0.01);
 
-    // Alinear con el área de cabecera / almohadas
-    furn.position.z = bed.position.z - (bedItem.dim_m[1] * 0.35);
+    // Alinear exactamente al frente de la curvatura de la cabecera (z = -0.65)
+    furn.position.z = bed.position.z - 0.65 + buroHalfD + 0.02;
 
-    // Alinear orientación frontal
+    // Orientar de frente alineado con la cama
     furn.rotation.y = bed.rotation.y;
 
     renderSelectionHighlight();
     saveStateToUrl();
-    showSaveToast('¡Buró pegado y alineado a la cama con éxito!', '🧲');
+    showSaveToast('¡Buró pegado al borde exacto de la cama sin atravesarla!', '🧲');
   });
 }
 
