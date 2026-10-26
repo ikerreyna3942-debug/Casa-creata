@@ -397,6 +397,7 @@
   .distrib-head{display:flex;align-items:center;justify-content:space-between}
   .distrib-head h3{margin:0;font-size:15px;font-weight:700;color:#ebd8c3}
   .distrib-list{max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+  .distrib-item.active-distrib{border:1px solid rgba(46,204,113,.45);background:rgba(46,204,113,.09)}
   .distrib-item{
     background:rgba(255,255,255,.05);padding:8px 12px;border-radius:8px;
     display:flex;align-items:center;justify-content:space-between;font-size:12px;
@@ -2299,6 +2300,9 @@ function setStoredDistribs(obj){
   localStorage.setItem('casa_creata_distrib_saved', JSON.stringify(obj));
 }
 
+let activeWorkingDistribName = '';
+try { activeWorkingDistribName = localStorage.getItem('casa_creata_active_distrib_name') || ''; } catch(e){}
+
 function renderSavedDistribs(){
   savedList.innerHTML = '';
   const map = getStoredDistribs();
@@ -2308,24 +2312,68 @@ function renderSavedDistribs(){
     return;
   }
   keys.forEach(k => {
+    const isCurrentActive = (k === activeWorkingDistribName);
     const item = document.createElement('div');
-    item.className = 'distrib-item';
+    item.className = 'distrib-item' + (isCurrentActive ? ' active-distrib' : '');
     item.innerHTML = `
-      <div><b>${k}</b> <span style="opacity:.6;font-size:11px">(${map[k].length} muebles)</span></div>
-      <div style="display:flex;gap:4px">
-        <button class="btn-subtle btn-load">Cargar</button>
-        <button class="btn-subtle btn-del" style="color:#ff7675">✕</button>
+      <div style="display:flex;align-items:center;gap:6px">
+        <b>${k}</b>
+        <span class="distrib-count" style="opacity:.65;font-size:11px">(${map[k].length} muebles)</span>
+        ${isCurrentActive ? '<span style="font-size:9.5px;background:#10b981;color:#fff;padding:1px 6px;border-radius:999px;font-weight:700">En uso</span>' : ''}
+      </div>
+      <div style="display:flex;gap:5px;align-items:center">
+        <button class="btn-subtle btn-load" title="Cargar este diseño en el plano">Cargar</button>
+        <button class="btn-subtle btn-save-row" style="background:#1b7340;border-color:#2ecc71;color:#fff;font-weight:700" title="Sobreescribir y guardar el diseño actual en este archivo">Guardar</button>
+        <button class="btn-subtle btn-del" style="color:#ff7675" title="Eliminar archivo">✕</button>
       </div>
     `;
+
+    // Botón Cargar
     item.querySelector('.btn-load').addEventListener('click', () => {
+      activeWorkingDistribName = k;
+      try { localStorage.setItem('casa_creata_active_distrib_name', k); } catch(e){}
       loadSetupFromJson(map[k]);
-      distribModal.classList.remove('open');
-    });
-    item.querySelector('.btn-del').addEventListener('click', () => {
-      delete map[k];
-      setStoredDistribs(map);
       renderSavedDistribs();
+      distribModal.classList.remove('open');
+      showSaveToast(`Diseño "${k}" cargado (${map[k].length} muebles)`, '📂');
     });
+
+    // Botón Guardar en este archivo ya trabajado
+    const btnSaveThis = item.querySelector('.btn-save-row');
+    btnSaveThis.addEventListener('click', () => {
+      const currentData = serializeSetup();
+      map[k] = currentData;
+      setStoredDistribs(map);
+      activeWorkingDistribName = k;
+      try { localStorage.setItem('casa_creata_active_distrib_name', k); } catch(e){}
+      saveStateToUrl();
+
+      btnSaveThis.textContent = '✓ Guardado';
+      btnSaveThis.style.background = '#10b981';
+      setTimeout(() => {
+        btnSaveThis.textContent = 'Guardar';
+        btnSaveThis.style.background = '#1b7340';
+      }, 1800);
+
+      const countEl = item.querySelector('.distrib-count');
+      if(countEl) countEl.textContent = `(${currentData.length} muebles)`;
+
+      showSaveToast(`¡"${k}" guardado y actualizado! (${currentData.length} muebles)`, '✅');
+    });
+
+    // Botón Eliminar
+    item.querySelector('.btn-del').addEventListener('click', () => {
+      if(confirm(`¿Deseas eliminar la distribución "${k}"?`)){
+        if(activeWorkingDistribName === k){
+          activeWorkingDistribName = '';
+          try { localStorage.removeItem('casa_creata_active_distrib_name'); } catch(e){}
+        }
+        delete map[k];
+        setStoredDistribs(map);
+        renderSavedDistribs();
+      }
+    });
+
     savedList.appendChild(item);
   });
 }
@@ -2355,20 +2403,21 @@ function saveCurrentPlanProcess(showFeedback = true){
     // 1. Guardar estado del diseño actual en LocalStorage
     localStorage.setItem('casa_creata_current_setup', jsonStr);
 
-    // 2. Guardar respaldo permanente con fecha y hora en lista de distribuciones
+    // 2. Si hay un archivo cargado o activo (ej. "primer"), actualizarlo directamente
     const map = getStoredDistribs();
-    const now = new Date();
-    const fecha = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    const hora = now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    const entryName = `Diseño Guardado (${fecha} ${hora})`;
-    map[entryName] = data;
-    map['Último diseño guardado'] = data;
+    if(activeWorkingDistribName && map[activeWorkingDistribName] !== undefined){
+      map[activeWorkingDistribName] = data;
+    } else {
+      map['Último diseño guardado'] = data;
+    }
     setStoredDistribs(map);
 
     // 3. Guardar metadatos complementarios del plano
+    const now = new Date();
     const meta = {
       timestamp: now.toISOString(),
       furnitureCount: data.length,
+      activeFile: activeWorkingDistribName || null,
       currentStore: (typeof currentStore !== 'undefined') ? currentStore : 'colosio',
       activeFloor: (typeof currentFloorMode !== 'undefined') ? currentFloorMode : 'exploded'
     };
@@ -2395,7 +2444,8 @@ function saveCurrentPlanProcess(showFeedback = true){
     }
     const count = data.length;
     const countTxt = count === 1 ? '1 mueble' : `${count} muebles`;
-    showSaveToast(`¡Diseño del plano guardado correctamente! (${countTxt})`, '✅');
+    const targetName = activeWorkingDistribName ? `"${activeWorkingDistribName}"` : 'del plano';
+    showSaveToast(`¡Diseño ${targetName} guardado correctamente! (${countTxt})`, '✅');
   }
 }
 
@@ -2418,8 +2468,11 @@ document.getElementById('btnSaveDistribNow').addEventListener('click', () => {
   const map = getStoredDistribs();
   map[name] = serializeSetup();
   setStoredDistribs(map);
+  activeWorkingDistribName = name;
+  try { localStorage.setItem('casa_creata_active_distrib_name', name); } catch(e){}
   input.value = '';
   renderSavedDistribs();
+  showSaveToast(`¡"${name}" guardado como nuevo archivo!`, '✅');
 });
 
 document.getElementById('btnCopyUrlShare').addEventListener('click', () => {
