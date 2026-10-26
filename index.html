@@ -1191,26 +1191,46 @@ const STORE_CONFIG = {
 };
 let currentStore = 'colosio';
 
-function setStore(storeKey){
-  if(!STORE_CONFIG[storeKey]) return;
-  currentStore = storeKey;
-  const cfg = STORE_CONFIG[storeKey];
-  const lbl = document.getElementById('lblActiveStore');
-  if(lbl) lbl.textContent = cfg.name.toUpperCase();
-  document.documentElement.style.setProperty('--store-color', cfg.color);
-  document.documentElement.style.setProperty('--store-tint', cfg.tint);
-  document.documentElement.style.setProperty('--store-border', cfg.border);
+let liveSheetsDb = window.FULL_SHEETS_DB || {};
 
-  document.querySelectorAll('.store-menu-item').forEach(el => {
-    el.classList.toggle('active', el.dataset.store === storeKey);
-  });
+function getLiveProductData(item){
+  if(!item) return null;
+  const db = liveSheetsDb || window.FULL_SHEETS_DB || {};
+  const sku = (item.sku || '').trim();
+  const skuNorm = sku.toUpperCase().replace(/\s+/g, '');
+  const nom = (item.name || '').trim();
+  const nomNorm = nom.toUpperCase();
+  const id = (item.id || '').trim();
 
-  // Actualizar el color de los contornos de muebles en la maqueta según sus ventas en esta tienda específica
+  let found = db[sku] ||
+              (skuNorm && db[skuNorm]) ||
+              db[nom] ||
+              (nomNorm && db[nomNorm]) ||
+              db[id];
+
+  if(!found && (sku || nom)){
+    const sLow = sku.toLowerCase();
+    const nLow = nom.toLowerCase();
+    for(const k in db){
+      const kLow = k.toLowerCase();
+      if((sLow && (kLow.includes(sLow) || sLow.includes(kLow))) ||
+         (nLow && (kLow.includes(nLow) || nLow.includes(kLow)))){
+        found = db[k];
+        break;
+      }
+    }
+  }
+  return found || item;
+}
+
+function refreshAllSalesVisuals(){
   placedFurniture.forEach(f => {
     const item = f.userData.item;
     if(!item) return;
-    const liveData = (liveSheetsDb && (liveSheetsDb[item.sku] || liveSheetsDb[item.name])) || item;
-    const salesCount = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
+    const liveData = getLiveProductData(item);
+    const salesCount = (liveData.ventas && liveData.ventas[currentStore] !== undefined)
+      ? liveData.ventas[currentStore]
+      : ((item.ventas && item.ventas[currentStore]) || 0);
     const tier = getSalesColorData(salesCount);
 
     f.traverse(c => {
@@ -1225,6 +1245,23 @@ function setStore(storeKey){
     renderFichaTables(selectedFurniture.userData.item);
     renderSelectionHighlight();
   }
+}
+
+function setStore(storeKey){
+  if(!STORE_CONFIG[storeKey]) return;
+  currentStore = storeKey;
+  const cfg = STORE_CONFIG[storeKey];
+  const lbl = document.getElementById('lblActiveStore');
+  if(lbl) lbl.textContent = cfg.name.toUpperCase();
+  document.documentElement.style.setProperty('--store-color', cfg.color);
+  document.documentElement.style.setProperty('--store-tint', cfg.tint);
+  document.documentElement.style.setProperty('--store-border', cfg.border);
+
+  document.querySelectorAll('.store-menu-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.store === storeKey);
+  });
+
+  refreshAllSalesVisuals();
 }
 
 const btnStore = document.getElementById('btnSelectStore');
@@ -1458,7 +1495,7 @@ function createFurnitureInstance(item, callback){
       new THREE.Vector3(-hw, 0.006, -hd)
     ];
     const contourLineGeo = new THREE.BufferGeometry().setFromPoints(contourPts);
-    const liveData = (liveSheetsDb && (liveSheetsDb[item.sku] || liveSheetsDb[item.name])) || item;
+    const liveData = getLiveProductData(item);
     const storeSales = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
     const salesTier = getSalesColorData(storeSales);
 
@@ -1868,7 +1905,7 @@ function deselectFurniture(){
 }
 
 function renderFichaTables(item){
-  const live = (liveSheetsDb && (liveSheetsDb[item.sku] || liveSheetsDb[item.name])) || item;
+  const live = getLiveProductData(item);
   const stock = live.stock || item.stock || {};
   const ventas = live.ventas || item.ventas || {};
 
@@ -2086,7 +2123,7 @@ function renderCatalog(catFilter){
     const varBadge = (siblings.length > 1) ? `<span class="badge-var-count">${siblings.length} Acabados</span>` : '';
     const imgSrc = item.thumb || item.photo;
 
-    const liveData = (liveSheetsDb && (liveSheetsDb[item.sku] || liveSheetsDb[item.name])) || item;
+    const liveData = getLiveProductData(item);
     const storeSales = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
     const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
     const salesTier = getSalesColorData(storeSales);
@@ -2527,7 +2564,6 @@ setFloorMode('exploded');
 restoreInitialState();
 
 // Sincronización en vivo automática de Google Sheets (Ficha técnica y ventas)
-let liveSheetsDb = window.FULL_SHEETS_DB || {};
 async function fetchLiveSheetsData(){
   const SPREADSHEET_ID = '18FMqtvQkSjhmrVzeuuR1ZDfU8IeDCF41D6myHMsNxRM';
   const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=DATOS%20G.&t=${Date.now()}`;
@@ -2569,10 +2605,14 @@ async function fetchLiveSheetsData(){
         }
       };
       liveSheetsDb[sku] = entry;
+      const skuNorm = sku.toUpperCase().replace(/\s+/g, '');
+      if(skuNorm) liveSheetsDb[skuNorm] = entry;
       if(nom) liveSheetsDb[nom] = entry;
+      const nomNorm = nom.toUpperCase();
+      if(nomNorm) liveSheetsDb[nomNorm] = entry;
     });
     console.log('✅ Google Sheets Live Sync: datos sincronizados en tiempo real.');
-    if(selectedFurniture) renderFichaTables(selectedFurniture.userData.item);
+    refreshAllSalesVisuals();
   } catch(e) {
     // Si la hoja aún no es pública o no hay red, opera normalmente con la base de datos local
   }
