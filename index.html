@@ -714,6 +714,7 @@
         </div>
         <div style="display:flex;flex-direction:column;gap:5px">
           <button class="btn-subtle" id="bMoveSelected" style="background:#ebd8c3;color:#1c1a18;font-weight:700">✥ Mover</button>
+          <button class="btn-subtle" id="bSnapToBed" style="background:rgba(235,216,195,.18);color:#ebd8c3;border:1px solid rgba(235,216,195,.4);font-weight:700" title="Pegar y alinear buró a la cama">🧲 Pegar</button>
           <button class="btn-subtle" id="bDelSelected" style="color:#ff7675;border-color:rgba(255,118,117,.3)">🗑️ Borrar</button>
         </div>
       </div>
@@ -1536,19 +1537,17 @@ function createFurnitureInstance(item, callback){
 /* =====================================================================
    7. SISTEMA DE COLISIONES REAL: PAREDES, PISO Y ENTRE MUEBLES
    ===================================================================== */
-function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
+function checkWallCollision(posX, posZ, rotY, item, level){
   const dimX = item.dim_m[0], dimZ = item.dim_m[1];
   const halfX = (Math.abs(dimX/2 * Math.cos(rotY)) + Math.abs(dimZ/2 * Math.sin(rotY)));
   const halfZ = (Math.abs(dimX/2 * Math.sin(rotY)) + Math.abs(dimZ/2 * Math.cos(rotY)));
 
-  const GAP = 0.01; // Tolerancia exacta de 1 cm como referencia
-
+  const GAP = 0.01;
   const fMinX = posX - halfX;
   const fMaxX = posX + halfX;
   const fMinZ = posZ - halfZ;
   const fMaxZ = posZ + halfZ;
 
-  // 1. Límite de muros perimetrales exteriores (con margen de 1 cm)
   const W_MIN_X = 0.25 + GAP;
   const W_MAX_X = 19.96 - GAP;
   const W_MIN_Z = -23.77 + GAP;
@@ -1557,7 +1556,6 @@ function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
     return { collides: true, reason: 'Pared perimetral exterior' };
   }
 
-  // 2. Colisión con Muros y Columnas del piso activo (con margen de 1 cm)
   const obs = LEVEL_OBSTACLES[level] || [];
   for(let i = 0; i < obs.length; i++){
     const b = obs[i];
@@ -1567,12 +1565,38 @@ function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
     }
   }
 
-  // 3. Colisión entre Muebles en el mismo piso (con margen de 1 cm)
+  return { collides: false };
+}
+
+function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
+  const wallCol = checkWallCollision(posX, posZ, rotY, item, level);
+  if(wallCol.collides) return wallCol;
+
+  const dimX = item.dim_m[0], dimZ = item.dim_m[1];
+  const halfX = (Math.abs(dimX/2 * Math.cos(rotY)) + Math.abs(dimZ/2 * Math.sin(rotY)));
+  const halfZ = (Math.abs(dimX/2 * Math.sin(rotY)) + Math.abs(dimZ/2 * Math.cos(rotY)));
+
+  const GAP = 0.01;
+  const fMinX = posX - halfX;
+  const fMaxX = posX + halfX;
+  const fMinZ = posZ - halfZ;
+  const fMaxZ = posZ + halfZ;
+
+  const isBuro = (item.category === 'Burós' || (item.name && item.name.toLowerCase().includes('buro')) || (item.id && item.id.includes('buro')));
+  const isBed = (item.category === 'Recámaras' || (item.name && item.name.toLowerCase().includes('cama')) || (item.id && item.id.includes('cama')));
+
+  // Colisión entre muebles (permite contacto estrecho y adosamiento entre burós y camas)
   for(let i = 0; i < placedFurniture.length; i++){
     const f = placedFurniture[i];
     if(f === ignoreFurniture) continue;
     if(f.userData.level !== level) continue;
     const it = f.userData.item;
+    
+    // Los burós y las camas pueden tocarse y adosarse directamente
+    const otherIsBed = (it.category === 'Recámaras' || (it.name && it.name.toLowerCase().includes('cama')) || (it.id && it.id.includes('cama')));
+    const otherIsBuro = (it.category === 'Burós' || (it.name && it.name.toLowerCase().includes('buro')) || (it.id && it.id.includes('buro')));
+    if((isBuro && otherIsBed) || (isBed && otherIsBuro)) continue;
+
     const rY = f.rotation.y;
     const fHx = (Math.abs(it.dim_m[0]/2 * Math.cos(rY)) + Math.abs(it.dim_m[1]/2 * Math.sin(rY)));
     const fHz = (Math.abs(it.dim_m[0]/2 * Math.sin(rY)) + Math.abs(it.dim_m[1]/2 * Math.cos(rY)));
@@ -2040,9 +2064,9 @@ function nudgeSelected(dx, dz){
   const furn = selectedFurniture;
   const newX = furn.position.x + dx;
   const newZ = furn.position.z + dz;
-  // Verificar colisión con paredes al micro-desplazar
-  const col = checkCollision(newX, newZ, furn.rotation.y, furn.userData.item, furn.userData.level, furn);
-  if(col.collides) return; // Bloquear si choca con pared
+  // Permitir adosar muebles entre sí; bloquear únicamente si choca con pared o columna
+  const col = checkWallCollision(newX, newZ, furn.rotation.y, furn.userData.item, furn.userData.level);
+  if(col.collides) return;
 
   furn.position.x = newX;
   furn.position.z = newZ;
@@ -2053,6 +2077,53 @@ document.getElementById('nXNeg').addEventListener('click', () => nudgeSelected(-
 document.getElementById('nXPos').addEventListener('click', () => nudgeSelected(NUDGE, 0));
 document.getElementById('nZNeg').addEventListener('click', () => nudgeSelected(0, NUDGE));
 document.getElementById('nZPos').addEventListener('click', () => nudgeSelected(0, -NUDGE));
+
+const btnSnapToBed = document.getElementById('bSnapToBed');
+if(btnSnapToBed){
+  btnSnapToBed.addEventListener('click', () => {
+    if(!selectedFurniture) return;
+    const furn = selectedFurniture;
+    const item = furn.userData.item;
+    const lvl = furn.userData.level;
+
+    // Buscar una cama en el mismo piso
+    const bed = placedFurniture.find(f => {
+      if(f === furn || f.userData.level !== lvl) return false;
+      const it = f.userData.item;
+      const nameLow = (it.name || '').toLowerCase();
+      const idLow = (it.id || '').toLowerCase();
+      return it.category === 'Recámaras' || nameLow.includes('cama') || idLow.includes('cama');
+    });
+
+    if(!bed){
+      showSaveToast('No se encontró una cama en este piso para pegar el buró', '⚠️');
+      return;
+    }
+
+    const bedItem = bed.userData.item;
+    const buroItem = item;
+
+    // Detectar si el buró está al lado izquierdo o derecho
+    const isLeft = furn.position.x < bed.position.x;
+
+    // El ancho del colchón King Size es de ~1.95 a 2.00m (mitad = 1.00m)
+    const mattressHalfW = (bedItem.dim_m[0] > 2.2) ? 1.00 : (bedItem.dim_m[0] / 2);
+    const buroHalfW = (buroItem.dim_m[0] || 0.5) / 2;
+
+    // Pegar exactamente al costado del colchón
+    furn.position.x = isLeft ? (bed.position.x - mattressHalfW - buroHalfW) : (bed.position.x + mattressHalfW + buroHalfW);
+
+    // Alinear con el área de cabecera / almohadas
+    furn.position.z = bed.position.z - (bedItem.dim_m[1] * 0.35);
+
+    // Alinear orientación frontal
+    furn.rotation.y = bed.rotation.y;
+
+    renderSelectionHighlight();
+    saveStateToUrl();
+    showSaveToast('¡Buró pegado y alineado a la cama con éxito!', '🧲');
+  });
+}
 
 document.getElementById('bMoveSelected').addEventListener('click', () => {
   if(!selectedFurniture) return;
