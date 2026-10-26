@@ -1382,53 +1382,53 @@ function getSalesColorData(salesCount){
   if(n <= 3){
     return {
       tier: 'BAJA',
-      hexNum: 0xe47a7a,
-      hexStr: '#e47a7a',
-      border: 'rgba(228, 122, 122, 0.65)',
-      badgeBg: '#e47a7a',
+      hexNum: 0xff8f8f,
+      hexStr: '#ff8f8f',
+      border: 'rgba(255, 143, 143, 0.80)',
+      badgeBg: '#ff8f8f',
       badgeText: '#3b0f0f',
-      tint: 'rgba(228, 122, 122, 0.25)'
+      tint: 'rgba(255, 143, 143, 0.32)'
     };
   }
   if(n <= 5){
     return {
       tier: 'BAJA-MEDIA',
-      hexNum: 0xf9d770,
-      hexStr: '#f9d770',
-      border: 'rgba(249, 215, 112, 0.70)',
-      badgeBg: '#f9d770',
+      hexNum: 0xffe285,
+      hexStr: '#ffe285',
+      border: 'rgba(255, 226, 133, 0.85)',
+      badgeBg: '#ffe285',
       badgeText: '#4a3800',
-      tint: 'rgba(249, 215, 112, 0.28)'
+      tint: 'rgba(255, 226, 133, 0.36)'
     };
   }
   if(n <= 9){
     return {
       tier: 'ALTA-MEDIA',
-      hexNum: 0xf3c391,
-      hexStr: '#f3c391',
-      border: 'rgba(243, 195, 145, 0.70)',
-      badgeBg: '#f3c391',
+      hexNum: 0xffd2a8,
+      hexStr: '#ffd2a8',
+      border: 'rgba(255, 210, 168, 0.85)',
+      badgeBg: '#ffd2a8',
       badgeText: '#5a2b0a',
-      tint: 'rgba(243, 195, 145, 0.30)'
+      tint: 'rgba(255, 210, 168, 0.36)'
     };
   }
   return {
     tier: 'ALTA',
-    hexNum: 0xadd09e,
-    hexStr: '#add09e',
-    border: 'rgba(173, 208, 158, 0.70)',
-    badgeBg: '#add09e',
+    hexNum: 0xb6e6a4,
+    hexStr: '#b6e6a4',
+    border: 'rgba(182, 230, 164, 0.85)',
+    badgeBg: '#b6e6a4',
     badgeText: '#144418',
-    tint: 'rgba(173, 208, 158, 0.30)'
+    tint: 'rgba(182, 230, 164, 0.36)'
   };
 }
 
 function getSalesTierColor(num){
   const n = Number(num) || 0;
-  if(n <= 3) return 0xe47a7a; // 0: BAJA (+40% vivo)
-  if(n <= 5) return 0xf9d770; // 4: BAJA-MEDIA (+40% vivo)
-  if(n <= 9) return 0xf3c391; // 6: ALTA-MEDIA (+40% vivo)
-  return 0xadd09e; // 10: ALTA (+40% vivo)
+  if(n <= 3) return 0xff8f8f; // BAJA (+20% más brillante)
+  if(n <= 5) return 0xffe285; // BAJA-MEDIA (+20% más brillante)
+  if(n <= 9) return 0xffd2a8; // ALTA-MEDIA (+20% más brillante)
+  return 0xb6e6a4; // ALTA (+20% más brillante)
 }
 
 function getSalesClass(num){
@@ -1499,7 +1499,7 @@ function createFurnitureInstance(item, callback){
     const storeSales = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
     const salesTier = getSalesColorData(storeSales);
 
-    const contourLineMat = new THREE.LineBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 0.85 });
+    const contourLineMat = new THREE.LineBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 1.0, toneMapped: false });
     const contourLineMesh = new THREE.Line(contourLineGeo, contourLineMat);
     contourLineMesh.userData.parentFurniture = group;
     contourLineMesh.userData.isContour = true;
@@ -1507,7 +1507,7 @@ function createFurnitureInstance(item, callback){
 
     const fillGeo = new THREE.PlaneGeometry(cW, cD);
     fillGeo.rotateX(-Math.PI/2);
-    const fillMat = new THREE.MeshBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 0.16, side: THREE.DoubleSide, depthWrite: false });
+    const fillMat = new THREE.MeshBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 0.30, side: THREE.DoubleSide, depthWrite: false, toneMapped: false });
     const fillMesh = new THREE.Mesh(fillGeo, fillMat);
     fillMesh.position.y = 0.005;
     fillMesh.userData.parentFurniture = group;
@@ -1971,12 +1971,12 @@ function renderSelectionHighlight(){
   ];
   const outlineGeo = new THREE.BufferGeometry().setFromPoints(outlinePts);
   const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
-  const lineMat = new THREE.LineBasicMaterial({ color: storeCfg.colorNum, linewidth: 3 });
+  const lineMat = new THREE.LineBasicMaterial({ color: storeCfg.colorNum, linewidth: 3, toneMapped: false });
   const line = new THREE.Line(outlineGeo, lineMat);
 
   const fillGeo = new THREE.PlaneGeometry(cW, cD);
   fillGeo.rotateX(-Math.PI/2);
-  const fillMat = new THREE.MeshBasicMaterial({ color: storeCfg.colorNum, transparent: true, opacity: 0.22, side: THREE.DoubleSide, depthWrite: false });
+  const fillMat = new THREE.MeshBasicMaterial({ color: storeCfg.colorNum, transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false, toneMapped: false });
   const fill = new THREE.Mesh(fillGeo, fillMat);
   fill.position.y = 0.012;
 
