@@ -2583,8 +2583,11 @@ async function fetchLiveSheetsData(){
       const nom = String(getVal(1)).trim();
       if(!sku && !nom) return;
       const parseZ = (val) => {
-        const s = String(val).replace(/[^0-9\-]/g, '').trim();
-        return (s && s !== '-') ? Math.max(0, parseInt(s, 10) || 0) : 0;
+        if(val === null || val === undefined || val === '') return 0;
+        if(typeof val === 'number') return Math.max(0, Math.round(val));
+        const s = String(val).trim();
+        const num = parseFloat(s);
+        return (!isNaN(num) && isFinite(num)) ? Math.max(0, Math.round(num)) : 0;
       };
       const entry = {
         sku: sku,
