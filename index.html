@@ -803,7 +803,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=3"></script>
+<script src="modelos_glb_data.js?v=20261027_5"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1199,6 +1199,7 @@ function setMurosHeight(val){
 
 murosRange.addEventListener('input', (e) => {
   setMurosHeight(e.target.value);
+  if(typeof saveStateToUrl === 'function') saveStateToUrl();
 });
 
 /* =====================================================================
@@ -1234,6 +1235,7 @@ function setFloorMode(mode){
     const destCam = new THREE.Vector3(CENTER.x + 24, 20, CENTER.z + 28);
     animateCameraTo(destCam, destTarget, 480);
   }
+  if(typeof saveStateToUrl === 'function') saveStateToUrl();
 }
 
 document.querySelectorAll('#topBarRight .pill-btn[data-mode]').forEach(btn => {
@@ -1298,8 +1300,11 @@ function refreshAllSalesVisuals(){
     });
   });
 
-  renderCatalogCards(currentCategoryFilter);
-  if(selectedFurniture){
+  if(typeof renderCatalog === 'function' && typeof catalogGrid !== 'undefined' && catalogGrid){
+    const activeChip = document.querySelector('.cat-chips-bar .cat-chip.active');
+    renderCatalog(activeChip ? activeChip.dataset.cat : 'all');
+  }
+  if(selectedFurniture && typeof renderFichaTables === 'function'){
     renderFichaTables(selectedFurniture.userData.item);
     renderSelectionHighlight();
   }
@@ -1320,6 +1325,7 @@ function setStore(storeKey){
   });
 
   refreshAllSalesVisuals();
+  if(typeof saveStateToUrl === 'function') saveStateToUrl();
 }
 
 const btnStore = document.getElementById('btnSelectStore');
@@ -1502,8 +1508,43 @@ function createFurnitureInstance(item, callback){
   group.userData.item = item;
   group.userData.isFurniture = true;
 
+  // Contorno rectangular del producto creado de forma síncrona (disponible en 0 ms para guardado e historial)
+  const cW = (item.dim_m[0] || 1) * 1.15;
+  const cD = (item.dim_m[1] || 1) * 1.15;
+  const hw = cW / 2;
+  const hd = cD / 2;
+  const contourPts = [
+    new THREE.Vector3(-hw, 0.006, -hd),
+    new THREE.Vector3(hw, 0.006, -hd),
+    new THREE.Vector3(hw, 0.006, hd),
+    new THREE.Vector3(-hw, 0.006, hd),
+    new THREE.Vector3(-hw, 0.006, -hd)
+  ];
+  const contourLineGeo = new THREE.BufferGeometry().setFromPoints(contourPts);
+  const liveData = getLiveProductData(item);
+  const storeSales = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
+  const salesTier = getSalesColorData(storeSales);
+
+  const contourLineMat = new THREE.LineBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 1.0, toneMapped: false });
+  const contourLineMesh = new THREE.Line(contourLineGeo, contourLineMat);
+  contourLineMesh.userData.parentFurniture = group;
+  contourLineMesh.userData.isContour = true;
+  group.add(contourLineMesh);
+
+  const fillGeo = new THREE.PlaneGeometry(cW, cD);
+  fillGeo.rotateX(-Math.PI/2);
+  const fillMat = new THREE.MeshBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 0.30, side: THREE.DoubleSide, depthWrite: false, toneMapped: false });
+  const fillMesh = new THREE.Mesh(fillGeo, fillMat);
+  fillMesh.position.y = 0.005;
+  fillMesh.userData.parentFurniture = group;
+  fillMesh.userData.isContour = true;
+  group.add(fillMesh);
+
+  // Registrar el grupo de inmediato de forma síncrona para evitar pérdidas de datos mientras descarga el .GLB
+  if(callback) callback(group);
+
   loadGLB(item.glb, (gltf) => {
-    const raw = gltf.scene;
+    const raw = gltf.scene.clone(true);
     const b1 = new THREE.Box3().setFromObject(raw);
     const size1 = new THREE.Vector3(); b1.getSize(size1);
 
@@ -1531,6 +1572,7 @@ function createFurnitureInstance(item, callback){
       if(c.isMesh){
         c.userData.parentFurniture = group;
         if(c.material){
+          c.material = c.material.clone();
           c.material.metalness = Math.min(c.material.metalness || 0, 0.12);
           c.material.roughness = THREE.MathUtils.clamp(c.material.roughness || 0.65, 0.3, 0.85);
           if(c.material.map) c.material.map.colorSpace = THREE.SRGBColorSpace;
@@ -1539,43 +1581,6 @@ function createFurnitureInstance(item, callback){
       }
     });
     group.add(wrapper);
-
-    // Contorno rectangular del producto (15% más grande en lugar de círculo)
-    const cW = (item.dim_m[0] || 1) * 1.15;
-    const cD = (item.dim_m[1] || 1) * 1.15;
-    const hw = cW / 2;
-    const hd = cD / 2;
-    const contourPts = [
-      new THREE.Vector3(-hw, 0.006, -hd),
-      new THREE.Vector3(hw, 0.006, -hd),
-      new THREE.Vector3(hw, 0.006, hd),
-      new THREE.Vector3(-hw, 0.006, hd),
-      new THREE.Vector3(-hw, 0.006, -hd)
-    ];
-    const contourLineGeo = new THREE.BufferGeometry().setFromPoints(contourPts);
-    const liveData = getLiveProductData(item);
-    const storeSales = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
-    const salesTier = getSalesColorData(storeSales);
-
-    const contourLineMat = new THREE.LineBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 1.0, toneMapped: false });
-    const contourLineMesh = new THREE.Line(contourLineGeo, contourLineMat);
-    contourLineMesh.userData.parentFurniture = group;
-    contourLineMesh.userData.isContour = true;
-    group.add(contourLineMesh);
-
-    const fillGeo = new THREE.PlaneGeometry(cW, cD);
-    fillGeo.rotateX(-Math.PI/2);
-    const fillMat = new THREE.MeshBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 0.30, side: THREE.DoubleSide, depthWrite: false, toneMapped: false });
-    const fillMesh = new THREE.Mesh(fillGeo, fillMat);
-    fillMesh.position.y = 0.005;
-    fillMesh.userData.parentFurniture = group;
-    fillMesh.userData.isContour = true;
-    group.add(fillMesh);
-
-    // ClickBox deshabilitado para evitar que muebles grandes (como camas) tapen el clic de muebles contiguos (como burós)
-    // La selección se realiza con 100% de precisión milimétrica sobre las mallas 3D visuales reales.
-
-    if(callback) callback(group);
   });
   return group;
 }
@@ -2780,84 +2785,127 @@ function serializeSetup(){
   };
 }
 
+let isRestoringState = true;
+
 function saveStateToUrl(){
+  if(isRestoringState) return;
   const data = serializeSetup();
   const jsonStr = JSON.stringify(data);
   try {
     localStorage.setItem('casa_creata_current_setup', jsonStr);
+    if(activeWorkingDistribName){
+      const map = getStoredDistribs();
+      if(map[activeWorkingDistribName] !== undefined){
+        map[activeWorkingDistribName] = data;
+        setStoredDistribs(map);
+      }
+    }
     const hash = '#' + encodeURIComponent(btoa(unescape(encodeURIComponent(jsonStr))));
     history.replaceState(null, '', hash);
   } catch(e){}
 }
 
-function loadSetupFromJson(data){
-  if(!data) return;
-
-  // 1. Restaurar configuración de entorno si es un objeto completo
-  if(!Array.isArray(data) && typeof data === 'object'){
-    // Restaurar Tienda
-    if(data.store && typeof setStore === 'function'){
-      setStore(data.store);
-    }
-    // Restaurar Altura de Muros / Paredes
-    if(data.muros !== undefined && typeof setMurosHeight === 'function'){
-      setMurosHeight(data.muros);
-    }
-    // Restaurar Piso / Nivel
-    if(data.floor && typeof setFloorMode === 'function'){
-      setFloorMode(data.floor);
-    }
-    // Restaurar Cámara y Enfoque
-    if(data.cam && data.cam.pos && data.cam.target && typeof camera !== 'undefined' && typeof controls !== 'undefined'){
-      try {
-        camera.position.set(data.cam.pos[0], data.cam.pos[1], data.cam.pos[2]);
-        controls.target.set(data.cam.target[0], data.cam.target[1], data.cam.target[2]);
-        camera.updateProjectionMatrix();
-        controls.update();
-      } catch(e){}
-    }
-  }
-
-  // 2. Cargar Muebles
-  const furnList = getFurnitureList(data);
-  placedFurniture.forEach(f => { if(f.parent) f.parent.remove(f); });
-  placedFurniture.length = 0;
-  deselectFurniture();
-
-  furnList.forEach(d => {
-    const item = RAW_CATALOG.find(x => x.id === d.id);
-    if(!item) return;
-    const grp = levelGroups[d.lvl] || levelGroups.PB;
-    createFurnitureInstance(item, (inst) => {
-      inst.userData.level = d.lvl;
-      const safePos = clampPositionToWalls(d.x, d.z, d.r || 0, item, d.lvl, inst, false);
-      inst.position.set(safePos.x, LOSA, safePos.z);
-      inst.rotation.y = d.r || 0;
-      grp.add(inst);
-      placedFurniture.push(inst);
-    });
+if(typeof controls !== 'undefined' && controls){
+  controls.addEventListener('end', () => {
+    if(!isRestoringState) saveStateToUrl();
   });
 }
 
+function loadSetupFromJson(data){
+  if(!data) return;
+  const prevRestoring = isRestoringState;
+  isRestoringState = true;
+
+  try {
+    // 1. Restaurar configuración de entorno si es un objeto completo
+    if(!Array.isArray(data) && typeof data === 'object'){
+      // Restaurar Tienda
+      if(data.store && typeof setStore === 'function'){
+        try { setStore(data.store); } catch(e){}
+      }
+      // Restaurar Altura de Muros / Paredes
+      if(data.muros !== undefined && typeof setMurosHeight === 'function'){
+        try { setMurosHeight(data.muros); } catch(e){}
+      }
+      // Restaurar Piso / Nivel
+      if(data.floor && typeof setFloorMode === 'function'){
+        try { setFloorMode(data.floor); } catch(e){}
+      }
+      // Restaurar Cámara y Enfoque (cancelando la animación por defecto de setFloorMode)
+      if(data.cam && data.cam.pos && data.cam.target && typeof camera !== 'undefined' && typeof controls !== 'undefined'){
+        try {
+          cameraAnim = null;
+          camera.position.set(data.cam.pos[0], data.cam.pos[1], data.cam.pos[2]);
+          controls.target.set(data.cam.target[0], data.cam.target[1], data.cam.target[2]);
+          camera.updateProjectionMatrix();
+          controls.update();
+        } catch(e){}
+      }
+    }
+
+    // 2. Cargar Muebles de forma 100% síncrona en placedFurniture
+    const furnList = getFurnitureList(data);
+    placedFurniture.forEach(f => { if(f.parent) f.parent.remove(f); });
+    placedFurniture.length = 0;
+    deselectFurniture();
+
+    furnList.forEach(d => {
+      const item = RAW_CATALOG.find(x => x.id === d.id);
+      if(!item) return;
+      const grp = levelGroups[d.lvl] || levelGroups.PB;
+      createFurnitureInstance(item, (inst) => {
+        inst.userData.level = d.lvl || 'PB';
+        inst.position.set(Number(d.x) || 0, LOSA, Number(d.z) || 0);
+        inst.rotation.y = Number(d.r) || 0;
+        grp.add(inst);
+        placedFurniture.push(inst);
+      });
+    });
+  } finally {
+    isRestoringState = prevRestoring;
+  }
+  if(!isRestoringState) saveStateToUrl();
+}
+
 function restoreInitialState(){
+  isRestoringState = true;
+  let hashObj = null;
+  let localObj = null;
+
   if(location.hash && location.hash.length > 2){
     try {
       const b64 = decodeURIComponent(location.hash.slice(1));
       const str = decodeURIComponent(escape(window.atob(b64)));
-      const obj = JSON.parse(str);
-      if(obj){
-        loadSetupFromJson(obj);
-        return;
-      }
+      hashObj = JSON.parse(str);
     } catch(e){}
   }
+
   try {
     const saved = localStorage.getItem('casa_creata_current_setup');
-    if(saved){
-      const obj = JSON.parse(saved);
-      if(obj) loadSetupFromJson(obj);
-    }
+    if(saved) localObj = JSON.parse(saved);
   } catch(e){}
+
+  // Si el hash de la URL viene sin muebles pero en LocalStorage o en la distribución activa sí hay muebles guardados,
+  // preservamos los muebles guardados para evitar que un hash vacío borre el trabajo del usuario.
+  let targetObj = hashObj || localObj;
+  if(hashObj && getFurnitureList(hashObj).length === 0){
+    if(localObj && getFurnitureList(localObj).length > 0){
+      hashObj.furniture = getFurnitureList(localObj);
+      targetObj = hashObj;
+    } else if(activeWorkingDistribName){
+      const map = getStoredDistribs();
+      if(map[activeWorkingDistribName] && getFurnitureList(map[activeWorkingDistribName]).length > 0){
+        hashObj.furniture = getFurnitureList(map[activeWorkingDistribName]);
+        targetObj = hashObj;
+      }
+    }
+  }
+
+  if(targetObj){
+    loadSetupFromJson(targetObj);
+  }
+  isRestoringState = false;
+  saveStateToUrl();
 }
 
 const distribModal = document.getElementById('distribModalBackdrop');
@@ -2895,12 +2943,13 @@ function renderSavedDistribs(){
   }
   keys.forEach(k => {
     const isCurrentActive = (k === activeWorkingDistribName);
+    const furnCount = getFurnitureList(map[k]).length;
     const item = document.createElement('div');
     item.className = 'distrib-item' + (isCurrentActive ? ' active-distrib' : '');
     item.innerHTML = `
       <div style="display:flex;align-items:center;gap:6px">
         <b>${k}</b>
-        <span class="distrib-count" style="opacity:.65;font-size:11px">(${map[k].length} muebles)</span>
+        <span class="distrib-count" style="opacity:.65;font-size:11px">(${furnCount} muebles)</span>
         ${isCurrentActive ? '<span style="font-size:9.5px;background:#10b981;color:#fff;padding:1px 6px;border-radius:999px;font-weight:700">En uso</span>' : ''}
       </div>
       <div style="display:flex;gap:5px;align-items:center">
@@ -2917,13 +2966,15 @@ function renderSavedDistribs(){
       loadSetupFromJson(map[k]);
       renderSavedDistribs();
       distribModal.classList.remove('open');
-      showSaveToast(`Diseño "${k}" cargado (${map[k].length} muebles)`, '📂');
+      const loadedCount = getFurnitureList(map[k]).length;
+      showSaveToast(`Diseño "${k}" cargado (${loadedCount} muebles)`, '📂');
     });
 
     // Botón Guardar en este archivo ya trabajado
     const btnSaveThis = item.querySelector('.btn-save-row');
     btnSaveThis.addEventListener('click', () => {
       const currentData = serializeSetup();
+      const savedCount = getFurnitureList(currentData).length;
       map[k] = currentData;
       setStoredDistribs(map);
       activeWorkingDistribName = k;
@@ -2938,9 +2989,9 @@ function renderSavedDistribs(){
       }, 1800);
 
       const countEl = item.querySelector('.distrib-count');
-      if(countEl) countEl.textContent = `(${currentData.length} muebles)`;
+      if(countEl) countEl.textContent = `(${savedCount} muebles)`;
 
-      showSaveToast(`¡"${k}" guardado y actualizado! (${currentData.length} muebles)`, '✅');
+      showSaveToast(`¡"${k}" guardado y actualizado! (${savedCount} muebles)`, '✅');
     });
 
     // Botón Eliminar
@@ -2981,6 +3032,7 @@ function showSaveToast(msg, icon = '💾'){
 function saveCurrentPlanProcess(showFeedback = true){
   const data = serializeSetup();
   const jsonStr = JSON.stringify(data);
+  const furnCount = getFurnitureList(data).length;
   try {
     // 1. Guardar estado del diseño actual en LocalStorage
     localStorage.setItem('casa_creata_current_setup', jsonStr);
@@ -2991,6 +3043,10 @@ function saveCurrentPlanProcess(showFeedback = true){
       map[activeWorkingDistribName] = data;
     } else {
       map['Último diseño guardado'] = data;
+      if(!activeWorkingDistribName){
+        activeWorkingDistribName = 'Último diseño guardado';
+        try { localStorage.setItem('casa_creata_active_distrib_name', activeWorkingDistribName); } catch(e){}
+      }
     }
     setStoredDistribs(map);
 
@@ -2998,7 +3054,7 @@ function saveCurrentPlanProcess(showFeedback = true){
     const now = new Date();
     const meta = {
       timestamp: now.toISOString(),
-      furnitureCount: data.length,
+      furnitureCount: furnCount,
       activeFile: activeWorkingDistribName || null,
       currentStore: (typeof currentStore !== 'undefined') ? currentStore : 'colosio',
       activeFloor: (typeof currentFloorMode !== 'undefined') ? currentFloorMode : 'exploded'
@@ -3024,8 +3080,7 @@ function saveCurrentPlanProcess(showFeedback = true){
         btn.classList.remove('saved');
       }, 2200);
     }
-    const count = getFurnitureList(data).length;
-    const countTxt = count === 1 ? '1 mueble' : `${count} muebles`;
+    const countTxt = furnCount === 1 ? '1 mueble' : `${furnCount} muebles`;
     const targetName = activeWorkingDistribName ? `"${activeWorkingDistribName}"` : 'del plano';
     showSaveToast(`¡Diseño ${targetName} guardado con tienda y paredes! (${countTxt})`, '✅');
   }
@@ -3048,13 +3103,16 @@ document.getElementById('btnSaveDistribNow').addEventListener('click', () => {
   const input = document.getElementById('distribNameInput');
   const name = (input.value || '').trim() || 'Distribución ' + new Date().toLocaleDateString();
   const map = getStoredDistribs();
-  map[name] = serializeSetup();
+  const currentData = serializeSetup();
+  const furnCount = getFurnitureList(currentData).length;
+  map[name] = currentData;
   setStoredDistribs(map);
   activeWorkingDistribName = name;
   try { localStorage.setItem('casa_creata_active_distrib_name', name); } catch(e){}
+  saveStateToUrl();
   input.value = '';
   renderSavedDistribs();
-  showSaveToast(`¡"${name}" guardado como nuevo archivo!`, '✅');
+  showSaveToast(`¡"${name}" guardado como nuevo archivo! (${furnCount} muebles)`, '✅');
 });
 
 document.getElementById('btnCopyUrlShare').addEventListener('click', () => {
