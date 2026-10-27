@@ -99,6 +99,10 @@
     max-width:calc(100vw - 36px);overflow-x:auto;scrollbar-width:none;
   }
   #topBarRight::-webkit-scrollbar{display:none}
+  @keyframes recPulse {
+    0% { transform: scale(0.85); opacity: 0.6; }
+    100% { transform: scale(1.35); opacity: 1; }
+  }
   .pill-btn{
     all:unset;cursor:pointer;background:var(--btn-pill);color:#e2ded8;font-size:11.5px;font-weight:600;
     padding:6px 12px;border-radius:999px;white-space:nowrap;transition:all .15s ease;
@@ -603,6 +607,8 @@
   <button class="pill-btn" id="btnSelectStore" title="Elegir tienda para ver ventas">🏪 Tienda: <b id="lblActiveStore">COLOSIO</b> ▾</button>
   <button class="pill-btn" id="btnAutoRot">🔄 Girar Vista</button>
   <button class="pill-btn" id="btnResetView">🎯 Centrar</button>
+  <span class="pill-sep"></span>
+  <button class="pill-btn" id="btnRecordScreen" title="Grabar video del recorrido 3D (clic para iniciar / detener)" style="display:inline-flex;align-items:center;gap:6px;"><span id="recDot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#e2ded8;transition:all .2s ease"></span><span id="lblRecordTxt">Grabar</span></button>
 </div>
 
 <!-- Popover Desplegable para Slider [🧱 Muros] -->
@@ -803,7 +809,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793128281"></script>
+<script src="modelos_glb_data.js?v=1793129283"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -876,7 +882,7 @@ const CAJONES_FONDO = [['E-7',1.563],['E-8',6.713],['E-9',12.293]];
    2. ESCENA THREE.JS, ILUMINACIÓN OMNIDIRECCIONAL (CERO SOMBRAS NEGRAS)
    ===================================================================== */
 const canvas = document.getElementById('c');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, preserveDrawingBuffer:true });
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -3391,6 +3397,131 @@ renderer.setAnimationLoop((now) => {
   if(selectedFurniture) renderSelectionHighlight();
   renderer.render(scene, camera);
 });
+
+// =====================================================================
+// SISTEMA DISCRETO DE GRABACIÓN DE VIDEO 3D (CANVAS MEDIA RECORDER)
+// =====================================================================
+let mediaRecorder = null;
+let recordedChunks = [];
+let recordTimerInterval = null;
+let recordStartTime = 0;
+
+function toggleCanvasRecording(){
+  if(mediaRecorder && mediaRecorder.state === 'recording'){
+    stopCanvasRecording();
+  } else {
+    startCanvasRecording();
+  }
+}
+
+function startCanvasRecording(){
+  const canvasEl = document.getElementById('c');
+  const btn = document.getElementById('btnRecordScreen');
+  const dot = document.getElementById('recDot');
+  const lbl = document.getElementById('lblRecordTxt');
+
+  if(!canvasEl || typeof canvasEl.captureStream !== 'function'){
+    showSaveToast('Tu navegador no soporta grabación directa de video 3D', '⚠️');
+    return;
+  }
+
+  try {
+    const stream = canvasEl.captureStream(60);
+    const types = [
+      'video/webm;codecs=vp9',
+      'video/webm;codecs=vp8',
+      'video/webm',
+      'video/mp4;codecs=avc1',
+      'video/mp4'
+    ];
+    let selectedType = '';
+    for(const t of types){
+      if(typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)){
+        selectedType = t;
+        break;
+      }
+    }
+
+    const options = selectedType ? { mimeType: selectedType, videoBitsPerSecond: 8000000 } : {};
+    mediaRecorder = new MediaRecorder(stream, options);
+    recordedChunks = [];
+
+    mediaRecorder.ondataavailable = (e) => {
+      if(e.data && e.data.size > 0){
+        recordedChunks.push(e.data);
+      }
+    };
+
+    mediaRecorder.onstop = () => {
+      if(recordTimerInterval) clearInterval(recordTimerInterval);
+      btn.style.background = '';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+      dot.style.background = '#e2ded8';
+      dot.style.animation = 'none';
+      lbl.textContent = 'Grabar';
+
+      if(recordedChunks.length === 0){
+        showSaveToast('No se capturó ningún fotograma', '⚠️');
+        return;
+      }
+
+      const mime = selectedType || 'video/webm';
+      const ext = mime.includes('mp4') ? 'mp4' : 'webm';
+      const blob = new Blob(recordedChunks, { type: mime });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const dateStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+      a.href = url;
+      a.download = `CASA-CREATA-3D-${dateStr}.${ext}`;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 2500);
+
+      showSaveToast(`¡Video descargado (${ext.toUpperCase()})!`, '🎥');
+    };
+
+    mediaRecorder.start(250);
+    recordStartTime = Date.now();
+
+    // Estilo visual durante grabación (discreto pero informativo)
+    btn.style.background = 'rgba(235, 87, 87, 0.18)';
+    btn.style.borderColor = 'rgba(235, 87, 87, 0.45)';
+    btn.style.color = '#ff9999';
+    dot.style.background = '#ff4d4d';
+    dot.style.animation = 'recPulse 1s infinite alternate';
+
+    const updateTimer = () => {
+      const sec = Math.floor((Date.now() - recordStartTime) / 1000);
+      const mm = String(Math.floor(sec / 60)).padStart(2, '0');
+      const ss = String(sec % 60).padStart(2, '0');
+      lbl.textContent = `${mm}:${ss} ⏹`;
+    };
+    updateTimer();
+    recordTimerInterval = setInterval(updateTimer, 1000);
+
+    showSaveToast('Grabando video 3D... Clic de nuevo para detener y guardar', '⏺');
+  } catch(err) {
+    console.error('Error al iniciar grabación de canvas:', err);
+    showSaveToast('No se pudo iniciar la grabación: ' + err.message, '⚠️');
+  }
+}
+
+function stopCanvasRecording(){
+  if(mediaRecorder && mediaRecorder.state !== 'inactive'){
+    mediaRecorder.stop();
+  }
+}
+
+const btnRecEl = document.getElementById('btnRecordScreen');
+if(btnRecEl){
+  btnRecEl.addEventListener('click', toggleCanvasRecording);
+}
 
 setFloorMode('exploded');
 restoreInitialState();
