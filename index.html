@@ -803,7 +803,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793114762"></script>
+<script src="modelos_glb_data.js?v=1793114989"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1558,19 +1558,12 @@ function createFurnitureInstance(item, callback){
       targetY = +(targetX * (size1.y / (size1.x || 1))).toFixed(3); // ~0.80 m (base 35 cm + colchón y almohadas)
     }
 
-    // Corrección proporcional para cabeceras cuyo Excel trae 40 cm de fondo (de buró/bufetera)
-    // pero que en foto y modelo 3D son paneles esbeltos (~14 cm de espesor):
+    // Corrección proporcional para cabeceras cuyo Excel traiga fondo excesivo (> 22 cm)
+    // respetando exactamente las medidas de Google Sheets cuando el fondo ya es real (ej. 15 cm):
     if(isCabeceraItem(item)){
       const naturalDepth = targetX * (size1.z / (size1.x || 1));
       if(targetZ > 0.22 && naturalDepth < 0.35){
         targetZ = Math.max(0.12, Math.min(0.16, +naturalDepth.toFixed(3)));
-      }
-      // Si en el Excel tiene 246x140 pero es cabecera KS de cama de 206 cm sin alas laterales de buró,
-      // mantener la proporción real de la foto (ancho KS ~212 cm y alto ~126 cm)
-      if(item.id === 'cabecera_madrid'){
-        targetX = 2.12;
-        targetY = 1.26;
-        targetZ = 0.14;
       }
     }
 
