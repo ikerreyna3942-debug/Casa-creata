@@ -809,7 +809,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793129283"></script>
+<script src="modelos_glb_data.js?v=1793131958"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1738,6 +1738,13 @@ function isChairItem(it){
   return n.includes('silla') || id.includes('silla');
 }
 
+function isModularSofaItem(it){
+  if(!it) return false;
+  const n = (it.name || '').toLowerCase();
+  const id = (it.id || '').toLowerCase();
+  return id.includes('shelby') || n.includes('shelby') || n.includes('modular') || id.includes('modular') || id.includes('esquinero') || n.includes('esquinero') || id.includes('ottoman') || n.includes('ottoman') || n.includes('brazo der') || n.includes('brazo izq') || n.includes('sin brazos');
+}
+
 function isTableItem(it){
   if(!it || isChairItem(it) || isBuroItem(it) || isBedItem(it) || isCabeceraItem(it)) return false;
   const n = (it.name || '').toLowerCase();
@@ -1765,7 +1772,7 @@ function isBedroomAssemblyPair(itemA, itemB){
   const bedA = isBedItem(itemA), bedB = isBedItem(itemB);
   const buroA = isBuroItem(itemA), buroB = isBuroItem(itemB);
   const cabA = isCabeceraItem(itemA), cabB = isCabeceraItem(itemB);
-  return (buroA && (bedB || cabB)) || (buroB && (bedA || cabA)) || (bedA && cabB) || (cabA && bedB) || isTableChairPair(itemA, itemB) || (isChairItem(itemA) && isChairItem(itemB));
+  return (buroA && (bedB || cabB)) || (buroB && (bedA || cabA)) || (bedA && cabB) || (cabA && bedB) || isTableChairPair(itemA, itemB) || (isChairItem(itemA) && isChairItem(itemB)) || (isModularSofaItem(itemA) && isModularSofaItem(itemB));
 }
 
 function getBedVolumetricProfile(item){
@@ -2592,6 +2599,55 @@ if(btnSnapToBed){
     const furn = selectedFurniture;
     const item = furn.userData.item;
     const lvl = furn.userData.level;
+
+    // CASO 0.5: Si el objeto seleccionado es un módulo de SALA MODULAR (ej. Shelby) y hay otro módulo en el piso -> Pegar al ras
+    if(isModularSofaItem(item)){
+      let targetMod = null, bestMD = Infinity;
+      placedFurniture.forEach(f => {
+        if(f === furn || f.userData.level !== lvl) return;
+        if(isModularSofaItem(f.userData.item)){
+          const d = Math.hypot(f.position.x - furn.position.x, f.position.z - furn.position.z);
+          if(d < bestMD){ bestMD = d; targetMod = f; }
+        }
+      });
+      if(targetMod){
+        const tItem = targetMod.userData.item;
+        const myW = (item.dim_m && item.dim_m[0]) || 1.35;
+        const myD = (item.dim_m && item.dim_m[1]) || 1.13;
+        const targetW = (tItem.dim_m && tItem.dim_m[0]) || 1.35;
+        const targetD = (tItem.dim_m && tItem.dim_m[1]) || 1.13;
+
+        const cos = Math.cos(targetMod.rotation.y), sin = Math.sin(targetMod.rotation.y);
+        const dxW = furn.position.x - targetMod.position.x;
+        const dzW = furn.position.z - targetMod.position.z;
+        const localX = dxW * cos - dzW * sin;
+        const localZ = dxW * sin + dzW * cos;
+
+        const normX = Math.abs(localX) / (targetW * 0.5 + myW * 0.5 || 1);
+        const normZ = Math.abs(localZ) / (targetD * 0.5 + myD * 0.5 || 1);
+
+        let snapLX = 0, snapLZ = 0;
+        if(normX >= normZ){
+          const sideX = (localX >= 0) ? 1 : -1;
+          snapLX = sideX * (targetW * 0.5 + myW * 0.5 + 0.002);
+          snapLZ = 0;
+        } else {
+          const sideZ = (localZ >= 0) ? 1 : -1;
+          snapLZ = sideZ * (targetD * 0.5 + myD * 0.5 + 0.002);
+          snapLX = 0;
+        }
+
+        const worldX = targetMod.position.x + snapLX * cos + snapLZ * sin;
+        const worldZ = targetMod.position.z - snapLX * sin + snapLZ * cos;
+        furn.rotation.y = targetMod.rotation.y;
+        const clamped = clampPositionToWalls(worldX, worldZ, furn.rotation.y, item, lvl, furn, true);
+        furn.position.x = clamped.x;
+        furn.position.z = clamped.z;
+        updateEditValues();
+        showSaveToast('¡Módulo de sala alineado y pegado al ras!', '🧲');
+        return;
+      }
+    }
 
     // CASO 0: Si el objeto seleccionado es una SILLA y hay una MESA DE COMEDOR en el piso -> Meter la silla debajo de la mesa (si las medidas lo permiten)
     if(isChairItem(item)){
