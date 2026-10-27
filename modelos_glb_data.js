@@ -894,17 +894,17 @@ window.CATALOGO_PRODUCTOS = [
     "variant": "Distraction Natural",
     "category": "Recámaras",
     "glb": "CAMA AMAERETO.GLB",
-    "sku": "ARMAMA2PDERDN",
+    "sku": "ARMCAMAMAKS",
     "proveedor": "ARMONY",
     "dim_m": [
-      2.02,
-      1.08,
-      0.91
+      2.0,
+      2.15,
+      1.15
     ],
     "dim_cm": [
-      202,
-      108,
-      91
+      200,
+      215,
+      115
     ],
     "stock": {
       "cedis": 0,
