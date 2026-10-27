@@ -803,7 +803,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793125323"></script>
+<script src="modelos_glb_data.js?v=1793127236"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1631,6 +1631,35 @@ function createFurnitureInstance(item, callback){
       }
     }
 
+    // Analizador geométrico universal para Mesas de Comedor: mide la base/pedestal inferior bajo la cubierta
+    if(isTableItem(item) && size1.x > 0.01 && size1.z > 0.01){
+      let pMinX = Infinity, pMaxX = -Infinity, pMinZ = Infinity, pMaxZ = -Infinity;
+      const yLow = b1.min.y + size1.y * 0.15;
+      const yHigh = b1.min.y + size1.y * 0.72;
+      raw.traverse( node => {
+        if(node.isMesh && node.geometry && node.geometry.attributes && node.geometry.attributes.position){
+          const pos = node.geometry.attributes.position;
+          for(let i = 0; i < pos.count; i++){
+            const vx = pos.getX(i), vy = pos.getY(i), vz = pos.getZ(i);
+            if(vy >= yLow && vy <= yHigh){
+              if(vx < pMinX) pMinX = vx;
+              if(vx > pMaxX) pMaxX = vx;
+              if(vz < pMinZ) pMinZ = vz;
+              if(vz > pMaxZ) pMaxZ = vz;
+            }
+          }
+        }
+      });
+      if(pMaxX > pMinX && pMaxZ > pMinZ){
+        const ratioX = Math.min(0.75, Math.max(0.32, (pMaxX - pMinX) / size1.x));
+        const ratioZ = Math.min(0.70, Math.max(0.32, (pMaxZ - pMinZ) / size1.z));
+        item._computedTableCore = {
+          halfX: +(targetX * ratioX * 0.5).toFixed(3),
+          halfZ: +(targetZ * ratioZ * 0.5).toFixed(3)
+        };
+      }
+    }
+
     const wrapper = new THREE.Group();
     wrapper.add(raw);
     wrapper.scale.set(sx, sy, sz);
@@ -1696,11 +1725,41 @@ function isBuroItem(it){
   return it.category === 'Burós' || n.includes('buro') || n.includes('buró') || id.includes('buro');
 }
 
+function isChairItem(it){
+  if(!it) return false;
+  const n = (it.name || '').toLowerCase();
+  const id = (it.id || '').toLowerCase();
+  return n.includes('silla') || id.includes('silla');
+}
+
+function isTableItem(it){
+  if(!it || isChairItem(it) || isBuroItem(it) || isBedItem(it) || isCabeceraItem(it)) return false;
+  const n = (it.name || '').toLowerCase();
+  const id = (it.id || '').toLowerCase();
+  return n.includes('mesa de comedor') || id.includes('mesa_comedor') || (it.category === 'Comedores' && (n.includes('mesa') || id.includes('mesa'))) || (n.includes('comedor') && !n.includes('silla') && !n.includes('bufetera') && !n.includes('credenza'));
+}
+
+function canChairTuckUnderTable(chairItem, tableItem){
+  if(!isChairItem(chairItem) || !isTableItem(tableItem)) return false;
+  const cW = (chairItem.dim_m && chairItem.dim_m[0]) || 0.62;
+  const cH = (chairItem.dim_m && chairItem.dim_m[2]) || 0.81;
+  const tW = (tableItem.dim_m && tableItem.dim_m[0]) || 1.80;
+  const tD = (tableItem.dim_m && tableItem.dim_m[1]) || 1.05;
+  const tH = (tableItem.dim_m && tableItem.dim_m[2]) || 0.75;
+  // Permite meter la silla debajo de la mesa siempre y cuando la altura de la cubierta (>= 68 cm) y el ancho de la mesa lo permitan
+  return (tH >= 0.68) && (cH <= tH + 0.35) && (cW <= Math.max(tW, tD) - 0.06);
+}
+
+function isTableChairPair(itemA, itemB){
+  return (isChairItem(itemA) && isTableItem(itemB) && canChairTuckUnderTable(itemA, itemB)) ||
+         (isTableItem(itemA) && isChairItem(itemB) && canChairTuckUnderTable(itemB, itemA));
+}
+
 function isBedroomAssemblyPair(itemA, itemB){
   const bedA = isBedItem(itemA), bedB = isBedItem(itemB);
   const buroA = isBuroItem(itemA), buroB = isBuroItem(itemB);
   const cabA = isCabeceraItem(itemA), cabB = isCabeceraItem(itemB);
-  return (buroA && (bedB || cabB)) || (buroB && (bedA || cabA)) || (bedA && cabB) || (cabA && bedB);
+  return (buroA && (bedB || cabB)) || (buroB && (bedA || cabA)) || (bedA && cabB) || (cabA && bedB) || isTableChairPair(itemA, itemB) || (isChairItem(itemA) && isChairItem(itemB));
 }
 
 function getBedVolumetricProfile(item){
@@ -1727,7 +1786,7 @@ function getBedVolumetricProfile(item){
   return { headboardHalfW: halfX, mattressHalfW: halfX, headboardDepth: Math.min(0.25, dz * 0.2), halfZ: halfZ, hasWings: false };
 }
 
-function getFurnitureLocalBoxes(item){
+function getFurnitureLocalBoxes(item, interactingWithItem=null){
   const dx = (item && item.dim_m && item.dim_m[0]) ? item.dim_m[0] : 1.0;
   const dz = (item && item.dim_m && item.dim_m[1]) ? item.dim_m[1] : 1.0;
   if(isBedItem(item)){
@@ -1739,11 +1798,23 @@ function getFurnitureLocalBoxes(item){
       ];
     }
   }
+  // Si es una Mesa de Comedor interactuando con una Silla cuyas medidas caben debajo de la cubierta:
+  // usa el núcleo de los pedestales/base de la mesa para que la silla pueda meterse debajo de la cubierta
+  if(isTableItem(item) && interactingWithItem && canChairTuckUnderTable(interactingWithItem, item)){
+    const cW = (interactingWithItem.dim_m && interactingWithItem.dim_m[0]) || 0.62;
+    const cD = (interactingWithItem.dim_m && interactingWithItem.dim_m[1]) || 0.62;
+    const fitsLongSide = (cW <= dx - 0.06);
+    const fitsHeadSide = (cW <= dz - 0.06);
+    const core = item._computedTableCore || { halfX: dx * 0.262, halfZ: dz * 0.228 };
+    const halfXCore = fitsHeadSide ? Math.max(core.halfX, dx/2 - cD * 0.60) : (dx / 2);
+    const halfZCore = fitsLongSide ? Math.max(core.halfZ, dz/2 - cD * 0.60) : (dz / 2);
+    return [{ minX: -halfXCore, maxX: halfXCore, minZ: -halfZCore, maxZ: halfZCore, part: 'table_pedestal' }];
+  }
   return [{ minX: -dx/2, maxX: dx/2, minZ: -dz/2, maxZ: dz/2, part: 'body' }];
 }
 
-function getFurnitureWorldBoxes(item, posX, posZ, rotY){
-  const localBoxes = getFurnitureLocalBoxes(item);
+function getFurnitureWorldBoxes(item, posX, posZ, rotY, interactingWithItem=null){
+  const localBoxes = getFurnitureLocalBoxes(item, interactingWithItem);
   const cos = Math.cos(rotY);
   const sin = Math.sin(rotY);
   return localBoxes.map(b => {
@@ -1811,10 +1882,6 @@ function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
   const wallCol = checkWallCollision(posX, posZ, rotY, item, level);
   if(wallCol.collides) return wallCol;
 
-  const myBoxes = getFurnitureWorldBoxes(item, posX, posZ, rotY);
-  const isBuro = isBuroItem(item);
-  const isBed = isBedItem(item);
-
   for(let i = 0; i < placedFurniture.length; i++){
     const f = placedFurniture[i];
     if(f === ignoreFurniture) continue;
@@ -1824,14 +1891,15 @@ function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
     const isBedBuroPair = isBedroomAssemblyPair(item, it);
     const gap = isBedBuroPair ? 0.002 : 0.008;
 
-    const otherBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y);
+    const myBoxes = getFurnitureWorldBoxes(item, posX, posZ, rotY, it);
+    const otherBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y, item);
     for(let a = 0; a < myBoxes.length; a++){
       const mb = myBoxes[a];
       for(let b = 0; b < otherBoxes.length; b++){
         const ob = otherBoxes[b];
         if(mb.maxX > (ob.minX - gap + 1e-4) && mb.minX < (ob.maxX + gap - 1e-4) &&
            mb.maxZ > (ob.minZ - gap + 1e-4) && mb.minZ < (ob.maxZ + gap - 1e-4)){
-          return { collides: true, reason: isBedBuroPair ? 'Colchón o cabecera de cama' : 'Mueble ya colocado' };
+          return { collides: true, reason: isTableChairPair(item, it) ? 'Base de la mesa de comedor' : (isBedBuroPair ? 'Colchón o cabecera de cama' : 'Mueble ya colocado') };
         }
       }
     }
@@ -1858,32 +1926,30 @@ function clampPositionToWalls(posX, posZ, rotY, item, level, ignoreFurniture=nul
   const obsList = [];
   const wallObs = LEVEL_OBSTACLES[level] || [];
   for(let i = 0; i < wallObs.length; i++){
-    obsList.push({ minX: wallObs[i].minX, maxX: wallObs[i].maxX, minZ: wallObs[i].minZ, maxZ: wallObs[i].maxZ, gap: GAP });
+    obsList.push({ minX: wallObs[i].minX, maxX: wallObs[i].maxX, minZ: wallObs[i].minZ, maxZ: wallObs[i].maxZ, gap: GAP, refItem: null });
   }
 
   if(includeFurniture){
-    const isBuro = isBuroItem(item);
-    const isBed = isBedItem(item);
     for(let i = 0; i < placedFurniture.length; i++){
       const f = placedFurniture[i];
       if(f === ignoreFurniture || f.userData.level !== level) continue;
       const it = f.userData.item;
       const isBedBuroPair = isBedroomAssemblyPair(item, it);
       const fGap = isBedBuroPair ? 0.001 : GAP;
-      const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y);
+      const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y, item);
       for(let j = 0; j < fBoxes.length; j++){
-        obsList.push({ minX: fBoxes[j].minX, maxX: fBoxes[j].maxX, minZ: fBoxes[j].minZ, maxZ: fBoxes[j].maxZ, gap: fGap });
+        obsList.push({ minX: fBoxes[j].minX, maxX: fBoxes[j].maxX, minZ: fBoxes[j].minZ, maxZ: fBoxes[j].maxZ, gap: fGap, refItem: it });
       }
     }
   }
 
-  const MAX_PUSH = 1.25; // Empuje máximo hacia el ras de la pared o colchón
+  const MAX_PUSH = 1.25; // Empuje máximo hacia el ras de la pared, colchón o base de mesa
   for(let pass = 0; pass < 5; pass++){
     let moved = false;
-    const myBoxes = getFurnitureWorldBoxes(item, cx, cz, rotY);
     for(let i = 0; i < obsList.length; i++){
       const b = obsList[i];
       const g = b.gap;
+      const myBoxes = getFurnitureWorldBoxes(item, cx, cz, rotY, b.refItem);
       for(let j = 0; j < myBoxes.length; j++){
         const mb = myBoxes[j];
         if(mb.maxX > (b.minX - g + 1e-4) && mb.minX < (b.maxX + g - 1e-4) &&
@@ -2419,24 +2485,20 @@ function nudgeSelected(dx, dz){
   const obsList = [];
   const wallObs = LEVEL_OBSTACLES[level] || [];
   for(let i = 0; i < wallObs.length; i++){
-    obsList.push({ minX: wallObs[i].minX, maxX: wallObs[i].maxX, minZ: wallObs[i].minZ, maxZ: wallObs[i].maxZ, gap: GAP });
+    obsList.push({ minX: wallObs[i].minX, maxX: wallObs[i].maxX, minZ: wallObs[i].minZ, maxZ: wallObs[i].maxZ, gap: GAP, refItem: null });
   }
 
-  const isBuro = isBuroItem(item);
-  const isBed = isBedItem(item);
   for(let i = 0; i < placedFurniture.length; i++){
     const f = placedFurniture[i];
     if(f === furn || f.userData.level !== level) continue;
     const it = f.userData.item;
     const isBedBuroPair = isBedroomAssemblyPair(item, it);
     const fGap = isBedBuroPair ? 0.001 : GAP;
-    const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y);
+    const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y, item);
     for(let j = 0; j < fBoxes.length; j++){
-      obsList.push({ minX: fBoxes[j].minX, maxX: fBoxes[j].maxX, minZ: fBoxes[j].minZ, maxZ: fBoxes[j].maxZ, gap: fGap });
+      obsList.push({ minX: fBoxes[j].minX, maxX: fBoxes[j].maxX, minZ: fBoxes[j].minZ, maxZ: fBoxes[j].maxZ, gap: fGap, refItem: it });
     }
   }
-
-  const myBoxes = getFurnitureWorldBoxes(item, curX, curZ, rotY);
 
   // --- MOVIMIENTO EN EJE X (Izquierda / Derecha) ---
   if(dx !== 0){
@@ -2446,6 +2508,7 @@ function nudgeSelected(dx, dz){
     for(let i = 0; i < obsList.length; i++){
       const b = obsList[i];
       const g = b.gap;
+      const myBoxes = getFurnitureWorldBoxes(item, curX, curZ, rotY, b.refItem);
       for(let j = 0; j < myBoxes.length; j++){
         const mb = myBoxes[j];
         // Verificar si el obstáculo se cruza en el corredor Z de esta sub-caja
@@ -2476,11 +2539,10 @@ function nudgeSelected(dx, dz){
   if(dz !== 0){
     let lowerBound = PERIMETER_BOUNDS.minZ + GAP + halfZ;
     let upperBound = PERIMETER_BOUNDS.maxZ - GAP - halfZ;
-    const myBoxesZ = getFurnitureWorldBoxes(item, curX, curZ, rotY);
-
     for(let i = 0; i < obsList.length; i++){
       const b = obsList[i];
       const g = b.gap;
+      const myBoxesZ = getFurnitureWorldBoxes(item, curX, curZ, rotY, b.refItem);
       for(let j = 0; j < myBoxesZ.length; j++){
         const mb = myBoxesZ[j];
         // Verificar si el obstáculo se cruza en el corredor X de esta sub-caja
@@ -2524,6 +2586,69 @@ if(btnSnapToBed){
     const furn = selectedFurniture;
     const item = furn.userData.item;
     const lvl = furn.userData.level;
+
+    // CASO 0: Si el objeto seleccionado es una SILLA y hay una MESA DE COMEDOR en el piso -> Meter la silla debajo de la mesa (si las medidas lo permiten)
+    if(isChairItem(item)){
+      let table = null, bestTD = Infinity;
+      placedFurniture.forEach(f => {
+        if(f === furn || f.userData.level !== lvl) return;
+        if(isTableItem(f.userData.item)){
+          const d = Math.hypot(f.position.x - furn.position.x, f.position.z - furn.position.z);
+          if(d < bestTD){ bestTD = d; table = f; }
+        }
+      });
+      if(table){
+        const tableItem = table.userData.item;
+        if(!canChairTuckUnderTable(item, tableItem)){
+          showSaveToast('Las medidas de esta silla no permiten meterla bajo la mesa', '⚠️');
+          return;
+        }
+        const tW = (tableItem.dim_m && tableItem.dim_m[0]) || 1.80;
+        const tD = (tableItem.dim_m && tableItem.dim_m[1]) || 1.05;
+        const cW = (item.dim_m && item.dim_m[0]) || 0.62;
+        const cD = (item.dim_m && item.dim_m[1]) || 0.62;
+        const cos = Math.cos(table.rotation.y), sin = Math.sin(table.rotation.y);
+        const dxW = furn.position.x - table.position.x;
+        const dzW = furn.position.z - table.position.z;
+        const localX = dxW * cos - dzW * sin;
+        const localZ = dxW * sin + dzW * cos;
+
+        const core = tableItem._computedTableCore || { halfX: tW * 0.262, halfZ: tD * 0.228 };
+        const halfXCore = Math.max(core.halfX, tW/2 - cD * 0.60);
+        const halfZCore = Math.max(core.halfZ, tD/2 - cD * 0.60);
+
+        const fitsLong = (cW <= tW - 0.06);
+        const fitsHead = (cW <= tD - 0.06);
+
+        let snapLX = localX, snapLZ = localZ, targetRot = table.rotation.y;
+        const normX = Math.abs(localX) / (tW * 0.5 || 1);
+        const normZ = Math.abs(localZ) / (tD * 0.5 || 1);
+
+        if(fitsHead && (!fitsLong || normX > normZ * 1.15)){
+          const sideX = (localX >= 0) ? 1 : -1;
+          snapLX = sideX * (halfXCore + cD * 0.5 + 0.002);
+          const maxOffZ = Math.max(0, (tD * 0.5) - (cW * 0.5) - 0.04);
+          snapLZ = Math.max(-maxOffZ, Math.min(maxOffZ, localZ));
+          targetRot = table.rotation.y + (sideX > 0 ? -Math.PI/2 : Math.PI/2);
+        } else {
+          const sideZ = (localZ >= 0) ? 1 : -1;
+          snapLZ = sideZ * (halfZCore + cD * 0.5 + 0.002);
+          const maxOffX = Math.max(0, (tW * 0.5) - (cW * 0.5) - 0.04);
+          snapLX = Math.max(-maxOffX, Math.min(maxOffX, localX));
+          targetRot = table.rotation.y + (sideZ > 0 ? Math.PI : 0);
+        }
+
+        const worldX = table.position.x + snapLX * cos + snapLZ * sin;
+        const worldZ = table.position.z - snapLX * sin + snapLZ * cos;
+        furn.rotation.y = targetRot;
+        const clamped = clampPositionToWalls(worldX, worldZ, furn.rotation.y, item, lvl, furn, true);
+        furn.position.x = clamped.x;
+        furn.position.z = clamped.z;
+        updateEditValues();
+        showSaveToast('¡Silla alineada y metida debajo de la mesa de comedor!', '🧲');
+        return;
+      }
+    }
 
     // CASO 1: Si el objeto seleccionado es una BASE DE CAMA y hay una CABECERA en el piso -> Pegar Base frente a la Cabecera
     if(isBedItem(item)){
