@@ -803,7 +803,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=20261027_5"></script>
+<script src="modelos_glb_data.js?v=1793114762"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1548,11 +1548,33 @@ function createFurnitureInstance(item, callback){
     const b1 = new THREE.Box3().setFromObject(raw);
     const size1 = new THREE.Vector3(); b1.getSize(size1);
 
-    const targetX = item.dim_m[0];
-    const targetZ = item.dim_m[1];
-    const targetY = item.dim_m[2];
+    let targetX = item.dim_m[0];
+    let targetZ = item.dim_m[1];
+    let targetY = item.dim_m[2];
 
-    // Escala métrica 1:1 exacta de Google Sheets (Frente = targetX, Fondo = targetZ, Alto = targetY)
+    // Corrección proporcional para bases de cama cuyo Excel indica solo la altura de la madera (35 cm)
+    // pero cuyo modelo 3D (.glb) incluye colchón y almohadas paradas encima (ej. Base Yute):
+    if(isBedItem(item) && targetY <= 0.42 && (size1.y / (size1.x || 1)) > 0.30){
+      targetY = +(targetX * (size1.y / (size1.x || 1))).toFixed(3); // ~0.80 m (base 35 cm + colchón y almohadas)
+    }
+
+    // Corrección proporcional para cabeceras cuyo Excel trae 40 cm de fondo (de buró/bufetera)
+    // pero que en foto y modelo 3D son paneles esbeltos (~14 cm de espesor):
+    if(isCabeceraItem(item)){
+      const naturalDepth = targetX * (size1.z / (size1.x || 1));
+      if(targetZ > 0.22 && naturalDepth < 0.35){
+        targetZ = Math.max(0.12, Math.min(0.16, +naturalDepth.toFixed(3)));
+      }
+      // Si en el Excel tiene 246x140 pero es cabecera KS de cama de 206 cm sin alas laterales de buró,
+      // mantener la proporción real de la foto (ancho KS ~212 cm y alto ~126 cm)
+      if(item.id === 'cabecera_madrid'){
+        targetX = 2.12;
+        targetY = 1.26;
+        targetZ = 0.14;
+      }
+    }
+
+    // Escala métrica 1:1 calibrada (Frente = targetX, Fondo = targetZ, Alto = targetY)
     let sx = targetX / (size1.x || 1);
     let sy = targetY / (size1.y || 1);
     let sz = targetZ / (size1.z || 1);

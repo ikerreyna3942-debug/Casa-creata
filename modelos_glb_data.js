@@ -1358,14 +1358,14 @@ window.CATALOGO_PRODUCTOS = [
     "sku": "MOBCABMADKSRM",
     "proveedor": "MOBEL INN",
     "dim_m": [
-      2.46,
-      0.4,
-      1.4
+      2.12,
+      0.14,
+      1.26
     ],
     "dim_cm": [
-      246,
-      40,
-      140
+      212,
+      14,
+      126
     ],
     "stock": {
       "cedis": 0,
