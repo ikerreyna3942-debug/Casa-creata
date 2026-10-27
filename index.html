@@ -803,7 +803,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793114989"></script>
+<script src="modelos_glb_data.js?v=1793115519"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1508,9 +1508,9 @@ function createFurnitureInstance(item, callback){
   group.userData.item = item;
   group.userData.isFurniture = true;
 
-  // Contorno rectangular del producto creado de forma síncrona (disponible en 0 ms para guardado e historial)
-  const cW = (item.dim_m[0] || 1) * 1.15;
-  const cD = (item.dim_m[1] || 1) * 1.15;
+  // Contorno rectangular ajustado al ras real del producto (1.03x)
+  const cW = (item.dim_m[0] || 1) * 1.03;
+  const cD = (item.dim_m[1] || 1) * 1.03;
   const hw = cW / 2;
   const hd = cD / 2;
   const contourPts = [
@@ -1572,6 +1572,14 @@ function createFurnitureInstance(item, callback){
     let sy = targetY / (size1.y || 1);
     let sz = targetZ / (size1.z || 1);
 
+    // En BASE YUTE.glb el edredón suelto sobresale ~13.2% a los lados (0.868) y ~4.5% al pie (0.955) respecto al marco de madera.
+    // Escalamos y centramos sobre el marco de madera real para que los 206x195 cm correspondan exactamente a la madera y el buró pegue a 0 cm.
+    const isYuteBase = (item.id === 'base_yute');
+    if(isYuteBase){
+      sx = (targetX / 0.868) / (size1.x || 1);
+      sz = (targetZ / 0.953) / (size1.z || 1);
+    }
+
     const wrapper = new THREE.Group();
     wrapper.add(raw);
     wrapper.scale.set(sx, sy, sz);
@@ -1579,6 +1587,15 @@ function createFurnitureInstance(item, callback){
 
     const b2 = new THREE.Box3().setFromObject(wrapper);
     const center2 = new THREE.Vector3(); b2.getCenter(center2);
+    if(isYuteBase){
+      // Compensar la asimetría del edredón colgante para que el marco de madera quede 100% centrado en X y al ras trasero en Z
+      const rawCenterX = (b1.min.x + b1.max.x) * 0.5;
+      const rawCenterZ = (b1.min.z + b1.max.z) * 0.5;
+      const frameCenterX = (-0.4281 + 0.4361) * 0.5;
+      const frameCenterZ = (-0.4940 + 0.4592) * 0.5;
+      center2.x += (frameCenterX - rawCenterX) * sx;
+      center2.z += (frameCenterZ - rawCenterZ) * sz;
+    }
     // Anclaje al ras exacto del suelo (cero hundimiento, cero flotar)
     wrapper.position.set(-center2.x, -b2.min.y, -center2.z);
 
@@ -1800,7 +1817,7 @@ function clampPositionToWalls(posX, posZ, rotY, item, level, ignoreFurniture=nul
       if(f === ignoreFurniture || f.userData.level !== level) continue;
       const it = f.userData.item;
       const isBedBuroPair = isBedroomAssemblyPair(item, it);
-      const fGap = isBedBuroPair ? 0.005 : GAP;
+      const fGap = isBedBuroPair ? 0.001 : GAP;
       const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y);
       for(let j = 0; j < fBoxes.length; j++){
         obsList.push({ minX: fBoxes[j].minX, maxX: fBoxes[j].maxX, minZ: fBoxes[j].minZ, maxZ: fBoxes[j].maxZ, gap: fGap });
@@ -2237,8 +2254,8 @@ function renderSelectionHighlight(){
   if(!selectedFurniture || !selectedFurniture.parent) return;
 
   const item = selectedFurniture.userData.item;
-  const cW = (item.dim_m[0] || 1) * 1.15; // Contorno 15% más grande que el producto
-  const cD = (item.dim_m[1] || 1) * 1.15;
+  const cW = (item.dim_m[0] || 1) * 1.03; // Contorno ajustado al ras del producto
+  const cD = (item.dim_m[1] || 1) * 1.03;
   const hw = cW / 2;
   const hd = cD / 2;
 
@@ -2360,7 +2377,7 @@ function nudgeSelected(dx, dz){
     if(f === furn || f.userData.level !== level) continue;
     const it = f.userData.item;
     const isBedBuroPair = isBedroomAssemblyPair(item, it);
-    const fGap = isBedBuroPair ? 0.005 : GAP;
+    const fGap = isBedBuroPair ? 0.001 : GAP;
     const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y);
     for(let j = 0; j < fBoxes.length; j++){
       obsList.push({ minX: fBoxes[j].minX, maxX: fBoxes[j].maxX, minZ: fBoxes[j].minZ, maxZ: fBoxes[j].maxZ, gap: fGap });
@@ -2467,10 +2484,10 @@ if(btnSnapToBed){
         }
       });
       if(cab){
-        const cabD = (cab.userData.item.dim_m[1] || 0.40) / 2;
+        const cabD = (cab.userData.item.dim_m[1] || 0.15) / 2;
         const baseD = (item.dim_m[1] || 1.95) / 2;
         const cos = Math.cos(cab.rotation.y), sin = Math.sin(cab.rotation.y);
-        const snapLocalZ = cabD + baseD + 0.008;
+        const snapLocalZ = cabD + baseD + 0.002;
         const worldX = cab.position.x + snapLocalZ * sin;
         const worldZ = cab.position.z + snapLocalZ * cos;
         furn.rotation.y = cab.rotation.y;
@@ -2495,10 +2512,10 @@ if(btnSnapToBed){
         }
       });
       if(base){
-        const cabD = (item.dim_m[1] || 0.40) / 2;
+        const cabD = (item.dim_m[1] || 0.15) / 2;
         const baseD = (base.userData.item.dim_m[1] || 1.95) / 2;
         const cos = Math.cos(base.rotation.y), sin = Math.sin(base.rotation.y);
-        const snapLocalZ = -(baseD + cabD + 0.008);
+        const snapLocalZ = -(baseD + cabD + 0.002);
         const worldX = base.position.x + snapLocalZ * sin;
         const worldZ = base.position.z + snapLocalZ * cos;
         furn.rotation.y = base.rotation.y;
@@ -2542,12 +2559,12 @@ if(btnSnapToBed){
     const isLeft = localX < 0;
 
     const snapLocalX = isLeft
-      ? -(prof.mattressHalfW + buroHalfW + 0.01)
-      :  (prof.mattressHalfW + buroHalfW + 0.01);
+      ? -(prof.mattressHalfW + buroHalfW + 0.002)
+      :  (prof.mattressHalfW + buroHalfW + 0.002);
 
     const snapLocalZ = prof.hasWings
-      ? (-prof.halfZ + prof.headboardDepth + buroHalfD + 0.015)
-      : (-prof.halfZ + buroHalfD + 0.01);
+      ? (-prof.halfZ + prof.headboardDepth + buroHalfD + 0.003)
+      : (-prof.halfZ + buroHalfD + 0.002);
 
     const worldX = bed.position.x + snapLocalX * cos + snapLocalZ * sin;
     const worldZ = bed.position.z - snapLocalX * sin + snapLocalZ * cos;
