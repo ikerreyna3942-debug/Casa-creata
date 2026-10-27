@@ -1590,11 +1590,18 @@ const PERIMETER_BOUNDS = {
   maxZ: -0.25
 };
 
-function isBedItem(it){
+function isCabeceraItem(it){
   if(!it) return false;
   const n = (it.name || '').toLowerCase();
   const id = (it.id || '').toLowerCase();
-  return it.category === 'Recámaras' || n.includes('cama') || id.includes('cama') || n.includes('litera') || id.includes('litera');
+  return n.includes('cabecera') || id.includes('cabecera');
+}
+
+function isBedItem(it){
+  if(!it || isCabeceraItem(it)) return false;
+  const n = (it.name || '').toLowerCase();
+  const id = (it.id || '').toLowerCase();
+  return it.category === 'Recámaras' || n.includes('cama') || id.includes('cama') || n.includes('base') || id.includes('base') || n.includes('litera') || id.includes('litera');
 }
 
 function isBuroItem(it){
@@ -1602,6 +1609,13 @@ function isBuroItem(it){
   const n = (it.name || '').toLowerCase();
   const id = (it.id || '').toLowerCase();
   return it.category === 'Burós' || n.includes('buro') || n.includes('buró') || id.includes('buro');
+}
+
+function isBedroomAssemblyPair(itemA, itemB){
+  const bedA = isBedItem(itemA), bedB = isBedItem(itemB);
+  const buroA = isBuroItem(itemA), buroB = isBuroItem(itemB);
+  const cabA = isCabeceraItem(itemA), cabB = isCabeceraItem(itemB);
+  return (buroA && (bedB || cabB)) || (buroB && (bedA || cabA)) || (bedA && cabB) || (cabA && bedB);
 }
 
 function getBedVolumetricProfile(item){
@@ -1718,9 +1732,7 @@ function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
     if(f.userData.level !== level) continue;
     const it = f.userData.item;
 
-    const otherIsBed = isBedItem(it);
-    const otherIsBuro = isBuroItem(it);
-    const isBedBuroPair = (isBuro && otherIsBed) || (isBed && otherIsBuro);
+    const isBedBuroPair = isBedroomAssemblyPair(item, it);
     const gap = isBedBuroPair ? 0.002 : 0.008;
 
     const otherBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y);
@@ -1767,7 +1779,7 @@ function clampPositionToWalls(posX, posZ, rotY, item, level, ignoreFurniture=nul
       const f = placedFurniture[i];
       if(f === ignoreFurniture || f.userData.level !== level) continue;
       const it = f.userData.item;
-      const isBedBuroPair = (isBuro && isBedItem(it)) || (isBed && isBuroItem(it));
+      const isBedBuroPair = isBedroomAssemblyPair(item, it);
       const fGap = isBedBuroPair ? 0.005 : GAP;
       const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y);
       for(let j = 0; j < fBoxes.length; j++){
@@ -2327,7 +2339,7 @@ function nudgeSelected(dx, dz){
     const f = placedFurniture[i];
     if(f === furn || f.userData.level !== level) continue;
     const it = f.userData.item;
-    const isBedBuroPair = (isBuro && isBedItem(it)) || (isBed && isBuroItem(it));
+    const isBedBuroPair = isBedroomAssemblyPair(item, it);
     const fGap = isBedBuroPair ? 0.005 : GAP;
     const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y);
     for(let j = 0; j < fBoxes.length; j++){
@@ -2424,7 +2436,63 @@ if(btnSnapToBed){
     const item = furn.userData.item;
     const lvl = furn.userData.level;
 
-    // Buscar la cama más cercana en el mismo piso
+    // CASO 1: Si el objeto seleccionado es una BASE DE CAMA y hay una CABECERA en el piso -> Pegar Base frente a la Cabecera
+    if(isBedItem(item)){
+      let cab = null, bestD = Infinity;
+      placedFurniture.forEach(f => {
+        if(f === furn || f.userData.level !== lvl) return;
+        if(isCabeceraItem(f.userData.item)){
+          const d = Math.hypot(f.position.x - furn.position.x, f.position.z - furn.position.z);
+          if(d < bestD){ bestD = d; cab = f; }
+        }
+      });
+      if(cab){
+        const cabD = (cab.userData.item.dim_m[1] || 0.40) / 2;
+        const baseD = (item.dim_m[1] || 1.95) / 2;
+        const cos = Math.cos(cab.rotation.y), sin = Math.sin(cab.rotation.y);
+        const snapLocalZ = cabD + baseD + 0.008;
+        const worldX = cab.position.x + snapLocalZ * sin;
+        const worldZ = cab.position.z + snapLocalZ * cos;
+        furn.rotation.y = cab.rotation.y;
+        const clamped = clampPositionToWalls(worldX, worldZ, furn.rotation.y, item, lvl, furn, false);
+        furn.position.x = clamped.x;
+        furn.position.z = clamped.z;
+        renderSelectionHighlight();
+        saveStateToUrl();
+        showSaveToast('¡Base de cama centrada y pegada al ras de la Cabecera!', '🧲');
+        return;
+      }
+    }
+
+    // CASO 2: Si el objeto seleccionado es una CABECERA y hay una BASE DE CAMA en el piso -> Pegar Cabecera detrás de la Base
+    if(isCabeceraItem(item)){
+      let base = null, bestD = Infinity;
+      placedFurniture.forEach(f => {
+        if(f === furn || f.userData.level !== lvl) return;
+        if(isBedItem(f.userData.item)){
+          const d = Math.hypot(f.position.x - furn.position.x, f.position.z - furn.position.z);
+          if(d < bestD){ bestD = d; base = f; }
+        }
+      });
+      if(base){
+        const cabD = (item.dim_m[1] || 0.40) / 2;
+        const baseD = (base.userData.item.dim_m[1] || 1.95) / 2;
+        const cos = Math.cos(base.rotation.y), sin = Math.sin(base.rotation.y);
+        const snapLocalZ = -(baseD + cabD + 0.008);
+        const worldX = base.position.x + snapLocalZ * sin;
+        const worldZ = base.position.z + snapLocalZ * cos;
+        furn.rotation.y = base.rotation.y;
+        const clamped = clampPositionToWalls(worldX, worldZ, furn.rotation.y, item, lvl, furn, false);
+        furn.position.x = clamped.x;
+        furn.position.z = clamped.z;
+        renderSelectionHighlight();
+        saveStateToUrl();
+        showSaveToast('¡Cabecera centrada y pegada detrás de la Base de Cama!', '🧲');
+        return;
+      }
+    }
+
+    // CASO 3: Pegar Buró al costado de la Cama / Base de Cama (y frente a la Cabecera si existe)
     let bed = null;
     let bestDist = Infinity;
     placedFurniture.forEach(f => {
@@ -2436,7 +2504,7 @@ if(btnSnapToBed){
     });
 
     if(!bed){
-      showSaveToast('No se encontró una cama en este piso para pegar el buró', '⚠️');
+      showSaveToast('No se encontró una cama o base en este piso para pegar', '⚠️');
       return;
     }
 
@@ -2446,7 +2514,6 @@ if(btnSnapToBed){
     const buroHalfW = (buroItem.dim_m[0] || 0.50) / 2;
     const buroHalfD = (buroItem.dim_m[1] || 0.39) / 2;
 
-    // Calcular coordenadas en el espacio local de la cama (soporta cualquier rotación de la cama)
     const cos = Math.cos(bed.rotation.y);
     const sin = Math.sin(bed.rotation.y);
     const dxWorld = furn.position.x - bed.position.x;
@@ -2458,7 +2525,6 @@ if(btnSnapToBed){
       ? -(prof.mattressHalfW + buroHalfW + 0.01)
       :  (prof.mattressHalfW + buroHalfW + 0.01);
 
-    // Si la cama tiene alas de cabecera anchas (Santa Fe, Aura), alinear al frente de la cabecera; si no, alinear al respaldo
     const snapLocalZ = prof.hasWings
       ? (-prof.halfZ + prof.headboardDepth + buroHalfD + 0.015)
       : (-prof.halfZ + buroHalfD + 0.01);
