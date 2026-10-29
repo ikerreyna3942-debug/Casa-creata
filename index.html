@@ -585,6 +585,176 @@
     }
   }
 
+
+/* =====================================================================
+   ZONAS INVISIBLES Y SETS DE EXHIBICIÓN CASA CREATA (HUD & MENÚ)
+   ===================================================================== */
+.zone-hud-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  background: rgba(22, 20, 18, 0.82);
+  border: 1px solid rgba(235, 216, 195, 0.28);
+  border-radius: 20px;
+  font-size: 11.5px;
+  color: #f4efe9;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  cursor: pointer;
+  transition: all .2s ease;
+  user-select: none;
+}
+.zone-hud-pill:hover {
+  background: rgba(35, 31, 28, 0.95);
+  border-color: rgba(235, 216, 195, 0.55);
+  transform: translateY(-1px);
+}
+.zone-hud-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #d4af37;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.7);
+  flex-shrink: 0;
+  transition: background .2s ease;
+}
+.zone-hud-pill.highlight .zone-hud-dot {
+  background: #10b981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.9);
+}
+
+.sets-dropdown-popover {
+  position: absolute;
+  top: 56px;
+  left: 20px;
+  width: 350px;
+  max-height: 520px;
+  background: rgba(18, 16, 14, 0.96);
+  border: 1px solid rgba(235, 216, 195, 0.25);
+  border-radius: 12px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.65);
+  z-index: 1200;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeInDown .2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sets-dropdown-popover.open { display: flex; }
+
+.sets-menu-header {
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sets-menu-header-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #ebd8c3;
+  text-transform: uppercase;
+}
+.sets-menu-header-sub {
+  font-size: 10px;
+  color: #a8a29a;
+}
+.sets-tabs-bar {
+  display: flex;
+  padding: 8px 12px;
+  gap: 6px;
+  background: rgba(0,0,0,0.25);
+}
+.sets-tab-btn {
+  flex: 1;
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  color: #bbb3a8;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.sets-tab-btn:hover { color: #f0ece6; background: rgba(255,255,255,0.08); }
+.sets-tab-btn.active {
+  background: #ebd8c3;
+  color: #1a1917;
+  border-color: #ebd8c3;
+}
+.sets-search-box {
+  padding: 6px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.sets-search-input {
+  width: 100%;
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 11px;
+  outline: none;
+  box-sizing: border-box;
+}
+.sets-search-input:focus { border-color: #ebd8c3; background: rgba(255,255,255,0.09); }
+.sets-list-container {
+  overflow-y: auto;
+  max-height: 360px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sets-item-card {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.sets-item-card:hover {
+  background: rgba(235, 216, 195, 0.12);
+  border-color: rgba(235, 216, 195, 0.35);
+  transform: translateX(2px);
+}
+.sets-item-card.active-set {
+  background: rgba(235, 216, 195, 0.18);
+  border-color: #ebd8c3;
+}
+.sets-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.sets-item-num {
+  font-weight: 700;
+  font-size: 12px;
+  color: #ebd8c3;
+}
+.sets-item-cat {
+  font-size: 10px;
+  color: #a8a29a;
+  background: rgba(0,0,0,0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.sets-item-finish {
+  font-size: 10px;
+  color: #d1c8bd;
+  line-height: 1.3;
+}
+.sets-item-finish b {
+  color: #f7eedf;
+}
+
 </style>
 </head>
 <body>
@@ -593,6 +763,11 @@
 <!-- 1. Cápsula Superior Izquierda: CASA CREATA + [💾 Distribuciones] + [🛋️ + Catálogo] -->
 <div id="topBarLeft">
   <span class="brand-title">CASA CREATA</span>
+  <button class="btn-top-action" id="btnToggleSets" title="Explorar los 51 Sets y Zonas de Casa Creata">📍 Sets (Zonas) ▾</button>
+  <div id="activeZoneHud" class="zone-hud-pill" title="Zona actual en el plano · Clic para ver opciones">
+    <span class="zone-hud-dot"></span>
+    <span id="activeZoneTxt">Set 1 · Lounge</span>
+  </div>
   <button class="btn-top-action btn-save-action" id="btnSaveProcess" title="Guardar proceso del plano y diseño en curso (Ctrl+S)">💾 Guardar</button>
   <button class="btn-top-action" id="btnOpenDistrib" title="Ver y cargar distribuciones guardadas">📁 Distribuciones</button>
   
@@ -662,6 +837,23 @@
 
 
 <!-- 3. CATÁLOGO DESPLEGABLE HACIA ABAJO (CERO AMONTONAMIENTO) -->
+
+<!-- Menú Flotante Desplegable para [📍 Sets / Zonas Oficiales] -->
+<div id="setsDropdownMenu" class="sets-dropdown-popover">
+  <div class="sets-menu-header">
+    <div class="sets-menu-header-title">ZONAS Y SETS DE EXHIBICIÓN</div>
+    <div class="sets-menu-header-sub">51 Sets Oficiales · Acabados de Muros y Mobiliario</div>
+  </div>
+  <div class="sets-tabs-bar">
+    <button class="sets-tab-btn active" data-tab="PB">Planta Baja (Sets 1-21)</button>
+    <button class="sets-tab-btn" data-tab="N1">Planta Alta (Sets 22-51)</button>
+  </div>
+  <div class="sets-search-box">
+    <input type="text" id="setsSearchInput" placeholder="🔍 Buscar por Set, mueble o acabado..." class="sets-search-input">
+  </div>
+  <div class="sets-list-container" id="setsListContainer"></div>
+</div>
+
 <div id="catalogBackdrop"></div>
 <div id="catalogDropdown">
   <div class="catalog-top-bar">
@@ -749,6 +941,10 @@
         <span class="ficha-label">PROVEEDOR:</span>
         <span class="ficha-val" id="fProveedor">ARTEX</span>
       </div>
+      <div class="ficha-row">
+        <span class="ficha-label">ZONA / SET:</span>
+        <span class="ficha-val" id="fZona" style="color:#ebd8c3;font-weight:600">-</span>
+      </div>
     </div>
 
     <div class="tbl-sec-title">INVENTARIO</div>
@@ -812,7 +1008,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793137651"></script>
+<script src="modelos_glb_data.js?v=1793292590"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1005,6 +1201,213 @@ function tileTexture(){
 }
 M.floor = new THREE.MeshStandardMaterial({ color:0xffffff, map:tileTexture(), roughness:0.98, metalness:0.0 });
 
+
+/* =====================================================================
+   ZONAS Y ACABADOS OFICIALES DE SETS (CASA CREATA)
+   ===================================================================== */
+const CASA_CREATA_SETS = {"1": {"num": 1, "level": "PB", "label": "Set 1", "category": "Lounge", "pos": [9.87, -5.16], "radius": 2.8, "acabados": ["Piedra flexible murano travertino white"], "muebles": ["Sillon: SILLON OCASIONAL AARMIN\n77x87x90cm", "Mesa lateral: MESA PAROTA DBL-COLOR 11684 UM7698-026 COD.T2781"]}, "2": {"num": 2, "level": "PB", "label": "Set 2", "category": "Comedor grande", "pos": [12.35, -7.09], "radius": 2.8, "acabados": [], "muebles": ["Mesa: MESA DE COMEDOR EMELIA MARMOL CALACATA ROMA", "Sillas: SILLA MEYER EN TELA BEIGE \n55X60X82 CM", "Lampara colgante: LÁMPARA COLGANTE BARRA TORSION AC147", "Cuadro: ARTE OBJETO EQUILIBRIO II"]}, "3": {"num": 3, "level": "PB", "label": "Set 3", "category": "Sala grande", "pos": [15.5, -5.74], "radius": 2.8, "acabados": ["DECO TAPIZ CPT BELIZA 1202"], "muebles": ["Sala: SALA SHELBY / NAPOLI 07\n417 x 265 x 91 CM", "Sillon: SILLON OCASIONAL ZUR PIEL ROSA MORADA TONO NATURAL 69X86X82 CM", "Vitrina: LIBRERO MAZATI 115X47X220 CM ENCINO CAMEL", "Credenza: CONSOLA BARAMAN KN248614 CONSOLE TABLE BT006 TRAVERTINE \nMEDIDAS: Alto:78 Ancho:50 Largo:20"]}, "4": {"num": 4, "level": "PB", "label": "Set 4", "category": "Recamara king", "pos": [18.18, -11.27], "radius": 2.8, "acabados": ["Panel WPC Liso Sidney Beige 60x290\nPiedra Flexible Murano Atenea Crema 60x120"], "muebles": ["Set cab y base: CAMA SALONI KING SIZE HADY IVORY\nMedidas: 230X234X90 CM", "buros: BURO 61 ROSA MORADA CLARA\nmedida: alto 50 x profu 40x  ancho70", "comoda/tocador: COMODA 36 ROSA MORADA CLARA \nmedidas 180X40X80", "Tapete: Tapate Azimut Stripe Grey 200X290"]}, "5": {"num": 5, "level": "PB", "label": "Set 5", "category": "Lounge", "pos": [15.5, -11.05], "radius": 2.8, "acabados": [], "muebles": ["Sillon: SOFA ZAMA LUXOR IVORY \nMedida: 225X90X92 CM"]}, "6": {"num": 6, "level": "PB", "label": "Set 6", "category": "Comedor grande", "pos": [11.86, -11.27], "radius": 2.8, "acabados": ["Panel WPC Liso Walnut 60x290", "Panel WPC Liso Sidney Beige 60x290", "Papel Tapiz DECO TAPIZ CPT SANTINO CO1003", "PEDIDO"], "muebles": ["Mesa: MESA DE COMEDOR PALESA DT-1039A-MS57 12MM ROME TRAVERTINE SINTERED STONE TOP, METAL BASE BEIGE COLOR \nMedidas 270x100x75 cm", "Sillas: SILLA DE COMEDOR PARMA EN TELA GRIS CLARO \nBRUSHED BROWN IRON\n\nMeddias 58x56x76 cm (KEU)", "Bufetero: COMODA BUFETERA SANTHOMAS NOCHE NT  \n240x41x80 cm", "Lampara colgante: LAMPARA COLGANTE LUMEN,  (LAS CHINAS) \nMEDIDAS: 120 largo"]}, "7": {"num": 7, "level": "PB", "label": "Set 7", "category": "Comedor chico", "pos": [17.56, -14.56], "radius": 2.8, "acabados": ["PAPEL TAPIZ DECO TAPIZ CPT SANTINO CO1018"], "muebles": ["Mesa: MESA LUMA BELLOTA NT\nMedida: 180 X 110 x 76", "Sillas: SILLA SANTHOMAS INTERIOR GG PIXEL LINEN LACA BELLOTA\nMedida: 55x63x81", "Decor. pared: ANFORA NEGRA SABUGAL", "Decor. pared: ARTE OBJETO INTERCVALO CARMIN"]}, "8": {"num": 8, "level": "PB", "label": "Set 8", "category": "SALA MEDIANA", "pos": [17.42, -17.69], "radius": 2.8, "acabados": ["PEDIDO"], "muebles": ["Sala modular: SALA MAWI HADI LINEN 263X185 CM", "MESA DE CENTRO : MESA DE CENTRO SOTTANA STONE BLANCA 138X7038 CM", "tapete: Tapete Azimut Stripe Cream 200X2.90", "Lampara piso: Lámpara Colgante Lumen 65 cm"]}, "9": {"num": 9, "level": "PB", "label": "Set 9", "category": "", "pos": [18.18, -21.33], "radius": 2.8, "acabados": ["Panel WPC Liso Greysh 60x290\nPanel WPC Liso Sidney Beige 60x290"], "muebles": ["Set cab y base: CAMA AURA QS G2 RHONA ECRU LACA BELLOTA \nMedidas: 184X218X115", "buros: BURO MADRID LISO ROSA MORADA SOLIDA PANEL \nMedidas: 50x40x55", "comoda/tocador: COMODA MADRID 180X40X80 ROSA MORADA SOLIDA PANEL", "tapete: T. LYON 2.00 X 2.90 L208A, L89 CREAM/ CREAM"]}, "10": {"num": 10, "level": "PB", "label": "Set 10", "category": "Lounge", "pos": [15.0, -14.95], "radius": 2.8, "acabados": [], "muebles": ["Sillon: SILLON OCASIONAL AUREN 86X90X87 CM", "sillon: SILLON LEONI TELA BEIGE 75X71X80 CM", "CUADRO  1: DUO 3D SABUGAL", "CUADRO 3: CARBON SABUGAL"]}, "11": {"num": 11, "level": "PB", "label": "Set 11", "category": "Recamara king", "pos": [12.53, -21.71], "radius": 2.8, "acabados": ["Piedra Flexible Murano Travertino White 60x120\nPanel WPC Liso Arena Cálida 25x290\nPanel WPC Liso Arena Cálida 60x290"], "muebles": ["Set cab y base: CAMA SANTA FE KS G4 LOVEM COTOON ESPIGA NT 300x217x115", "buros: BURO BARPE COLOR NUEZ 70X40X60", "comoda/tocador: COMODA BARPE COLOR NUEZ 220x40x80", "tapete: Moor silver 2.40x3.3"]}, "12": {"num": 12, "level": "PB", "label": "Set 12", "category": "SOFA", "pos": [14.01, -18.5], "radius": 2.8, "acabados": [], "muebles": ["SOFA: SOFA SANTA FE G4 GELLAR JUTE LACA BELLOTA 250x100x72", "credenza: CREDENZA ADANA 220X40X80 (Solida-Panel)"]}, "13": {"num": 13, "level": "PB", "label": "Set 13", "category": "SALA", "pos": [11.86, -16.49], "radius": 2.8, "acabados": ["TAPIZ SOC STROKES TA25000 WHITE", "TAPIZ MRS TRAMAE TRANSITUS 6689 STONE"], "muebles": ["Sillon: SILLON OCASIONAL UNIPATA 87X79X87 CM", "SALA L : SALA PIERO FOREVER PLUS MOSS DERECHA 290x165x65", "MESA DE CENTRO : MESA DE CENTRO RENA 100 DIAM. LACA BELLOTA", "MESA LATERAL : MESA LATERAL SALERMO REDONDA LACA BELLOTA"]}, "14": {"num": 14, "level": "PB", "label": "Set 14", "category": "Sala mediana", "pos": [7.05, -19.95], "radius": 2.8, "acabados": ["p. tapiz -  mrs transitus 6681 sand"], "muebles": ["Sala: SALA TORINO, SILLON DERECHO, SILLON IZQUIERO Y UN OTTOMAN\ny SILLON MODULAR", "Sillon: THOMPSON SW SILLON OCASIONAL GIRATORIO FOREVER CURRY", "Centro de entre: CENTRO DE TV PUERTAS CORREDIZAS ROSA MORADA", "Mesa centro: MESA CENTRO AFRICAN SPALTED ROBLE ENCINO HABANO 127X76X41 CM"]}, "15": {"num": 15, "level": "PB", "label": "Set 15", "category": "sala chica", "pos": [8.87, -16.54], "radius": 2.8, "acabados": [], "muebles": ["SILLON: SILLON OCASIONAL BALI G3 BAKER OLIVE LACA BELLOTA", "CUADRO: Marfil Sabugal \n90x150", "ESPEJO: Espejo Dubbo 4pzs\n120x120", "Tapete: Tapete Tora Natural Olive\n200X290"]}, "16": {"num": 16, "level": "PB", "label": "Set 16", "category": "Comedor xchico", "pos": [4.68, -14.95], "radius": 2.8, "acabados": [], "muebles": ["Mesa: MESA BARRIL 180X120X75 MADERA SOLIDA ROSA MORADA", "Sillas: SILLA NAIROVI ROSA MORADA SOLIDA RHONA IVORY", "credenza: CREDENZA DE BEJUCO 220X40X80 ROSA MORADA SOLIDA PANEL", "CUADRO: GALERNA 120X150"]}, "17": {"num": 17, "level": "PB", "label": "Set 17", "category": "SALA MEDIANA", "pos": [4.18, -11.05], "radius": 2.8, "acabados": [], "muebles": ["Sofa: SALA LUNNO TELA BAKER LINEN INCLUYE 3 SILLONES SIN BRAZO Y 1 TABURETE\n3.92 x 1.55 x 0.70 cm", "Mesa centro opcion 1: MESA LATERAL RAMALI MADERA TECA NATURAL PATAS MADERA", "Mesa centro opcion 2: PORTOFINO MESA DE CENTRO 80X120 CM ROSA MORADA TONO NATURAL", "SILLON: SILLON KATE TELA BEIGE CUERDA COFFEE 73X76X78 CM"]}, "18": {"num": 18, "level": "PB", "label": "Set 18", "category": "SOFA CAMA", "pos": [6.24, -11.27], "radius": 2.8, "acabados": [], "muebles": ["Sofa: SOFA CAMA UGANDA BRAXTON OAT 156X106X74 CM, EXTENDIDO 135X194X34 CM"]}, "19": {"num": 19, "level": "PB", "label": "Set 19", "category": "Recamara king", "pos": [8.87, -11.27], "radius": 2.8, "acabados": ["DECO TAPIZ CPT RAVINA CO3007 SHELL", "DECO TAPIZ CPT RAVINA CO3008 TOAST"], "muebles": ["Set cab y base: CABECERA MADRID KING SIZE CON BEJUCO ROSA MORADA SOLIDA PANEL | BASE DE CAMA KING SIZE YUTE ROSA MORADA SOLIDA PANEL", "buros: BURO CON BEJUCO ROSA MORADA SOLIDA PANEL", "comoda/tocador: COMODA CON BEJUCO ROSA MORADA SOLIDA PANEL", "LAMPARAS: LAMPARA DE MESA OLIMPIA PANTALLA COLOR CRUDO MADERA CLARA BEJUCO BEIGE"]}, "20": {"num": 20, "level": "PB", "label": "Set 20", "category": "SOFA Y LOVE", "pos": [2.7, -6.14], "radius": 2.8, "acabados": ["DECO TAPIZ SOC ROCK RE25130 CHALK"], "muebles": ["Sala modular: SALA GALES CHAISE Y SOFA", "ESPEJO: ESPEJO LUXEMBURGO 116X220 MARCO ORO", "Mesa centro: MESA DE CENTRO 49 CHICA ROSA MORADA CAFE", "SILLON: SILLON MURRAY PIEL ALINE CASHMERE KF.A1033 U722291 -K 1(2A)/S/G"]}, "21": {"num": 21, "level": "PB", "label": "Set 21", "category": "Comedor grande", "pos": [3.7, -3.5], "radius": 2.8, "acabados": [], "muebles": ["Mesa: MESA DE COMEDOR PRINCETON CUBIERTA MARMOL BOTTICINO", "Sillas: SILLA PRINCETON CAPITAN CON BRAZOS ROSA MORADA BELGIAN COTTON", "TAPETE: EL QUE TIENE EL COMEDOR"]}, "22": {"num": 22, "level": "N1", "label": "Set 22", "category": "Comedor chico", "pos": [17.64, -25.29], "radius": 2.8, "acabados": [], "muebles": ["Mesa: BASE DE MESA BLONDY 170X110 ENCINO LACA BELLOTA", "CRISTAL: CRISTAL RECTANGULAR TEMPLADO 12 MM 170X110 CM CANTOS PULIDOS BORDES REDONDEADOS", "CREDENZA: CREDENZA MATRU PAROTA 160X40X80", "SSILLA: SILLA DALILA VIVA CITY IVORY ROSA MORADA 58X70X55 CM"]}, "23": {"num": 23, "level": "N1", "label": "Set 23", "category": "Recamara queen", "pos": [18.4, -20.34], "radius": 2.8, "acabados": [], "muebles": ["Set cab y base: CAMA QS CELINE TELA BEIGE 150X190X120 CM", "buros: RENA BURO 58X46 CM ENCINO LACA BELLOTA", "Pie de cama: BANCA KANA HERA SNOW 140CM", "CUADRO: CUADRO VELA"]}, "24": {"num": 24, "level": "N1", "label": "Set 24", "category": "SALA CHICA", "pos": [16.69, -17.49], "radius": 2.8, "acabados": ["DECO TAPIZ MRS TRAMAE TRANSITUS 6681 SAND"], "muebles": ["Sala: SOFA AURA G3 BAKER LINEN TACUBA 220x95x70", "CREDENZA: CREDENZA PORTO", "ESPEJO: MARCO VALO REDONDO 82X3X104CM ENCINO LACA BELLOTA", "CUADRO: Cuadro Drip Profundo Sabugal\n90x150"]}, "25": {"num": 25, "level": "N1", "label": "Set 25", "category": "Recamara Litera", "pos": [12.75, -20.13], "radius": 2.8, "acabados": [], "muebles": ["Set cab y base: LITERA VENTO MADERA SOLIDA COLOR MUSHROOM", "ESCRITORIO: SECRETAIRE BLONDY TACUBA", "Tapete: Tapete Nepal LB007D C84 Cream 200x300", "TABURETE: TABURETE SARIEL NEGRO"]}, "26": {"num": 26, "level": "N1", "label": "Set 26", "category": "Sala chica", "pos": [13.7, -23.81], "radius": 2.8, "acabados": [], "muebles": ["Sala: SOFA CAMA ASHA BRAXTON OAT 263cm", "Sillon: SILLON OWEN BAJA TUSK ANTEBRAZO TARA SAND ROSA MORADA NATURAL 68X90X71 CM", "taburete: TABURETE OWEN BAJA TUSK ROSA MORADA NATURAL 68X40X50 CM", "Mesa centro: MESA CENTRAL SANTORINI 80X80X35 CM ROSA MORADA"]}, "27": {"num": 27, "level": "N1", "label": "Set 27", "category": "Recamara queen", "pos": [10.32, -25.98], "radius": 2.8, "acabados": [], "muebles": ["Set cab y base: PORTOFINO CAMA QS ROSA MORADA TONO NATURAL GLOSS COTTON", "buros: BURO AFRICA ROSA MORADA", "pie de cama: JUNO BANCA MADERA ROSA MORADA 120X50X52 CM DYNAMIC TAUPE SIN TIRILLASMR", "tapete: Tapete Piana Taupe 200x290"]}, "28": {"num": 28, "level": "N1", "label": "Set 28", "category": "COMEDOR", "pos": [7.94, -24.61], "radius": 2.8, "acabados": ["DECO TAPIZ SOC STROKES TA25000 WHITE"], "muebles": ["MESA : MESA SANTORINI 8P 110X220 ROSA MORADA", "SILLAS: SILLA SANTORINI PIXEL LINEN ROSA MORADA", "TAPETE: Tapete Trentino 41064 6161 Pebble Shape Cream 200x290", "CUADRO: SILUETA CARMIN.\n160x110"]}, "29": {"num": 29, "level": "N1", "label": "Set 29", "category": "Comedor xchico", "pos": [7.69, -20.34], "radius": 2.8, "acabados": [], "muebles": ["Mesa: COMEDOR  MINIMA"]}, "30": {"num": 30, "level": "N1", "label": "Set 30", "category": "Comedor chico", "pos": [2.35, -19.2], "radius": 2.8, "acabados": [], "muebles": ["Mesa: MESA DE COMEDOR LEONARDO CUBIERTA TRAVERTINO 220 CM BASE MADERA SOLIDA ROBLE", "Sillas: SILLA SHANNON TELA C-686 Y-1521 C-686 DINING CHAIR", "ESPEJO: ESPEJO COBE CHAPA NOGAL", "macrame: MACRAME ESPECIAL"]}, "31": {"num": 31, "level": "N1", "label": "Set 31", "category": "SALA", "pos": [18.4, -15.4], "radius": 2.8, "acabados": [], "muebles": ["Sala Modular: SALA CARRARA 3 PIEZAS, SILLON IZQ, ESQUINERO, SILLON DERECHO 295X295", "Sillon: SILLON COSMO MOHAIR 4 CURRY 78X65X73 CM", "CREDENZA: MESA CENTRO DMX-N 3PZAS ENCINO TABACO", "MESA DE CENTRO : MESA DE CENTRO CON CUBIERTA DE GRANITO DE 140CM X 80CM TINTA NUEZ"]}, "32": {"num": 32, "level": "N1", "label": "Set 32", "category": "Exhibición", "pos": [18.4, -11.93], "radius": 2.8, "acabados": [], "muebles": []}, "33": {"num": 33, "level": "N1", "label": "Set 33", "category": "COMEDOR", "pos": [12.75, -14.95], "radius": 2.8, "acabados": [], "muebles": ["COMEDOR: MESA AFRICAN ENCINO CAMEL 240X120X76 CM", "SILLAS: SILLA AURA G3 BAKER LINEN HABANO", "Bufettero: COMODA BUFETERA AFRICAN ENCINO CAMEL 198X51X81 CM", "LAMPARA COLGANTE: Lámpara Colgante Blanco y Negro 120 cm"]}, "34": {"num": 34, "level": "N1", "label": "Set 34", "category": "Exhibición", "pos": [12.75, -12.28], "radius": 2.8, "acabados": [], "muebles": []}, "35": {"num": 35, "level": "N1", "label": "Set 35", "category": "RECAMARA KING", "pos": [7.84, -12.28], "radius": 2.8, "acabados": [], "muebles": ["Base y cabecera: cama san jose", "buros: BURO DE PLATOS PAROTA", "pie de cama: BANCA CIRCE CAJONERA MADERA ROSA MORADA 120X40X51 CM", "comoda/tocador: BUFETERO DE PLATOS DE 220X40X80 PAROTA (Solida-Panel)"]}, "36": {"num": 36, "level": "N1", "label": "Set 36", "category": "Lounge", "pos": [4.91, -12.62], "radius": 2.8, "acabados": [], "muebles": ["Sillon: SOFACAM CITY NIZA FOSSIL"]}, "37": {"num": 37, "level": "N1", "label": "Set 37", "category": "Sofa", "pos": [3.02, -7.14], "radius": 2.8, "acabados": [], "muebles": []}, "38": {"num": 38, "level": "N1", "label": "Set 38", "category": "Comedor xchico", "pos": [2.53, -4.34], "radius": 2.8, "acabados": [], "muebles": []}, "39": {"num": 39, "level": "N1", "label": "Set 39", "category": "Comedor grande", "pos": [2.82, -2.37], "radius": 2.8, "acabados": [], "muebles": []}, "40": {"num": 40, "level": "N1", "label": "Set 40", "category": "Lounge", "pos": [5.24, -7.85], "radius": 2.8, "acabados": [], "muebles": []}, "41": {"num": 41, "level": "N1", "label": "Set 41", "category": "Comedor xchico", "pos": [5.39, -4.81], "radius": 2.8, "acabados": [], "muebles": []}, "42": {"num": 42, "level": "N1", "label": "Set 42", "category": "Camastro", "pos": [5.6, -2.85], "radius": 2.8, "acabados": [], "muebles": []}, "43": {"num": 43, "level": "N1", "label": "Set 43", "category": "Sala mediana", "pos": [8.75, -6.65], "radius": 2.8, "acabados": [], "muebles": []}, "44": {"num": 44, "level": "N1", "label": "Set 44", "category": "Comedor grande", "pos": [10.1, -4.81], "radius": 2.8, "acabados": [], "muebles": []}, "45": {"num": 45, "level": "N1", "label": "Set 45", "category": "Sala chica", "pos": [10.1, -2.18], "radius": 2.8, "acabados": [], "muebles": []}, "46": {"num": 46, "level": "N1", "label": "Set 46", "category": "Camastro", "pos": [12.28, -7.56], "radius": 2.8, "acabados": [], "muebles": []}, "47": {"num": 47, "level": "N1", "label": "Set 47", "category": "Comedor grande", "pos": [13.09, -5.03], "radius": 2.8, "acabados": [], "muebles": []}, "48": {"num": 48, "level": "N1", "label": "Set 48", "category": "Sala chica", "pos": [13.09, -1.68], "radius": 2.8, "acabados": [], "muebles": []}, "49": {"num": 49, "level": "N1", "label": "Set 49", "category": "Sala chica", "pos": [15.74, -7.83], "radius": 2.8, "acabados": ["26112.0"], "muebles": [": MESA DE CENTR BEJUCO 120CM ROSA MORADA SOLIDA PANEL"]}, "50": {"num": 50, "level": "N1", "label": "Set 50", "category": "Exhibición", "pos": [17.17, -5.5], "radius": 2.8, "acabados": [], "muebles": []}, "51": {"num": 51, "level": "N1", "label": "Set 51", "category": "Exhibición", "pos": [17.17, -1.68], "radius": 2.8, "acabados": [], "muebles": []}};
+
+// Mapa de reglas de acabado especial por Set
+const SET_MATERIAL_RULES = {
+  1: 'murano_travertino',
+  3: 'tapiz_beliza',
+  4: 'wpc_sidney_atenea',
+  6: 'wpc_walnut_santino',
+  7: 'tapiz_santino',
+  9: 'wpc_greysh',
+  11: 'murano_arena',
+  13: 'tapiz_transitus_stone',
+  14: 'tapiz_transitus_sand',
+  19: 'tapiz_ravina',
+  20: 'tapiz_rock_chalk',
+  24: 'tapiz_transitus_sand',
+  28: 'tapiz_strokes_white'
+};
+
+// Generador de texturas de muros de alta definición sin descargas externas
+function createWallTexture(type, baseColHex, accentColHex){
+  const s = 256;
+  const cv = document.createElement('canvas'); cv.width = cv.height = s;
+  const g = cv.getContext('2d');
+  g.fillStyle = baseColHex; g.fillRect(0,0,s,s);
+  
+  if(type === 'wpc_slats'){
+    const slatW = 16;
+    for(let x=0; x<s; x+=slatW){
+      g.fillStyle = accentColHex;
+      g.fillRect(x + slatW - 2, 0, 2, s);
+      for(let y=0; y<s; y+=8){
+        g.fillStyle = `rgba(0,0,0,${Math.random()*0.03})`;
+        g.fillRect(x, y, slatW-2, Math.random()*12);
+      }
+    }
+  } else if(type === 'murano_stone'){
+    for(let y=16; y<s; y+=28){
+      g.strokeStyle = accentColHex;
+      g.lineWidth = 1.2 + Math.random();
+      g.beginPath();
+      g.moveTo(0, y + (Math.random()-0.5)*10);
+      g.bezierCurveTo(s*0.33, y+(Math.random()-0.5)*15, s*0.66, y+(Math.random()-0.5)*15, s, y+(Math.random()-0.5)*10);
+      g.stroke();
+    }
+    for(let i=0; i<400; i++){
+      g.fillStyle = `rgba(255,255,255,${Math.random()*0.04})`;
+      g.fillRect(Math.random()*s, Math.random()*s, 1.5, 1.5);
+    }
+  } else if(type === 'deco_tapiz'){
+    g.strokeStyle = accentColHex;
+    g.lineWidth = 0.8;
+    for(let i=0; i<s; i+=4){
+      g.beginPath(); g.moveTo(i, 0); g.lineTo(i, s); g.stroke();
+      g.beginPath(); g.moveTo(0, i); g.lineTo(s, i); g.stroke();
+    }
+    for(let i=0; i<300; i++){
+      g.fillStyle = `rgba(0,0,0,${Math.random()*0.025})`;
+      g.fillRect(Math.random()*s, Math.random()*s, 2, 2);
+    }
+  } else if(type === 'rock_chalk'){
+    for(let i=0; i<600; i++){
+      g.fillStyle = (Math.random()>0.5) ? `rgba(255,255,255,0.03)` : `rgba(0,0,0,0.02)`;
+      g.fillRect(Math.random()*s, Math.random()*s, 3+Math.random()*4, 3+Math.random()*4);
+    }
+  }
+  
+  const t = new THREE.CanvasTexture(cv);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(2, 2);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+const WALL_MATERIALS = {
+  murano_travertino: new THREE.MeshStandardMaterial({
+    color: 0xF4F1EA,
+    map: createWallTexture('murano_stone', '#F4F1EA', 'rgba(195,188,175,0.40)'),
+    roughness: 0.70, metalness: 0.02
+  }),
+  tapiz_beliza: new THREE.MeshStandardMaterial({
+    color: 0xEBE5DD,
+    map: createWallTexture('deco_tapiz', '#EBE5DD', 'rgba(175,168,155,0.30)'),
+    roughness: 0.88, metalness: 0.01
+  }),
+  wpc_sidney_atenea: new THREE.MeshStandardMaterial({
+    color: 0xDDD4C5,
+    map: createWallTexture('wpc_slats', '#DDD4C5', 'rgba(125,115,100,0.45)'),
+    roughness: 0.65, metalness: 0.01
+  }),
+  wpc_walnut_santino: new THREE.MeshStandardMaterial({
+    color: 0x583E28,
+    map: createWallTexture('wpc_slats', '#583E28', 'rgba(35,22,12,0.60)'),
+    roughness: 0.55, metalness: 0.01
+  }),
+  tapiz_santino: new THREE.MeshStandardMaterial({
+    color: 0xE2DDD4,
+    map: createWallTexture('deco_tapiz', '#E2DDD4', 'rgba(160,152,140,0.35)'),
+    roughness: 0.85
+  }),
+  wpc_greysh: new THREE.MeshStandardMaterial({
+    color: 0xB8B3A8,
+    map: createWallTexture('wpc_slats', '#B8B3A8', 'rgba(105,100,90,0.45)'),
+    roughness: 0.70
+  }),
+  murano_arena: new THREE.MeshStandardMaterial({
+    color: 0xE8DFC8,
+    map: createWallTexture('murano_stone', '#E8DFC8', 'rgba(170,155,130,0.40)'),
+    roughness: 0.75
+  }),
+  tapiz_transitus_stone: new THREE.MeshStandardMaterial({
+    color: 0xC4BCB1,
+    map: createWallTexture('deco_tapiz', '#C4BCB1', 'rgba(130,122,112,0.35)'),
+    roughness: 0.85
+  }),
+  tapiz_transitus_sand: new THREE.MeshStandardMaterial({
+    color: 0xD8CCBE,
+    map: createWallTexture('deco_tapiz', '#D8CCBE', 'rgba(155,142,128,0.35)'),
+    roughness: 0.85
+  }),
+  tapiz_ravina: new THREE.MeshStandardMaterial({
+    color: 0xE8E0D4,
+    map: createWallTexture('deco_tapiz', '#E8E0D4', 'rgba(165,150,132,0.35)'),
+    roughness: 0.88
+  }),
+  tapiz_rock_chalk: new THREE.MeshStandardMaterial({
+    color: 0xE5E0D8,
+    map: createWallTexture('rock_chalk', '#E5E0D8', 'rgba(145,138,130,0.30)'),
+    roughness: 0.92
+  }),
+  tapiz_strokes_white: new THREE.MeshStandardMaterial({
+    color: 0xF6F4F0,
+    map: createWallTexture('deco_tapiz', '#F6F4F0', 'rgba(215,210,200,0.30)'),
+    roughness: 0.80
+  }),
+  base_sidney_beige: new THREE.MeshStandardMaterial({
+    color: 0xECE7DE,
+    roughness: 0.85, metalness: 0.01
+  }),
+  exterior_gris: M.wallExt
+};
+
+function getWallMaterialFor(levelId, w){
+  const pts = w.p;
+  if(!pts || pts.length === 0) return WALL_MATERIALS.base_sidney_beige;
+  let cx = 0, cy = 0;
+  for(let i=0; i<pts.length; i++){ cx += pts[i][0]; cy += pts[i][1]; }
+  cx /= pts.length; cy /= pts.length;
+  const cz = -cy;
+  
+  // Muros perimetrales exteriores
+  const isExt = (cx <= 0.35 || cx >= 19.85 || cy <= 1.05 || (levelId==='PB' && cy >= 23.65) || (levelId==='N1' && cy >= 28.15));
+  if(isExt) return WALL_MATERIALS.exterior_gris;
+  
+  // Buscar el Set más cercano en este piso
+  let closestSet = null;
+  let minDist = 999;
+  for(let snum in CASA_CREATA_SETS){
+    const s = CASA_CREATA_SETS[snum];
+    if(s.level === levelId){
+      const d = Math.hypot(cx - s.pos[0], cz - s.pos[1]);
+      if(d < minDist){ minDist = d; closestSet = s; }
+    }
+  }
+  
+  if(closestSet && minDist <= 5.0 && SET_MATERIAL_RULES[closestSet.num]){
+    return WALL_MATERIALS[SET_MATERIAL_RULES[closestSet.num]] || WALL_MATERIALS.base_sidney_beige;
+  }
+  return WALL_MATERIALS.base_sidney_beige;
+}
+
+// Detector de Set activo por coordenadas del mundo 3D
+function getSetAtWorldPoint(x, z, levelId){
+  let closestSet = null;
+  let minDist = 999;
+  for(let snum in CASA_CREATA_SETS){
+    const s = CASA_CREATA_SETS[snum];
+    if(!levelId || levelId === 'exploded' || s.level === levelId){
+      const d = Math.hypot(x - s.pos[0], z - s.pos[1]);
+      if(d < minDist){
+        minDist = d;
+        closestSet = s;
+      }
+    }
+  }
+  return (minDist <= 3.8) ? closestSet : null;
+}
+
+function updateZoneHud(setObj){
+  const hudTxt = document.getElementById('activeZoneTxt');
+  const hudPill = document.getElementById('activeZoneHud');
+  if(!hudTxt || !hudPill) return;
+  if(setObj){
+    const acStr = (setObj.acabados && setObj.acabados.length > 0) ? setObj.acabados[0].split('\n')[0].substring(0, 32) : 'Sidney Beige';
+    hudTxt.textContent = `Set ${setObj.num} · ${setObj.category} (${acStr})`;
+    hudPill.classList.add('highlight');
+  } else {
+    hudTxt.textContent = (currentFloorMode === 'N1') ? 'Planta Alta · Showroom' : 'Planta Baja · Showroom';
+    hudPill.classList.remove('highlight');
+  }
+}
+
+
 const shapeOf = (pts) => new THREE.Shape(pts.map(p=>new THREE.Vector2(p[0],p[1])));
 
 // Almacén global de muros para control del Slider [🧱 Muros]
@@ -1140,10 +1543,12 @@ function buildBuilding(){
 
     const d = DATA[L.id]; if(!d) return;
 
-    // Muros (Registrados para control de altura del slider [🧱 Muros])
+    // Muros (Registrados para control de altura del slider [🧱 Muros] con acabados de SETS)
     (d.walls||[]).forEach(w => {
-      const mat = (w.t==='tablaroca') ? M.wallInt : M.wallInt;
-      prism(w.p, LOSA, L.muro, mat, grp, [], true, true);
+      const mat = getWallMaterialFor(L.id, w);
+      const wallMesh = prism(w.p, LOSA, L.muro, mat, grp, [], true, true);
+      wallMesh.userData.wallData = w;
+      wallMesh.userData.level = L.id;
     });
 
     // Columnas
@@ -2276,6 +2681,16 @@ function selectFurniture(furn){
   }
 
   document.getElementById('cardProdName').textContent = item.short_name || item.name;
+  const fZonaElem = document.getElementById('fZona');
+  if(fZonaElem && typeof getSetAtWorldPoint === 'function'){
+    const curSet = getSetAtWorldPoint(furn.position.x, furn.position.z, furn.userData.level);
+    if(curSet){
+      fZonaElem.textContent = `Set ${curSet.num} · ${curSet.category}`;
+      updateZoneHud(curSet);
+    } else {
+      fZonaElem.textContent = (furn.userData.level === 'N1') ? 'Planta Alta' : 'Planta Baja';
+    }
+  }
   document.getElementById('fNombre').textContent = item.name;
   document.getElementById('fMedidas').textContent = `${item.dim_cm[0]} × ${item.dim_cm[1]} × ${item.dim_cm[2]} cm (${(item.dim_cm[0]/100).toFixed(2)}×${(item.dim_cm[1]/100).toFixed(2)}m)`;
   document.getElementById('fSku').textContent = item.sku;
@@ -3644,6 +4059,173 @@ async function fetchLiveSheetsData(){
 }
 fetchLiveSheetsData();
 setInterval(fetchLiveSheetsData, 30000);
+
+
+
+// =====================================================================
+// CONTROLADOR DEL MENÚ Y NAVEGADOR DE SETS (ZONAS INVISIBLES)
+// =====================================================================
+const btnToggleSets = document.getElementById('btnToggleSets');
+const setsDropdownMenu = document.getElementById('setsDropdownMenu');
+const setsListContainer = document.getElementById('setsListContainer');
+const setsSearchInput = document.getElementById('setsSearchInput');
+const activeZoneHud = document.getElementById('activeZoneHud');
+let activeSetsTab = 'PB';
+
+function renderSetsList(filterTxt = ''){
+  if(!setsListContainer) return;
+  setsListContainer.innerHTML = '';
+  const filter = filterTxt.toLowerCase().trim();
+  
+  const setNums = Object.keys(CASA_CREATA_SETS).map(Number).sort((a,b) => a - b);
+  let renderedCount = 0;
+  
+  setNums.forEach(num => {
+    const s = CASA_CREATA_SETS[num];
+    if(s.level !== activeSetsTab) return;
+    
+    const acStr = (s.acabados || []).join(' ');
+    const searchMatch = !filter || 
+      `set ${s.num}`.includes(filter) || 
+      s.category.toLowerCase().includes(filter) || 
+      acStr.toLowerCase().includes(filter) ||
+      (s.muebles || []).join(' ').toLowerCase().includes(filter);
+      
+    if(!searchMatch) return;
+    
+    renderedCount++;
+    const card = document.createElement('div');
+    card.className = 'sets-item-card';
+    const mainFinish = (s.acabados && s.acabados.length > 0) ? s.acabados.join(' · ') : 'Showroom Sidney Beige Yeso';
+    
+    card.innerHTML = `
+      <div class="sets-item-top">
+        <span class="sets-item-num">SET ${s.num}</span>
+        <span class="sets-item-cat">${s.category || 'Exhibición'}</span>
+      </div>
+      <div class="sets-item-finish">
+        <b>Pared:</b> ${mainFinish}
+      </div>
+    `;
+    
+    card.addEventListener('click', () => {
+      focusOnSet(s);
+      if(setsDropdownMenu) setsDropdownMenu.classList.remove('open');
+      if(btnToggleSets) btnToggleSets.classList.remove('active');
+    });
+    
+    setsListContainer.appendChild(card);
+  });
+  
+  if(renderedCount === 0){
+    setsListContainer.innerHTML = '<div style="padding:16px;text-align:center;color:#888;font-size:11px;">No se encontraron Sets</div>';
+  }
+}
+
+function focusOnSet(setObj){
+  if(!setObj) return;
+  // Cambiar piso si es necesario
+  if(currentFloorMode !== setObj.level && currentFloorMode !== 'exploded'){
+    setFloorMode(setObj.level);
+  }
+  
+  const targetX = setObj.pos[0];
+  const targetZ = setObj.pos[1];
+  const targetY = (setObj.level === 'N1') ? H_PB + 1.2 : 1.2;
+  
+  // Animar cámara suavemente hacia el Set
+  const startCam = camera.position.clone();
+  const startTgt = controls.target.clone();
+  const endTgt = new THREE.Vector3(targetX, targetY, targetZ);
+  const endCam = new THREE.Vector3(targetX + 3.8, targetY + 3.2, targetZ + 4.5);
+  
+  let animProgress = 0;
+  function animSetFly(){
+    animProgress += 0.04;
+    if(animProgress > 1) animProgress = 1;
+    const ease = 0.5 - Math.cos(animProgress * Math.PI) / 2;
+    camera.position.lerpVectors(startCam, endCam, ease);
+    controls.target.lerpVectors(startTgt, endTgt, ease);
+    controls.update();
+    if(animProgress < 1){
+      requestAnimationFrame(animSetFly);
+    } else {
+      updateZoneHud(setObj);
+    }
+  }
+  animSetFly();
+  updateZoneHud(setObj);
+}
+
+if(btnToggleSets){
+  btnToggleSets.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = setsDropdownMenu.classList.toggle('open');
+    btnToggleSets.classList.toggle('active', isOpen);
+    if(isOpen){
+      if(storeDropdownMenu) storeDropdownMenu.classList.remove('open');
+      if(murosSliderWrap) murosSliderWrap.classList.remove('open');
+      renderSetsList(setsSearchInput ? setsSearchInput.value : '');
+    }
+  });
+}
+
+if(activeZoneHud){
+  activeZoneHud.addEventListener('click', () => {
+    if(btnToggleSets) btnToggleSets.click();
+  });
+}
+
+document.querySelectorAll('.sets-tab-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('.sets-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeSetsTab = btn.dataset.tab;
+    renderSetsList(setsSearchInput ? setsSearchInput.value : '');
+  });
+});
+
+if(setsSearchInput){
+  setsSearchInput.addEventListener('input', (e) => {
+    renderSetsList(e.target.value);
+  });
+}
+
+// Cerrar al hacer clic afuera
+document.addEventListener('click', (e) => {
+  if(setsDropdownMenu && setsDropdownMenu.classList.contains('open')){
+    if(!setsDropdownMenu.contains(e.target) && e.target !== btnToggleSets){
+      setsDropdownMenu.classList.remove('open');
+      if(btnToggleSets) btnToggleSets.classList.remove('active');
+    }
+  }
+});
+
+// Actualizar HUD al mover el cursor por el suelo
+const zoneRay = new THREE.Raycaster();
+const zoneMouse = new THREE.Vector2();
+let lastZoneCheck = 0;
+
+window.addEventListener('pointermove', (e) => {
+  const now = Date.now();
+  if(now - lastZoneCheck < 120) return; // Limitar frecuencia a ~8 fps para alto rendimiento
+  lastZoneCheck = now;
+  
+  zoneMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  zoneMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  zoneRay.setFromCamera(zoneMouse, camera);
+  
+  const fm = floorMeshes[activeWorkingLevel] || floorMeshes['PB'];
+  if(fm){
+    const hits = zoneRay.intersectObject(fm, false);
+    if(hits.length > 0){
+      const setObj = getSetAtWorldPoint(hits[0].point.x, hits[0].point.z, activeWorkingLevel);
+      if(setObj){
+        updateZoneHud(setObj);
+      }
+    }
+  }
+});
 
 </script>
 

@@ -1765,9 +1765,13 @@ window.CATALOGO_PRODUCTOS = [
     ],
     "stock": {},
     "ventas": {},
-    "photo": "fotos/mesa_centro_bicolor/foto_1.jpg",
-    "thumb": "fotos/mesa_centro_bicolor/foto_1.jpg",
+    "photo": "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 2_46PM.jpg",
+    "thumb": "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 2_46PM.jpg",
     "gallery": [
+      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 2_46PM.jpg",
+      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 10_10AM.jpg",
+      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 12_11PM (1).jpg",
+      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 12_11PM.jpg",
       "fotos/mesa_centro_bicolor/foto_1.jpg"
     ],
     "flip": false,
