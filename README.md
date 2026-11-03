@@ -1,2 +1,0 @@
-# casa-creata
-Repository cleared.

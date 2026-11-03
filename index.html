@@ -1008,7 +1008,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793293430"></script>
+<script src="modelos_glb_data.js?v=1793728208"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1823,8 +1823,10 @@ function createFurnitureInstance(item, callback){
     if(isBedItem(item) && size1.x > 0.01 && size1.z > 0.01){
       let cMinX = Infinity, cMaxX = -Infinity, cMinZ = Infinity, cMaxZ = -Infinity;
       let bMinX = Infinity, bMaxX = -Infinity;
+      let fMinX = Infinity, fMaxX = -Infinity;
       const yCut = b1.min.y + size1.y * 0.25;
       const zHeadCut = b1.min.z + size1.z * 0.24;
+      const zBodyStart = b1.min.z + size1.z * 0.35;
       const zFootCut = b1.max.z - size1.z * 0.20;
 
       raw.traverse( node => {
@@ -1835,6 +1837,10 @@ function createFurnitureInstance(item, callback){
             if(vz <= zHeadCut){
               if(vx < bMinX) bMinX = vx;
               if(vx > bMaxX) bMaxX = vx;
+            }
+            if(vz >= zBodyStart){
+              if(vx < fMinX) fMinX = vx;
+              if(vx > fMaxX) fMaxX = vx;
             }
             if(vy <= yCut && (vz <= zHeadCut || vz >= zFootCut)){
               if(vx < cMinX) cMinX = vx;
@@ -1850,6 +1856,7 @@ function createFurnitureInstance(item, callback){
 
       const headW = (bMaxX > bMinX) ? (bMaxX - bMinX) : size1.x;
       const cornerFrameW = (cMaxX > cMinX) ? (cMaxX - cMinX) : size1.x;
+      const bodyFrameW = (fMaxX > fMinX) ? (fMaxX - fMinX) : cornerFrameW;
       const cornerFrameD = (cMaxZ > cMinZ) ? (cMaxZ - cMinZ) : size1.z;
 
       // Caso A: Base o cama de ancho uniforme cuyo edredón cuelga en la parte media sobresaliendo del marco de madera
@@ -1862,9 +1869,9 @@ function createFurnitureInstance(item, callback){
           x: (cMinX + cMaxX) * 0.5,
           z: (cMinZ < Infinity && cMaxZ > -Infinity) ? (cMinZ + cMaxZ) * 0.5 : (b1.min.z + b1.max.z) * 0.5
         };
-      } else if(headW > cornerFrameW * 1.06 && cornerFrameW > size1.x * 0.55){
-        // Caso B: Cama con cabecera integrada más ancha que el colchón/base (perfil en T automático)
-        const matHalfW = +(targetX * (cornerFrameW / size1.x) * 0.5).toFixed(3);
+      } else if(headW > bodyFrameW * 1.06 && bodyFrameW > size1.x * 0.55){
+        // Caso B: Cama con cabecera integrada más ancha que el colchón/base (perfil en T automático, incluso si la cabecera llega al suelo)
+        const matHalfW = +(targetX * (bodyFrameW / size1.x) * 0.5).toFixed(3);
         item._computedBedProfile = {
           headboardHalfW: targetX * 0.5,
           mattressHalfW: matHalfW,
@@ -2021,6 +2028,10 @@ function getBedVolumetricProfile(item){
   const idLow = ((item && item.id) || '').toLowerCase();
   const nameLow = ((item && item.name) || '').toLowerCase();
 
+  // San José KS: Cabecera ancha con alas 2.95m (halfX=1.475m), colchón/base 2.17m (matHalfW=1.085m), respaldo 0.18m
+  if(idLow.includes('san_jose') || nameLow.includes('san jose') || nameLow.includes('san josé')){
+    return { headboardHalfW: halfX, mattressHalfW: 1.085, headboardDepth: 0.18, halfZ: halfZ, hasWings: true };
+  }
   // Santa Fe KS: Cabecera curva ancha 3.00m (halfX=1.50m), colchón/base 2.25m (matHalfW=1.125m), respaldo 0.435m
   if(idLow.includes('santa_fe') || nameLow.includes('santa fe') || dx > 2.5){
     return { headboardHalfW: halfX, mattressHalfW: 1.125, headboardDepth: 0.435, halfZ: halfZ, hasWings: true };
@@ -2048,6 +2059,14 @@ function getFurnitureLocalBoxes(item, interactingWithItem=null){
         { minX: -prof.mattressHalfW,  maxX: prof.mattressHalfW,  minZ: -prof.halfZ + prof.headboardDepth, maxZ: prof.halfZ, part: 'mattress' }
       ];
     }
+  }
+  // Si es una Sala en L (ej. Sala Mawi o Sofá Cama Asha): perfil en L de 2 cajas para permitir colocar mesas de centro en el hueco frontal
+  const idLow = ((item && item.id) || '').toLowerCase();
+  if(idLow.includes('sala_mawi') || idLow.includes('sofa_cama_asha')){
+    return [
+      { minX: -dx/2, maxX: dx * 0.10, minZ: -dz/2, maxZ: -dz/2 + dz * 0.60, part: 'sofa_body' },
+      { minX: dx * 0.10, maxX: dx/2,  minZ: -dz/2, maxZ: dz/2, part: 'sofa_chaise' }
+    ];
   }
   // Si es una Mesa de Comedor interactuando con una Silla cuyas medidas caben debajo de la cubierta:
   // usa el núcleo de los pedestales/base de la mesa para que la silla pueda meterse debajo de la cubierta
