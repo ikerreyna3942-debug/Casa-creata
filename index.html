@@ -1008,7 +1008,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793728208"></script>
+<script src="modelos_glb_data.js?v=1793730986"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1747,42 +1747,90 @@ function getSalesClass(num){
   return 'sales-tier-alta';
 }
 
+function buildFootprintGroup(item, colorNum, fillOpacity, lineY, fillY, isContourTag=false, parentFurn=null){
+  const holder = new THREE.Group();
+  const pad = 0.012;
+  const lineMat = new THREE.LineBasicMaterial({ color: colorNum, transparent: true, opacity: 1.0, linewidth: 2, toneMapped: false });
+  const fillMat = new THREE.MeshBasicMaterial({ color: colorNum, transparent: true, opacity: fillOpacity, side: THREE.DoubleSide, depthWrite: false, toneMapped: false });
+
+  if(isBedItem(item)){
+    const prof = getBedVolumetricProfile(item);
+    if(prof && prof.hasWings){
+      const hwH = prof.headboardHalfW + pad;
+      const hwM = prof.mattressHalfW + pad;
+      const z0 = -prof.halfZ - pad;
+      const z1 = -prof.halfZ + prof.headboardDepth;
+      const z2 = prof.halfZ + pad;
+      const pts = [
+        new THREE.Vector3(-hwH, lineY, z0),
+        new THREE.Vector3( hwH, lineY, z0),
+        new THREE.Vector3( hwH, lineY, z1),
+        new THREE.Vector3( hwM, lineY, z1),
+        new THREE.Vector3( hwM, lineY, z2),
+        new THREE.Vector3(-hwM, lineY, z2),
+        new THREE.Vector3(-hwM, lineY, z1),
+        new THREE.Vector3(-hwH, lineY, z1),
+        new THREE.Vector3(-hwH, lineY, z0)
+      ];
+      const lineMesh = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), lineMat);
+      if(isContourTag){ lineMesh.userData.parentFurniture = parentFurn; lineMesh.userData.isContour = true; }
+      holder.add(lineMesh);
+
+      const dHead = Math.max(0.05, z1 - z0);
+      const gHead = new THREE.PlaneGeometry(hwH * 2, dHead);
+      gHead.rotateX(-Math.PI/2);
+      const mHead = new THREE.Mesh(gHead, fillMat);
+      mHead.position.set(0, fillY, (z0 + z1) * 0.5);
+      if(isContourTag){ mHead.userData.parentFurniture = parentFurn; mHead.userData.isContour = true; }
+      holder.add(mHead);
+
+      const dMat = Math.max(0.05, z2 - z1);
+      const gMat = new THREE.PlaneGeometry(hwM * 2, dMat);
+      gMat.rotateX(-Math.PI/2);
+      const mMat = new THREE.Mesh(gMat, fillMat);
+      mMat.position.set(0, fillY, (z1 + z2) * 0.5);
+      if(isContourTag){ mMat.userData.parentFurniture = parentFurn; mMat.userData.isContour = true; }
+      holder.add(mMat);
+      return holder;
+    }
+  }
+
+  const cW = (item.dim_m[0] || 1) + pad * 2;
+  const cD = (item.dim_m[1] || 1) + pad * 2;
+  const hw = cW / 2;
+  const hd = cD / 2;
+  const contourPts = [
+    new THREE.Vector3(-hw, lineY, -hd),
+    new THREE.Vector3( hw, lineY, -hd),
+    new THREE.Vector3( hw, lineY,  hd),
+    new THREE.Vector3(-hw, lineY,  hd),
+    new THREE.Vector3(-hw, lineY, -hd)
+  ];
+  const contourLineMesh = new THREE.Line(new THREE.BufferGeometry().setFromPoints(contourPts), lineMat);
+  if(isContourTag){ contourLineMesh.userData.parentFurniture = parentFurn; contourLineMesh.userData.isContour = true; }
+  holder.add(contourLineMesh);
+
+  const fillGeo = new THREE.PlaneGeometry(cW, cD);
+  fillGeo.rotateX(-Math.PI/2);
+  const fillMesh = new THREE.Mesh(fillGeo, fillMat);
+  fillMesh.position.y = fillY;
+  if(isContourTag){ fillMesh.userData.parentFurniture = parentFurn; fillMesh.userData.isContour = true; }
+  holder.add(fillMesh);
+  return holder;
+}
+
 function createFurnitureInstance(item, callback){
   const group = new THREE.Group();
   group.userData.item = item;
   group.userData.isFurniture = true;
 
-  // Contorno rectangular ajustado al ras real del producto (1.03x)
-  const cW = (item.dim_m[0] || 1) * 1.03;
-  const cD = (item.dim_m[1] || 1) * 1.03;
-  const hw = cW / 2;
-  const hd = cD / 2;
-  const contourPts = [
-    new THREE.Vector3(-hw, 0.006, -hd),
-    new THREE.Vector3(hw, 0.006, -hd),
-    new THREE.Vector3(hw, 0.006, hd),
-    new THREE.Vector3(-hw, 0.006, hd),
-    new THREE.Vector3(-hw, 0.006, -hd)
-  ];
-  const contourLineGeo = new THREE.BufferGeometry().setFromPoints(contourPts);
   const liveData = getLiveProductData(item);
   const storeSales = (liveData.ventas && liveData.ventas[currentStore] !== undefined) ? liveData.ventas[currentStore] : ((item.ventas && item.ventas[currentStore]) || 0);
   const salesTier = getSalesColorData(storeSales);
 
-  const contourLineMat = new THREE.LineBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 1.0, toneMapped: false });
-  const contourLineMesh = new THREE.Line(contourLineGeo, contourLineMat);
-  contourLineMesh.userData.parentFurniture = group;
-  contourLineMesh.userData.isContour = true;
-  group.add(contourLineMesh);
-
-  const fillGeo = new THREE.PlaneGeometry(cW, cD);
-  fillGeo.rotateX(-Math.PI/2);
-  const fillMat = new THREE.MeshBasicMaterial({ color: salesTier.hexNum, transparent: true, opacity: 0.30, side: THREE.DoubleSide, depthWrite: false, toneMapped: false });
-  const fillMesh = new THREE.Mesh(fillGeo, fillMat);
-  fillMesh.position.y = 0.005;
-  fillMesh.userData.parentFurniture = group;
-  fillMesh.userData.isContour = true;
-  group.add(fillMesh);
+  const contourHolder = buildFootprintGroup(item, salesTier.hexNum, 0.30, 0.006, 0.005, true, group);
+  contourHolder.userData.isContour = true;
+  group.add(contourHolder);
 
   // Registrar el grupo de inmediato de forma síncrona para evitar pérdidas de datos mientras descarga el .GLB
   if(callback) callback(group);
@@ -2028,23 +2076,31 @@ function getBedVolumetricProfile(item){
   const idLow = ((item && item.id) || '').toLowerCase();
   const nameLow = ((item && item.name) || '').toLowerCase();
 
-  // San José KS: Cabecera ancha con alas 2.95m (halfX=1.475m), colchón/base 2.17m (matHalfW=1.085m), respaldo 0.18m
+  // San José KS: Cabecera ancha con alas 2.95m (halfX=1.475m), base real en zona buró 2.036m (matHalfW=1.018m), espesor respaldo 0.10m
   if(idLow.includes('san_jose') || nameLow.includes('san jose') || nameLow.includes('san josé')){
-    return { headboardHalfW: halfX, mattressHalfW: 1.085, headboardDepth: 0.18, halfZ: halfZ, hasWings: true };
+    return { headboardHalfW: halfX, mattressHalfW: 1.018, headboardDepth: 0.10, halfZ: halfZ, hasWings: true };
   }
-  // Santa Fe KS: Cabecera curva ancha 3.00m (halfX=1.50m), colchón/base 2.25m (matHalfW=1.125m), respaldo 0.435m
+  // Santa Fe KS: Cabecera curva ancha 3.00m (halfX=1.50m), base real 2.24m (matHalfW=1.120m), espesor respaldo en .glb 0.28m
   if(idLow.includes('santa_fe') || nameLow.includes('santa fe') || dx > 2.5){
-    return { headboardHalfW: halfX, mattressHalfW: 1.125, headboardDepth: 0.435, halfZ: halfZ, hasWings: true };
+    return { headboardHalfW: halfX, mattressHalfW: 1.120, headboardDepth: 0.28, halfZ: halfZ, hasWings: true };
   }
-  // Aura QS: Cabecera 1.84m (halfX=0.92m), colchón/base 1.54m (matHalfW=0.772m), respaldo 0.44m
+  // Aura QS: Cabecera curva 1.84m (halfX=0.92m), base real en zona buró 1.51m (matHalfW=0.755m), espesor respaldo en .glb 0.28m
   if(idLow.includes('aura') || nameLow.includes('aura')){
-    return { headboardHalfW: halfX, mattressHalfW: 0.772, headboardDepth: 0.44, halfZ: halfZ, hasWings: true };
+    return { headboardHalfW: halfX, mattressHalfW: 0.755, headboardDepth: 0.28, halfZ: halfZ, hasWings: true };
+  }
+  // Saloni KS: Base acolchada curva 2.30m (núcleo lateral en .glb matHalfW=1.125m para pegar el buró al ras del borde redondeado)
+  if(idLow.includes('saloni') || nameLow.includes('saloni')){
+    return { headboardHalfW: 1.125, mattressHalfW: 1.125, headboardDepth: 0.28, halfZ: halfZ, hasWings: false };
+  }
+  // Amareto KS: Cabecera 2.00m (halfX=1.00m), marco de madera real 1.976m (matHalfW=0.988m)
+  if(idLow.includes('amareto') || nameLow.includes('amareto')){
+    return { headboardHalfW: halfX, mattressHalfW: 0.988, headboardDepth: 0.22, halfZ: halfZ, hasWings: true };
   }
   // Cualquier cama futura con cabecera integrada más ancha detectada automáticamente desde su malla .GLB
   if(item && item._computedBedProfile){
     return item._computedBedProfile;
   }
-  // Amareto KS, Base Yute, Litera Vento y otras bases/camas de ancho uniforme
+  // Base Yute, Litera Vento y otras bases/camas de ancho uniforme
   return { headboardHalfW: halfX, mattressHalfW: halfX, headboardDepth: Math.min(0.25, dz * 0.2), halfZ: halfZ, hasWings: false };
 }
 
@@ -2059,6 +2115,9 @@ function getFurnitureLocalBoxes(item, interactingWithItem=null){
         { minX: -prof.mattressHalfW,  maxX: prof.mattressHalfW,  minZ: -prof.halfZ + prof.headboardDepth, maxZ: prof.halfZ, part: 'mattress' }
       ];
     }
+    return [
+      { minX: -prof.mattressHalfW, maxX: prof.mattressHalfW, minZ: -prof.halfZ, maxZ: prof.halfZ, part: 'mattress' }
+    ];
   }
   // Si es una Sala en L (ej. Sala Mawi o Sofá Cama Asha): perfil en L de 2 cajas para permitir colocar mesas de centro en el hueco frontal
   const idLow = ((item && item.id) || '').toLowerCase();
@@ -2104,13 +2163,63 @@ function getFurnitureWorldBoxes(item, posX, posZ, rotY, interactingWithItem=null
       if(wz < wMinZ) wMinZ = wz;
       if(wz > wMaxZ) wMaxZ = wz;
     }
+    const lcX = (b.minX + b.maxX) * 0.5;
+    const lcZ = (b.minZ + b.maxZ) * 0.5;
+    const hx = (b.maxX - b.minX) * 0.5;
+    const hz = (b.maxZ - b.minZ) * 0.5;
+    const cx = posX + lcX * cos + lcZ * sin;
+    const cz = posZ - lcX * sin + lcZ * cos;
     return {
       minX: wMinX, maxX: wMaxX, minZ: wMinZ, maxZ: wMaxZ,
       oxMin: wMinX - posX, oxMax: wMaxX - posX,
       ozMin: wMinZ - posZ, ozMax: wMaxZ - posZ,
+      cx: cx, cz: cz, hx: hx, hz: hz,
+      ux: cos, uz: -sin, vx: sin, vz: cos,
       part: b.part
     };
   });
+}
+
+// Teorema de Ejes Separadores 2D (OBB / SAT): calcula colisión exacta y vectores de empuje sin inflación por rotación
+function getOBBPushCandidates(mb, ob, gap){
+  if(mb.maxX <= (ob.minX - gap + 1e-4) || mb.minX >= (ob.maxX + gap - 1e-4) ||
+     mb.maxZ <= (ob.minZ - gap + 1e-4) || mb.minZ >= (ob.maxZ + gap - 1e-4)){
+    return null;
+  }
+  const uxB = (ob.ux !== undefined) ? ob.ux : 1;
+  const uzB = (ob.uz !== undefined) ? ob.uz : 0;
+  const vxB = (ob.vx !== undefined) ? ob.vx : 0;
+  const vzB = (ob.vz !== undefined) ? ob.vz : 1;
+  const cxB = (ob.cx !== undefined) ? ob.cx : (ob.minX + ob.maxX) * 0.5;
+  const czB = (ob.cz !== undefined) ? ob.cz : (ob.minZ + ob.maxZ) * 0.5;
+  const hxB = (ob.hx !== undefined) ? ob.hx : (ob.maxX - ob.minX) * 0.5;
+  const hzB = (ob.hz !== undefined) ? ob.hz : (ob.maxZ - ob.minZ) * 0.5;
+
+  const axes = [
+    [mb.ux, mb.uz],
+    [mb.vx, mb.vz],
+    [uxB, uzB],
+    [vxB, vzB]
+  ];
+  const dx = mb.cx - cxB;
+  const dz = mb.cz - czB;
+  const pushes = [];
+
+  for(let k = 0; k < 4; k++){
+    const ax = axes[k][0], az = axes[k][1];
+    const projD = dx * ax + dz * az;
+    const rA = mb.hx * Math.abs(mb.ux * ax + mb.uz * az) + mb.hz * Math.abs(mb.vx * ax + mb.vz * az);
+    const rB = hxB * Math.abs(uxB * ax + uzB * az) + hzB * Math.abs(vxB * ax + vzB * az);
+    const totalR = rA + rB + gap;
+    if(Math.abs(projD) >= totalR - 1e-4){
+      return null; // Eje separador encontrado: cero colisión
+    }
+    const dPos = totalR - projD;
+    const dNeg = -totalR - projD;
+    pushes.push({ dx: dPos * ax, dz: dPos * az, dist: Math.abs(dPos) });
+    pushes.push({ dx: dNeg * ax, dz: dNeg * az, dist: Math.abs(dNeg) });
+  }
+  return pushes;
 }
 
 function checkWallCollision(posX, posZ, rotY, item, level){
@@ -2138,8 +2247,7 @@ function checkWallCollision(posX, posZ, rotY, item, level){
     const b = obs[i];
     for(let j = 0; j < myBoxes.length; j++){
       const mb = myBoxes[j];
-      if(mb.maxX > (b.minX - GAP + 1e-4) && mb.minX < (b.maxX + GAP - 1e-4) &&
-         mb.maxZ > (b.minZ - GAP + 1e-4) && mb.minZ < (b.maxZ + GAP - 1e-4)){
+      if(getOBBPushCandidates(mb, b, GAP) !== null){
         return { collides: true, reason: 'Pared o columna' };
       }
     }
@@ -2159,7 +2267,7 @@ function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
     const it = f.userData.item;
 
     const isBedBuroPair = isBedroomAssemblyPair(item, it);
-    const gap = isBedBuroPair ? 0.002 : 0.008;
+    const gap = isBedBuroPair ? 0.001 : 0.008;
 
     const myBoxes = getFurnitureWorldBoxes(item, posX, posZ, rotY, it);
     const otherBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y, item);
@@ -2167,8 +2275,26 @@ function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
       const mb = myBoxes[a];
       for(let b = 0; b < otherBoxes.length; b++){
         const ob = otherBoxes[b];
-        if(mb.maxX > (ob.minX - gap + 1e-4) && mb.minX < (ob.maxX + gap - 1e-4) &&
-           mb.maxZ > (ob.minZ - gap + 1e-4) && mb.minZ < (ob.maxZ + gap - 1e-4)){
+        // Si es un Buró junto a una Cama con alas y el buró descansa al frente de las alas (no dentro de ellas), no hay colisión con la cabecera:
+        if(isBuroItem(item) && isBedItem(it) && ob.part === 'headboard'){
+          const bProf = getBedVolumetricProfile(it);
+          const c = Math.cos(f.rotation.y), s = Math.sin(f.rotation.y);
+          const localZ = (posX - f.position.x) * s + (posZ - f.position.z) * c;
+          const buroHalfD = ((item.dim_m && item.dim_m[1]) || 0.40) * 0.5;
+          if(localZ - buroHalfD >= -bProf.halfZ + bProf.headboardDepth - 0.02){
+            continue; // Libre al frente de las alas de la cabecera
+          }
+        }
+        if(isBedItem(item) && isBuroItem(it) && mb.part === 'headboard'){
+          const bProf = getBedVolumetricProfile(item);
+          const c = Math.cos(rotY), s = Math.sin(rotY);
+          const localZ = (f.position.x - posX) * s + (f.position.z - posZ) * c;
+          const buroHalfD = ((it.dim_m && it.dim_m[1]) || 0.40) * 0.5;
+          if(localZ - buroHalfD >= -bProf.halfZ + bProf.headboardDepth - 0.02){
+            continue; // Libre al frente de las alas de la cabecera
+          }
+        }
+        if(getOBBPushCandidates(mb, ob, gap) !== null){
           return { collides: true, reason: isTableChairPair(item, it) ? 'Base de la mesa de comedor' : (isBedBuroPair ? 'Colchón o cabecera de cama' : 'Mueble ya colocado') };
         }
       }
@@ -2178,7 +2304,7 @@ function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
   return { collides: false };
 }
 
-// Sujeción automática (Clamping MTV) para que ningún mueble atraviese paredes ni camas al colocar, rotar o arrastrar
+// Sujeción automática OBB/MTV para que ningún mueble atraviese paredes ni camas (incluso rotadas en diagonal)
 function clampPositionToWalls(posX, posZ, rotY, item, level, ignoreFurniture=null, includeFurniture=true){
   const dimX = item.dim_m[0], dimZ = item.dim_m[1];
   const halfX = (Math.abs(dimX/2 * Math.cos(rotY)) + Math.abs(dimZ/2 * Math.sin(rotY)));
@@ -2208,13 +2334,13 @@ function clampPositionToWalls(posX, posZ, rotY, item, level, ignoreFurniture=nul
       const fGap = isBedBuroPair ? 0.001 : GAP;
       const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y, item);
       for(let j = 0; j < fBoxes.length; j++){
-        obsList.push({ minX: fBoxes[j].minX, maxX: fBoxes[j].maxX, minZ: fBoxes[j].minZ, maxZ: fBoxes[j].maxZ, gap: fGap, refItem: it });
+        obsList.push(Object.assign({}, fBoxes[j], { gap: fGap, refItem: it, furnRef: f }));
       }
     }
   }
 
   const MAX_PUSH = 1.25; // Empuje máximo hacia el ras de la pared, colchón o base de mesa
-  for(let pass = 0; pass < 5; pass++){
+  for(let pass = 0; pass < 6; pass++){
     let moved = false;
     for(let i = 0; i < obsList.length; i++){
       const b = obsList[i];
@@ -2222,21 +2348,33 @@ function clampPositionToWalls(posX, posZ, rotY, item, level, ignoreFurniture=nul
       const myBoxes = getFurnitureWorldBoxes(item, cx, cz, rotY, b.refItem);
       for(let j = 0; j < myBoxes.length; j++){
         const mb = myBoxes[j];
-        if(mb.maxX > (b.minX - g + 1e-4) && mb.minX < (b.maxX + g - 1e-4) &&
-           mb.maxZ > (b.minZ - g + 1e-4) && mb.minZ < (b.maxZ + g - 1e-4)){
+        if(isBuroItem(item) && b.refItem && isBedItem(b.refItem) && b.part === 'headboard'){
+          const bProf = getBedVolumetricProfile(b.refItem);
+          const fRef = b.furnRef;
+          if(fRef){
+            const c = Math.cos(fRef.rotation.y), s = Math.sin(fRef.rotation.y);
+            const localZ = (cx - fRef.position.x) * s + (cz - fRef.position.z) * c;
+            const buroHalfD = ((item.dim_m && item.dim_m[1]) || 0.40) * 0.5;
+            if(localZ - buroHalfD >= -bProf.halfZ + bProf.headboardDepth - 0.02){
+              continue; // Ignorar empuje lateral de la cabecera porque el buró descansa al frente
+            }
+          }
+        }
+        const pushes = getOBBPushCandidates(mb, b, g);
+        if(pushes && pushes.length > 0){
           const candidates = [];
-          const pLeft  = (b.minX - g) - mb.oxMax;
-          const pRight = (b.maxX + g) - mb.oxMin;
-          const pBack  = (b.minZ - g) - mb.ozMax;
-          const pFront = (b.maxZ + g) - mb.ozMin;
-
-          if(pLeft >= minPX - 1e-4 && Math.abs(pLeft - cx) <= MAX_PUSH)  candidates.push({ d: Math.abs(pLeft - cx),  nx: pLeft,  nz: cz });
-          if(pRight <= maxPX + 1e-4 && Math.abs(pRight - cx) <= MAX_PUSH) candidates.push({ d: Math.abs(pRight - cx), nx: pRight, nz: cz });
-          if(pBack >= minPZ - 1e-4 && Math.abs(pBack - cz) <= MAX_PUSH)  candidates.push({ d: Math.abs(pBack - cz),  nx: cx,     nz: pBack });
-          if(pFront <= maxPZ + 1e-4 && Math.abs(pFront - cz) <= MAX_PUSH) candidates.push({ d: Math.abs(pFront - cz), nx: cx,     nz: pFront });
-
+          for(let k = 0; k < pushes.length; k++){
+            const p = pushes[k];
+            if(p.dist <= MAX_PUSH){
+              const nx = cx + p.dx;
+              const nz = cz + p.dz;
+              if(nx >= minPX - 1e-4 && nx <= maxPX + 1e-4 && nz >= minPZ - 1e-4 && nz <= maxPZ + 1e-4){
+                candidates.push({ d: p.dist, nx: nx, nz: nz });
+              }
+            }
+          }
           if(candidates.length > 0){
-            candidates.sort((a, b) => a.d - b.d);
+            candidates.sort((a, b2) => a.d - b2.d);
             cx = Math.max(minPX, Math.min(maxPX, candidates[0].nx));
             cz = Math.max(minPZ, Math.min(maxPZ, candidates[0].nz));
             moved = true;
@@ -2652,32 +2790,8 @@ function renderSelectionHighlight(){
   if(!selectedFurniture || !selectedFurniture.parent) return;
 
   const item = selectedFurniture.userData.item;
-  const cW = (item.dim_m[0] || 1) * 1.03; // Contorno ajustado al ras del producto
-  const cD = (item.dim_m[1] || 1) * 1.03;
-  const hw = cW / 2;
-  const hd = cD / 2;
-
-  const outlinePts = [
-    new THREE.Vector3(-hw, 0.015, -hd),
-    new THREE.Vector3(hw, 0.015, -hd),
-    new THREE.Vector3(hw, 0.015, hd),
-    new THREE.Vector3(-hw, 0.015, hd),
-    new THREE.Vector3(-hw, 0.015, -hd)
-  ];
-  const outlineGeo = new THREE.BufferGeometry().setFromPoints(outlinePts);
   const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
-  const lineMat = new THREE.LineBasicMaterial({ color: storeCfg.colorNum, linewidth: 3, toneMapped: false });
-  const line = new THREE.Line(outlineGeo, lineMat);
-
-  const fillGeo = new THREE.PlaneGeometry(cW, cD);
-  fillGeo.rotateX(-Math.PI/2);
-  const fillMat = new THREE.MeshBasicMaterial({ color: storeCfg.colorNum, transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false, toneMapped: false });
-  const fill = new THREE.Mesh(fillGeo, fillMat);
-  fill.position.y = 0.012;
-
-  const grp = new THREE.Group();
-  grp.add(line);
-  grp.add(fill);
+  const grp = buildFootprintGroup(item, storeCfg.colorNum, 0.35, 0.015, 0.012, false, null);
 
   const wp = new THREE.Vector3();
   selectedFurniture.getWorldPosition(wp);
@@ -2776,7 +2890,7 @@ function nudgeSelected(dx, dz){
     const fGap = isBedBuroPair ? 0.001 : GAP;
     const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y, item);
     for(let j = 0; j < fBoxes.length; j++){
-      obsList.push({ minX: fBoxes[j].minX, maxX: fBoxes[j].maxX, minZ: fBoxes[j].minZ, maxZ: fBoxes[j].maxZ, gap: fGap, refItem: it });
+      obsList.push(Object.assign({}, fBoxes[j], { gap: fGap, refItem: it, furnRef: f }));
     }
   }
 
@@ -2793,6 +2907,18 @@ function nudgeSelected(dx, dz){
         const mb = myBoxes[j];
         // Verificar si el obstáculo se cruza en el corredor Z de esta sub-caja
         if((curZ + mb.ozMax > b.minZ - g + 1e-4) && (curZ + mb.ozMin < b.maxZ + g - 1e-4)){
+          if(isBuroItem(item) && b.refItem && isBedItem(b.refItem) && b.part === 'headboard'){
+            const bProf = getBedVolumetricProfile(b.refItem);
+            const fRef = b.furnRef;
+            if(fRef){
+              const c = Math.cos(fRef.rotation.y), s = Math.sin(fRef.rotation.y);
+              const localZ = (curX - fRef.position.x) * s + (curZ - fRef.position.z) * c;
+              const buroHalfD = ((item.dim_m && item.dim_m[1]) || 0.40) * 0.5;
+              if(localZ - buroHalfD >= -bProf.halfZ + bProf.headboardDepth - 0.02){
+                continue; // Buró en frente de la cabecera, libre para apegarse al colchón
+              }
+            }
+          }
           const stopLeft  = (b.minX - g) - mb.oxMax; // Tope al ras izquierdo del obstáculo
           const stopRight = (b.maxX + g) - mb.oxMin; // Tope al ras derecho del obstáculo
           const boxCenterX = (b.minX + b.maxX) * 0.5;
