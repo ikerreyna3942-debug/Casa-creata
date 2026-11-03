@@ -763,14 +763,8 @@
 <!-- 1. Cápsula Superior Izquierda: CASA CREATA + [💾 Distribuciones] + [🛋️ + Catálogo] -->
 <div id="topBarLeft">
   <span class="brand-title">CASA CREATA</span>
-  <button class="btn-top-action" id="btnToggleSets" title="Explorar los 51 Sets y Zonas de Casa Creata">📍 Sets (Zonas) ▾</button>
-  <div id="activeZoneHud" class="zone-hud-pill" title="Zona actual en el plano · Clic para ver opciones">
-    <span class="zone-hud-dot"></span>
-    <span id="activeZoneTxt">Set 1 · Lounge</span>
-  </div>
   <button class="btn-top-action btn-save-action" id="btnSaveProcess" title="Guardar proceso del plano y diseño en curso (Ctrl+S)">💾 Guardar</button>
   <button class="btn-top-action" id="btnOpenDistrib" title="Ver y cargar distribuciones guardadas">📁 Distribuciones</button>
-  
 </div>
 
 <!-- 2. Cápsula Superior Derecha (Niveles, Muros y Herramientas CAD) -->
@@ -785,8 +779,7 @@
   <button class="pill-btn" id="btnSelectStore" title="Elegir tienda para ver ventas">🏪 Tienda: <b id="lblActiveStore">COLOSIO</b> ▾</button>
   <button class="pill-btn" id="btnAutoRot">🔄 Girar Vista</button>
   <button class="pill-btn" id="btnResetView">🎯 Centrar</button>
-  <span class="pill-sep"></span>
-  <button class="pill-btn" id="btnRecordScreen" title="Grabar video del recorrido 3D (clic para iniciar / detener)" style="display:inline-flex;align-items:center;gap:6px;"><span id="recDot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#e2ded8;transition:all .2s ease"></span><span id="lblRecordTxt">Grabar</span></button>
+
 </div>
 
 <!-- Popover Desplegable para Slider [🧱 Muros] -->
@@ -838,21 +831,7 @@
 
 <!-- 3. CATÁLOGO DESPLEGABLE HACIA ABAJO (CERO AMONTONAMIENTO) -->
 
-<!-- Menú Flotante Desplegable para [📍 Sets / Zonas Oficiales] -->
-<div id="setsDropdownMenu" class="sets-dropdown-popover">
-  <div class="sets-menu-header">
-    <div class="sets-menu-header-title">ZONAS Y SETS DE EXHIBICIÓN</div>
-    <div class="sets-menu-header-sub">51 Sets Oficiales · Acabados de Muros y Mobiliario</div>
-  </div>
-  <div class="sets-tabs-bar">
-    <button class="sets-tab-btn active" data-tab="PB">Planta Baja (Sets 1-21)</button>
-    <button class="sets-tab-btn" data-tab="N1">Planta Alta (Sets 22-51)</button>
-  </div>
-  <div class="sets-search-box">
-    <input type="text" id="setsSearchInput" placeholder="🔍 Buscar por Set, mueble o acabado..." class="sets-search-input">
-  </div>
-  <div class="sets-list-container" id="setsListContainer"></div>
-</div>
+
 
 <div id="catalogBackdrop"></div>
 <div id="catalogDropdown">
@@ -915,7 +894,7 @@
         </div>
         <div style="display:flex;flex-direction:column;gap:5px">
           <button class="btn-subtle" id="bMoveSelected" style="background:#ebd8c3;color:#1c1a18;font-weight:700">✥ Mover</button>
-          <button class="btn-subtle" id="bSnapToBed" style="background:rgba(235,216,195,.18);color:#ebd8c3;border:1px solid rgba(235,216,195,.4);font-weight:700" title="Pegar y alinear buró a la cama">🧲 Pegar</button>
+          <button class="btn-subtle" id="bSnapToBed" style="background:rgba(235,216,195,.18);color:#ebd8c3;border:1px solid rgba(235,216,195,.4);font-weight:700" title="Pegar a la pared o producto más cercano (Tecla Fin)">🧲 Pegar (Fin)</button>
           <button class="btn-subtle" id="bDelSelected" style="color:#ff7675;border-color:rgba(255,118,117,.3)">🗑️ Borrar</button>
         </div>
       </div>
@@ -1008,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793730986"></script>
+<script src="modelos_glb_data.js?v=1793732697"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1458,11 +1437,11 @@ function setFloorMode(mode){
   if(mode === 'exploded'){
     activeWorkingLevel = 'PB';
     NIVELES.forEach(L => {
-      targetY[L.id] = (L.id==='PB') ? 0 : (L.id==='N1' ? H_PB + 4.5 : H_PB + H_N1 + 9.0);
+      targetY[L.id] = (L.id==='PB') ? 0 : (L.id==='N1' ? H_PB : H_PB + H_N1);
       levelGroups[L.id].visible = true;
     });
-    const destTarget = new THREE.Vector3(CENTER.x, 8.5, CENTER.z);
-    const destCam = new THREE.Vector3(CENTER.x + 32, 32, CENTER.z + 40);
+    const destTarget = new THREE.Vector3(CENTER.x, (H_PB + H_N1) * 0.5, CENTER.z);
+    const destCam = new THREE.Vector3(CENTER.x + 26, 22, CENTER.z + 32);
     animateCameraTo(destCam, destTarget, 500);
   } else {
     activeWorkingLevel = mode;
@@ -2260,9 +2239,15 @@ function checkCollision(posX, posZ, rotY, item, level, ignoreFurniture=null){
   const wallCol = checkWallCollision(posX, posZ, rotY, item, level);
   if(wallCol.collides) return wallCol;
 
+  const isIgnored = (f) => {
+    if(!ignoreFurniture) return false;
+    if(Array.isArray(ignoreFurniture)) return ignoreFurniture.includes(f);
+    return f === ignoreFurniture;
+  };
+
   for(let i = 0; i < placedFurniture.length; i++){
     const f = placedFurniture[i];
-    if(f === ignoreFurniture) continue;
+    if(isIgnored(f)) continue;
     if(f.userData.level !== level) continue;
     const it = f.userData.item;
 
@@ -2325,10 +2310,16 @@ function clampPositionToWalls(posX, posZ, rotY, item, level, ignoreFurniture=nul
     obsList.push({ minX: wallObs[i].minX, maxX: wallObs[i].maxX, minZ: wallObs[i].minZ, maxZ: wallObs[i].maxZ, gap: GAP, refItem: null });
   }
 
+  const isClampIgnored = (f) => {
+    if(!ignoreFurniture) return false;
+    if(Array.isArray(ignoreFurniture)) return ignoreFurniture.includes(f);
+    return f === ignoreFurniture;
+  };
+
   if(includeFurniture){
     for(let i = 0; i < placedFurniture.length; i++){
       const f = placedFurniture[i];
-      if(f === ignoreFurniture || f.userData.level !== level) continue;
+      if(isClampIgnored(f) || f.userData.level !== level) continue;
       const it = f.userData.item;
       const isBedBuroPair = isBedroomAssemblyPair(item, it);
       const fGap = isBedBuroPair ? 0.001 : GAP;
@@ -2448,7 +2439,17 @@ function startPlacing(item){
 }
 
 function cancelPlacing(){
-  if(movingFurniture){
+  if(movingFurnitureList){
+    movingFurnitureList.forEach(m => {
+      m.furn.visible = true;
+      if(movingOrig){
+        m.furn.position.set(movingOrig.pos.x + m.relX, LOSA, movingOrig.pos.z + m.relZ);
+        m.furn.rotation.y = m.rotY;
+      }
+    });
+    movingFurnitureList = null;
+    movingFurniture = null;
+  } else if(movingFurniture){
     movingFurniture.visible = true;
     if(movingOrig){
       movingFurniture.position.copy(movingOrig.pos);
@@ -2608,6 +2609,31 @@ canvas.addEventListener('pointerup', e => {
         furn.position.set(posX, LOSA, posZ);
         furn.rotation.y = rotY;
         furn.visible = true;
+
+        if(movingFurnitureList && movingFurnitureList.length > 0){
+          const placedList = [furn];
+          movingFurnitureList.forEach(m => {
+            if(m.furn === furn) return;
+            const newX = posX + m.relX;
+            const newZ = posZ + m.relZ;
+            m.furn.userData.level = hit.level;
+            m.furn.position.set(newX, LOSA, newZ);
+            m.furn.visible = true;
+            if(m.furn.parent !== grp){
+              if(m.furn.parent) m.furn.parent.remove(m.furn);
+              grp.add(m.furn);
+            }
+            placedList.push(m.furn);
+            recordHistory('move', m.furn);
+          });
+          movingFurnitureList = null;
+          selectedFurnitureList = placedList;
+          selectedFurniture = furn;
+          renderSelectionHighlight();
+          saveStateToUrl();
+          return;
+        }
+
         selectFurniture(furn);
         recordHistory('move', furn);
         saveStateToUrl();
@@ -2646,10 +2672,11 @@ canvas.addEventListener('pointerup', e => {
   if(hits.length > 0){
     const furn = hits[0].object.userData.parentFurniture;
     if(furn){
-      selectFurniture(furn);
+      const isMulti = !!e.shiftKey;
+      selectFurniture(furn, isMulti);
     }
   } else {
-    if(e.clientX < innerWidth - 360) deselectFurniture();
+    if(e.clientX < innerWidth - 360 && !e.shiftKey) deselectFurniture();
   }
 });
 
@@ -2659,26 +2686,53 @@ canvas.addEventListener('pointerup', e => {
 const cardWrap = document.getElementById('selectedCardWrap');
 const selHighlight = new THREE.Group(); scene.add(selHighlight);
 
-function selectFurniture(furn){
-  selectedFurniture = furn;
-  const item = furn.userData.item;
+let selectedFurnitureList = [];
 
-  if(furn.userData.level && currentFloorMode !== 'exploded' && currentFloorMode !== furn.userData.level){
-    setFloorMode(furn.userData.level);
+function selectFurniture(furn, isMulti = false){
+  if(!furn || !furn.parent) return;
+
+  if(isMulti){
+    const idx = selectedFurnitureList.indexOf(furn);
+    if(idx >= 0){
+      selectedFurnitureList.splice(idx, 1);
+      if(selectedFurniture === furn){
+        selectedFurniture = selectedFurnitureList.length > 0 ? selectedFurnitureList[selectedFurnitureList.length - 1] : null;
+      }
+      if(selectedFurnitureList.length === 0){
+        deselectFurniture();
+        return;
+      }
+    } else {
+      selectedFurnitureList.push(furn);
+      selectedFurniture = furn;
+    }
+  } else {
+    selectedFurniture = furn;
+    selectedFurnitureList = [furn];
   }
 
-  document.getElementById('cardProdName').textContent = item.short_name || item.name;
+  const item = selectedFurniture.userData.item;
+
+  if(selectedFurniture.userData.level && currentFloorMode !== 'exploded' && currentFloorMode !== selectedFurniture.userData.level){
+    setFloorMode(selectedFurniture.userData.level);
+  }
+
+  const cardTitle = (selectedFurnitureList.length > 1) 
+    ? `${selectedFurnitureList.length} muebles seleccionados (Shift)` 
+    : (item.short_name || item.name);
+  document.getElementById('cardProdName').textContent = cardTitle;
+
   const fZonaElem = document.getElementById('fZona');
   if(fZonaElem && typeof getSetAtWorldPoint === 'function'){
-    const curSet = getSetAtWorldPoint(furn.position.x, furn.position.z, furn.userData.level);
+    const curSet = getSetAtWorldPoint(selectedFurniture.position.x, selectedFurniture.position.z, selectedFurniture.userData.level);
     if(curSet){
       fZonaElem.textContent = `Set ${curSet.num} · ${curSet.category}`;
       updateZoneHud(curSet);
     } else {
-      fZonaElem.textContent = (furn.userData.level === 'N1') ? 'Planta Alta' : 'Planta Baja';
+      fZonaElem.textContent = (selectedFurniture.userData.level === 'N1') ? 'Planta Alta' : 'Planta Baja';
     }
   }
-  document.getElementById('fNombre').textContent = item.name;
+  document.getElementById('fNombre').textContent = (selectedFurnitureList.length > 1) ? `Selección múltiple (${selectedFurnitureList.length} muebles)` : item.name;
   document.getElementById('fMedidas').textContent = `${item.dim_cm[0]} × ${item.dim_cm[1]} × ${item.dim_cm[2]} cm (${(item.dim_cm[0]/100).toFixed(2)}×${(item.dim_cm[1]/100).toFixed(2)}m)`;
   document.getElementById('fSku').textContent = item.sku;
   document.getElementById('fProveedor').textContent = item.proveedor || '';
@@ -2704,7 +2758,7 @@ function selectFurniture(furn){
 
   const chipsWrap = document.getElementById('cardVariantChips');
   const siblings = RAW_CATALOG.filter(x => x.group_id === item.group_id);
-  if(siblings.length > 1){
+  if(siblings.length > 1 && selectedFurnitureList.length === 1){
     chipsWrap.style.display = 'flex';
     chipsWrap.innerHTML = '';
     siblings.forEach(sib => {
@@ -2720,7 +2774,7 @@ function selectFurniture(furn){
 
   renderFichaTables(item);
 
-  let deg = Math.round(THREE.MathUtils.radToDeg(furn.rotation.y)) % 360;
+  let deg = Math.round(THREE.MathUtils.radToDeg(selectedFurniture.rotation.y)) % 360;
   if(deg < 0) deg += 360;
   document.getElementById('rotRange').value = deg;
   document.getElementById('rotDegTxt').textContent = deg + '°';
@@ -2731,6 +2785,7 @@ function selectFurniture(furn){
 
 function deselectFurniture(){
   selectedFurniture = null;
+  selectedFurnitureList = [];
   cardWrap.classList.remove('open');
   document.getElementById('editControlsBox').classList.remove('open');
   document.getElementById('btnToggleEdit').classList.remove('active');
@@ -2787,17 +2842,20 @@ function switchFurnitureVariant(furn, newVariantItem){
 
 function renderSelectionHighlight(){
   while(selHighlight.children.length > 0) selHighlight.remove(selHighlight.children[0]);
-  if(!selectedFurniture || !selectedFurniture.parent) return;
+  const targets = (selectedFurnitureList && selectedFurnitureList.length > 0) ? selectedFurnitureList : (selectedFurniture ? [selectedFurniture] : []);
+  if(targets.length === 0) return;
 
-  const item = selectedFurniture.userData.item;
   const storeCfg = STORE_CONFIG[currentStore] || STORE_CONFIG.colosio;
-  const grp = buildFootprintGroup(item, storeCfg.colorNum, 0.35, 0.015, 0.012, false, null);
-
-  const wp = new THREE.Vector3();
-  selectedFurniture.getWorldPosition(wp);
-  grp.position.set(wp.x, wp.y, wp.z);
-  grp.rotation.y = selectedFurniture.rotation.y;
-  selHighlight.add(grp);
+  targets.forEach(furn => {
+    if(!furn || !furn.parent) return;
+    const item = furn.userData.item;
+    const grp = buildFootprintGroup(item, storeCfg.colorNum, 0.35, 0.015, 0.012, false, null);
+    const wp = new THREE.Vector3();
+    furn.getWorldPosition(wp);
+    grp.position.set(wp.x, wp.y, wp.z);
+    grp.rotation.y = furn.rotation.y;
+    selHighlight.add(grp);
+  });
 }
 
 document.getElementById('btnToggleEdit').addEventListener('click', e => {
@@ -2824,16 +2882,22 @@ document.getElementById('rotRange').addEventListener('input', e => {
   saveStateToUrl();
 });
 document.getElementById('bRotM45').addEventListener('click', () => {
-  if(!selectedFurniture) return;
-  selectedFurniture.rotation.y -= Math.PI/4;
+  const targets = (selectedFurnitureList && selectedFurnitureList.length > 0) ? selectedFurnitureList : (selectedFurniture ? [selectedFurniture] : []);
+  if(targets.length === 0) return;
+  targets.forEach(furn => {
+    furn.rotation.y -= Math.PI/4;
+    recordHistory('rot', furn);
+  });
   updateEditValues();
-  recordHistory('rot', selectedFurniture);
 });
 document.getElementById('bRotP45').addEventListener('click', () => {
-  if(!selectedFurniture) return;
-  selectedFurniture.rotation.y += Math.PI/4;
+  const targets = (selectedFurnitureList && selectedFurnitureList.length > 0) ? selectedFurnitureList : (selectedFurniture ? [selectedFurniture] : []);
+  if(targets.length === 0) return;
+  targets.forEach(furn => {
+    furn.rotation.y += Math.PI/4;
+    recordHistory('rot', furn);
+  });
   updateEditValues();
-  recordHistory('rot', selectedFurniture);
 });
 
 function updateEditValues(){
@@ -2854,9 +2918,94 @@ function updateEditValues(){
 }
 
 const NUDGE = 0.05;
-function nudgeSelected(dx, dz){
-  if(!selectedFurniture) return;
-  const furn = selectedFurniture;
+
+// Obtener vectores relativos al ángulo de vista horizontal de la cámara
+function getCameraViewVectors(){
+  const forward = new THREE.Vector3();
+  camera.getWorldDirection(forward);
+  forward.y = 0;
+  forward.normalize();
+  const right = new THREE.Vector3();
+  right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
+  return { forward, right };
+}
+
+function nudgeViewRelative(directionName, step = 0.05){
+  const { forward, right } = getCameraViewVectors();
+  let v = new THREE.Vector3();
+  if(directionName === 'up') v.copy(forward);
+  else if(directionName === 'down') v.copy(forward).negate();
+  else if(directionName === 'right') v.copy(right);
+  else if(directionName === 'left') v.copy(right).negate();
+
+  const dx = v.x * step;
+  const dz = v.z * step;
+  nudgeSelectedList(dx, dz);
+}
+
+function nudgeSelectedList(dx, dz){
+  const targets = (selectedFurnitureList && selectedFurnitureList.length > 0) ? selectedFurnitureList : (selectedFurniture ? [selectedFurniture] : []);
+  if(targets.length === 0) return;
+
+  if(targets.length === 1){
+    nudgeSingleFurniture(targets[0], dx, dz);
+    return;
+  }
+
+  // Mover todo el conjunto de muebles seleccionados rígidamente
+  let canMove = true;
+  for(let i = 0; i < targets.length; i++){
+    const f = targets[i];
+    const nextX = f.position.x + dx;
+    const nextZ = f.position.z + dz;
+    const col = checkCollision(nextX, nextZ, f.rotation.y, f.userData.item, f.userData.level, targets);
+    if(col.collides){
+      canMove = false;
+      break;
+    }
+  }
+  if(canMove){
+    for(let i = 0; i < targets.length; i++){
+      targets[i].position.x += dx;
+      targets[i].position.z += dz;
+    }
+    renderSelectionHighlight();
+    saveStateToUrl();
+  } else {
+    // Si el movimiento diagonal conjunto topa, deslizar en X y Z por separado
+    let movedAny = false;
+    if(dx !== 0){
+      let canX = true;
+      for(let i = 0; i < targets.length; i++){
+        const f = targets[i];
+        const colX = checkCollision(f.position.x + dx, f.position.z, f.rotation.y, f.userData.item, f.userData.level, targets);
+        if(colX.collides){ canX = false; break; }
+      }
+      if(canX){
+        for(let i = 0; i < targets.length; i++) targets[i].position.x += dx;
+        movedAny = true;
+      }
+    }
+    if(dz !== 0){
+      let canZ = true;
+      for(let i = 0; i < targets.length; i++){
+        const f = targets[i];
+        const colZ = checkCollision(f.position.x, f.position.z + dz, f.rotation.y, f.userData.item, f.userData.level, targets);
+        if(colZ.collides){ canZ = false; break; }
+      }
+      if(canZ){
+        for(let i = 0; i < targets.length; i++) targets[i].position.z += dz;
+        movedAny = true;
+      }
+    }
+    if(movedAny){
+      renderSelectionHighlight();
+      saveStateToUrl();
+    }
+  }
+}
+
+function nudgeSingleFurniture(furn, dx, dz){
   const item = furn.userData.item;
   const level = furn.userData.level;
   const rotY = furn.rotation.y;
@@ -2866,7 +3015,6 @@ function nudgeSelected(dx, dz){
   const halfZ = (Math.abs(dimX/2 * Math.sin(rotY)) + Math.abs(dimZ/2 * Math.cos(rotY)));
   const GAP = 0.01;
 
-  // Si el mueble estaba previamente incrustado en una pared, desincrustarlo primero hacia el interior
   let curX = furn.position.x;
   let curZ = furn.position.z;
   if(checkWallCollision(curX, curZ, rotY, item, level).collides){
@@ -2875,7 +3023,6 @@ function nudgeSelected(dx, dz){
     curZ = unstuck.z;
   }
 
-  // Construir lista de cajas obstáculo (paredes, columnas y otros mueblesincluyendo T-box de camas)
   const obsList = [];
   const wallObs = LEVEL_OBSTACLES[level] || [];
   for(let i = 0; i < wallObs.length; i++){
@@ -2894,7 +3041,7 @@ function nudgeSelected(dx, dz){
     }
   }
 
-  // --- MOVIMIENTO EN EJE X (Izquierda / Derecha) ---
+  // Desplazamiento en X
   if(dx !== 0){
     let lowerBound = PERIMETER_BOUNDS.minX + GAP + halfX;
     let upperBound = PERIMETER_BOUNDS.maxX - GAP - halfX;
@@ -2905,7 +3052,6 @@ function nudgeSelected(dx, dz){
       const myBoxes = getFurnitureWorldBoxes(item, curX, curZ, rotY, b.refItem);
       for(let j = 0; j < myBoxes.length; j++){
         const mb = myBoxes[j];
-        // Verificar si el obstáculo se cruza en el corredor Z de esta sub-caja
         if((curZ + mb.ozMax > b.minZ - g + 1e-4) && (curZ + mb.ozMin < b.maxZ + g - 1e-4)){
           if(isBuroItem(item) && b.refItem && isBedItem(b.refItem) && b.part === 'headboard'){
             const bProf = getBedVolumetricProfile(b.refItem);
@@ -2915,12 +3061,12 @@ function nudgeSelected(dx, dz){
               const localZ = (curX - fRef.position.x) * s + (curZ - fRef.position.z) * c;
               const buroHalfD = ((item.dim_m && item.dim_m[1]) || 0.40) * 0.5;
               if(localZ - buroHalfD >= -bProf.halfZ + bProf.headboardDepth - 0.02){
-                continue; // Buró en frente de la cabecera, libre para apegarse al colchón
+                continue;
               }
             }
           }
-          const stopLeft  = (b.minX - g) - mb.oxMax; // Tope al ras izquierdo del obstáculo
-          const stopRight = (b.maxX + g) - mb.oxMin; // Tope al ras derecho del obstáculo
+          const stopLeft  = (b.minX - g) - mb.oxMax;
+          const stopRight = (b.maxX + g) - mb.oxMin;
           const boxCenterX = (b.minX + b.maxX) * 0.5;
           const mySubCenterX = curX + (mb.oxMin + mb.oxMax) * 0.5;
 
@@ -2941,7 +3087,7 @@ function nudgeSelected(dx, dz){
     }
   }
 
-  // --- MOVIMIENTO EN EJE Z (Arriba -Z / Abajo +Z) ---
+  // Desplazamiento en Z
   if(dz !== 0){
     let lowerBound = PERIMETER_BOUNDS.minZ + GAP + halfZ;
     let upperBound = PERIMETER_BOUNDS.maxZ - GAP - halfZ;
@@ -2951,10 +3097,9 @@ function nudgeSelected(dx, dz){
       const myBoxesZ = getFurnitureWorldBoxes(item, curX, curZ, rotY, b.refItem);
       for(let j = 0; j < myBoxesZ.length; j++){
         const mb = myBoxesZ[j];
-        // Verificar si el obstáculo se cruza en el corredor X de esta sub-caja
         if((curX + mb.oxMax > b.minX - g + 1e-4) && (curX + mb.oxMin < b.maxX + g - 1e-4)){
-          const stopBack  = (b.minZ - g) - mb.ozMax; // Tope al ras frontal (-Z) del obstáculo
-          const stopFront = (b.maxZ + g) - mb.ozMin; // Tope al ras posterior (+Z) del obstáculo
+          const stopBack  = (b.minZ - g) - mb.ozMax;
+          const stopFront = (b.maxZ + g) - mb.ozMin;
           const boxCenterZ = (b.minZ + b.maxZ) * 0.5;
           const mySubCenterZ = curZ + (mb.ozMin + mb.ozMax) * 0.5;
 
@@ -2980,257 +3125,138 @@ function nudgeSelected(dx, dz){
   renderSelectionHighlight();
   saveStateToUrl();
 }
-document.getElementById('nXNeg').addEventListener('click', () => nudgeSelected(-NUDGE, 0));
-document.getElementById('nXPos').addEventListener('click', () => nudgeSelected(NUDGE, 0));
-document.getElementById('nZNeg').addEventListener('click', () => nudgeSelected(0, -NUDGE));
-document.getElementById('nZPos').addEventListener('click', () => nudgeSelected(0, NUDGE));
 
-const btnSnapToBed = document.getElementById('bSnapToBed');
-if(btnSnapToBed){
-  btnSnapToBed.addEventListener('click', () => {
-    if(!selectedFurniture) return;
-    const furn = selectedFurniture;
-    const item = furn.userData.item;
-    const lvl = furn.userData.level;
+function nudgeSelected(dx, dz){
+  nudgeSelectedList(dx, dz);
+}
 
-    // CASO 0.5: Si el objeto seleccionado es un módulo de SALA MODULAR (ej. Shelby) y hay otro módulo en el piso -> Pegar al ras
-    if(isModularSofaItem(item)){
-      let targetMod = null, bestMD = Infinity;
-      placedFurniture.forEach(f => {
-        if(f === furn || f.userData.level !== lvl) return;
-        if(isModularSofaItem(f.userData.item)){
-          const d = Math.hypot(f.position.x - furn.position.x, f.position.z - furn.position.z);
-          if(d < bestMD){ bestMD = d; targetMod = f; }
-        }
-      });
-      if(targetMod){
-        const tItem = targetMod.userData.item;
-        const myW = (item.dim_m && item.dim_m[0]) || 1.35;
-        const myD = (item.dim_m && item.dim_m[1]) || 1.13;
-        const targetW = (tItem.dim_m && tItem.dim_m[0]) || 1.35;
-        const targetD = (tItem.dim_m && tItem.dim_m[1]) || 1.13;
+// Botones de cruceta en pantalla según vista horizontal de cámara
+document.getElementById('nXNeg').addEventListener('click', () => nudgeViewRelative('left', NUDGE));
+document.getElementById('nXPos').addEventListener('click', () => nudgeViewRelative('right', NUDGE));
+document.getElementById('nZNeg').addEventListener('click', () => nudgeViewRelative('up', NUDGE));
+document.getElementById('nZPos').addEventListener('click', () => nudgeViewRelative('down', NUDGE));
 
-        const cos = Math.cos(targetMod.rotation.y), sin = Math.sin(targetMod.rotation.y);
-        const dxW = furn.position.x - targetMod.position.x;
-        const dzW = furn.position.z - targetMod.position.z;
-        const localX = dxW * cos - dzW * sin;
-        const localZ = dxW * sin + dzW * cos;
+// Función para pegar/adherir el mueble seleccionado al obstáculo (pared o mueble adyacente) más cercano
+function snapSelectedToNearest(){
+  const furn = selectedFurniture;
+  if(!furn || !furn.parent) return;
 
-        const normX = Math.abs(localX) / (targetW * 0.5 + myW * 0.5 || 1);
-        const normZ = Math.abs(localZ) / (targetD * 0.5 + myD * 0.5 || 1);
+  const item = furn.userData.item;
+  const level = furn.userData.level;
+  const rotY = furn.rotation.y;
 
-        let snapLX = 0, snapLZ = 0;
-        if(normX >= normZ){
-          const sideX = (localX >= 0) ? 1 : -1;
-          snapLX = sideX * (targetW * 0.5 + myW * 0.5 + 0.002);
-          snapLZ = 0;
-        } else {
-          const sideZ = (localZ >= 0) ? 1 : -1;
-          snapLZ = sideZ * (targetD * 0.5 + myD * 0.5 + 0.002);
-          snapLX = 0;
-        }
+  const c = Math.cos(rotY), s = Math.sin(rotY);
+  const testDirs = [
+    { name: 'local_right', x:  c, z: -s },
+    { name: 'local_left',  x: -c, z:  s },
+    { name: 'local_back',  x:  s, z:  c },
+    { name: 'local_front', x: -s, z: -c },
+    { name: 'world_posX',  x:  1, z:  0 },
+    { name: 'world_negX',  x: -1, z:  0 },
+    { name: 'world_posZ',  x:  0, z:  1 },
+    { name: 'world_negZ',  x:  0, z: -1 },
+  ];
 
-        const worldX = targetMod.position.x + snapLX * cos + snapLZ * sin;
-        const worldZ = targetMod.position.z - snapLX * sin + snapLZ * cos;
-        furn.rotation.y = targetMod.rotation.y;
-        const clamped = clampPositionToWalls(worldX, worldZ, furn.rotation.y, item, lvl, furn, true);
-        furn.position.x = clamped.x;
-        furn.position.z = clamped.z;
-        updateEditValues();
-        showSaveToast('¡Módulo de sala alineado y pegado al ras!', '🧲');
-        return;
+  const ignoreList = (selectedFurnitureList && selectedFurnitureList.length > 0) ? selectedFurnitureList : [furn];
+
+  let bestDir = null;
+  let bestDist = Infinity;
+
+  testDirs.forEach(dir => {
+    const len = Math.hypot(dir.x, dir.z);
+    if(len < 1e-5) return;
+    const nx = dir.x / len;
+    const nz = dir.z / len;
+
+    const initCol = checkCollision(furn.position.x + nx * 0.005, furn.position.z + nz * 0.005, rotY, item, level, ignoreList);
+    if(initCol.collides) return;
+
+    let maxD = 2.0;
+    let foundCol = false;
+    for(let d = 0.02; d <= maxD; d += 0.02){
+      const col = checkCollision(furn.position.x + nx * d, furn.position.z + nz * d, rotY, item, level, ignoreList);
+      if(col.collides){
+        maxD = d;
+        foundCol = true;
+        break;
       }
     }
 
-    // CASO 0: Si el objeto seleccionado es una SILLA y hay una MESA DE COMEDOR en el piso -> Meter la silla debajo de la mesa (si las medidas lo permiten)
-    if(isChairItem(item)){
-      let table = null, bestTD = Infinity;
-      placedFurniture.forEach(f => {
-        if(f === furn || f.userData.level !== lvl) return;
-        if(isTableItem(f.userData.item)){
-          const d = Math.hypot(f.position.x - furn.position.x, f.position.z - furn.position.z);
-          if(d < bestTD){ bestTD = d; table = f; }
-        }
-      });
-      if(table){
-        const tableItem = table.userData.item;
-        if(!canChairTuckUnderTable(item, tableItem)){
-          showSaveToast('Las medidas de esta silla no permiten meterla bajo la mesa', '⚠️');
-          return;
-        }
-        const tW = (tableItem.dim_m && tableItem.dim_m[0]) || 1.80;
-        const tD = (tableItem.dim_m && tableItem.dim_m[1]) || 1.05;
-        const cW = (item.dim_m && item.dim_m[0]) || 0.62;
-        const cD = (item.dim_m && item.dim_m[1]) || 0.62;
-        const cos = Math.cos(table.rotation.y), sin = Math.sin(table.rotation.y);
-        const dxW = furn.position.x - table.position.x;
-        const dzW = furn.position.z - table.position.z;
-        const localX = dxW * cos - dzW * sin;
-        const localZ = dxW * sin + dzW * cos;
-
-        const core = tableItem._computedTableCore || { halfX: tW * 0.262, halfZ: tD * 0.228 };
-        const halfXCore = Math.max(core.halfX, tW/2 - cD * 0.60);
-        const halfZCore = Math.max(core.halfZ, tD/2 - cD * 0.60);
-
-        const fitsLong = (cW <= tW - 0.06);
-        const fitsHead = (cW <= tD - 0.06);
-
-        let snapLX = localX, snapLZ = localZ, targetRot = table.rotation.y;
-        const normX = Math.abs(localX) / (tW * 0.5 || 1);
-        const normZ = Math.abs(localZ) / (tD * 0.5 || 1);
-
-        if(fitsHead && (!fitsLong || normX > normZ * 1.15)){
-          const sideX = (localX >= 0) ? 1 : -1;
-          snapLX = sideX * (halfXCore + cD * 0.5 + 0.002);
-          const maxOffZ = Math.max(0, (tD * 0.5) - (cW * 0.5) - 0.04);
-          snapLZ = Math.max(-maxOffZ, Math.min(maxOffZ, localZ));
-          targetRot = table.rotation.y + (sideX > 0 ? -Math.PI/2 : Math.PI/2);
-        } else {
-          const sideZ = (localZ >= 0) ? 1 : -1;
-          snapLZ = sideZ * (halfZCore + cD * 0.5 + 0.002);
-          const maxOffX = Math.max(0, (tW * 0.5) - (cW * 0.5) - 0.04);
-          snapLX = Math.max(-maxOffX, Math.min(maxOffX, localX));
-          targetRot = table.rotation.y + (sideZ > 0 ? Math.PI : 0);
-        }
-
-        const worldX = table.position.x + snapLX * cos + snapLZ * sin;
-        const worldZ = table.position.z - snapLX * sin + snapLZ * cos;
-        furn.rotation.y = targetRot;
-        const clamped = clampPositionToWalls(worldX, worldZ, furn.rotation.y, item, lvl, furn, true);
-        furn.position.x = clamped.x;
-        furn.position.z = clamped.z;
-        updateEditValues();
-        showSaveToast('¡Silla alineada y metida debajo de la mesa de comedor!', '🧲');
-        return;
+    if(foundCol){
+      let low = maxD - 0.02;
+      let high = maxD;
+      for(let iter = 0; iter < 6; iter++){
+        const mid = (low + high) * 0.5;
+        const col = checkCollision(furn.position.x + nx * mid, furn.position.z + nz * mid, rotY, item, level, ignoreList);
+        if(col.collides) high = mid;
+        else low = mid;
+      }
+      const distToObstacle = low;
+      if(distToObstacle > 0.002 && distToObstacle < bestDist){
+        bestDist = distToObstacle;
+        bestDir = { x: nx, z: nz, dist: distToObstacle };
       }
     }
+  });
 
-    // CASO 1: Si el objeto seleccionado es una BASE DE CAMA y hay una CABECERA en el piso -> Pegar Base frente a la Cabecera
-    if(isBedItem(item)){
-      let cab = null, bestD = Infinity;
-      placedFurniture.forEach(f => {
-        if(f === furn || f.userData.level !== lvl) return;
-        if(isCabeceraItem(f.userData.item)){
-          const d = Math.hypot(f.position.x - furn.position.x, f.position.z - furn.position.z);
-          if(d < bestD){ bestD = d; cab = f; }
+  if(bestDir && bestDist < 1.95){
+    const moveX = bestDir.x * bestDir.dist;
+    const moveZ = bestDir.z * bestDir.dist;
+
+    furn.position.x += moveX;
+    furn.position.z += moveZ;
+
+    // Pase 2: auto-ajuste al eje perpendicular si hay muro u obstáculo adyacente (ej. esquina o muro posterior)
+    const perpDirs = [
+      { x: -bestDir.z, z:  bestDir.x },
+      { x:  bestDir.z, z: -bestDir.x }
+    ];
+    let perpBest = null;
+    let perpDist = Infinity;
+    perpDirs.forEach(pdir => {
+      let foundP = false;
+      let pMax = 0.60;
+      for(let d = 0.02; d <= pMax; d += 0.02){
+        const col = checkCollision(furn.position.x + pdir.x * d, furn.position.z + pdir.z * d, rotY, item, level, ignoreList);
+        if(col.collides){ pMax = d; foundP = true; break; }
+      }
+      if(foundP){
+        let low = pMax - 0.02, high = pMax;
+        for(let iter = 0; iter < 5; iter++){
+          const mid = (low + high) * 0.5;
+          const col = checkCollision(furn.position.x + pdir.x * mid, furn.position.z + pdir.z * mid, rotY, item, level, ignoreList);
+          if(col.collides) high = mid; else low = mid;
         }
-      });
-      if(cab){
-        const cabD = (cab.userData.item.dim_m[1] || 0.15) / 2;
-        const baseD = (item.dim_m[1] || 1.95) / 2;
-        const cos = Math.cos(cab.rotation.y), sin = Math.sin(cab.rotation.y);
-        const snapLocalZ = cabD + baseD + 0.002;
-        const worldX = cab.position.x + snapLocalZ * sin;
-        const worldZ = cab.position.z + snapLocalZ * cos;
-        furn.rotation.y = cab.rotation.y;
-        const clamped = clampPositionToWalls(worldX, worldZ, furn.rotation.y, item, lvl, furn, false);
-        furn.position.x = clamped.x;
-        furn.position.z = clamped.z;
-        renderSelectionHighlight();
-        saveStateToUrl();
-        showSaveToast('¡Base de cama centrada y pegada al ras de la Cabecera!', '🧲');
-        return;
-      }
-    }
-
-    // CASO 2: Si el objeto seleccionado es una CABECERA y hay una BASE DE CAMA en el piso -> Pegar Cabecera detrás de la Base
-    if(isCabeceraItem(item)){
-      let base = null, bestD = Infinity;
-      placedFurniture.forEach(f => {
-        if(f === furn || f.userData.level !== lvl) return;
-        if(isBedItem(f.userData.item)){
-          const d = Math.hypot(f.position.x - furn.position.x, f.position.z - furn.position.z);
-          if(d < bestD){ bestD = d; base = f; }
-        }
-      });
-      if(base){
-        const cabD = (item.dim_m[1] || 0.15) / 2;
-        const baseD = (base.userData.item.dim_m[1] || 1.95) / 2;
-        const cos = Math.cos(base.rotation.y), sin = Math.sin(base.rotation.y);
-        const snapLocalZ = -(baseD + cabD + 0.002);
-        const worldX = base.position.x + snapLocalZ * sin;
-        const worldZ = base.position.z + snapLocalZ * cos;
-        furn.rotation.y = base.rotation.y;
-        const clamped = clampPositionToWalls(worldX, worldZ, furn.rotation.y, item, lvl, furn, false);
-        furn.position.x = clamped.x;
-        furn.position.z = clamped.z;
-        renderSelectionHighlight();
-        saveStateToUrl();
-        showSaveToast('¡Cabecera centrada y pegada detrás de la Base de Cama!', '🧲');
-        return;
-      }
-    }
-
-    // CASO 3: Pegar Buró al costado de la Cama / Base de Cama (y frente a la Cabecera si existe)
-    let bed = null;
-    let bestDist = Infinity;
-    placedFurniture.forEach(f => {
-      if(f === furn || f.userData.level !== lvl) return;
-      if(isBedItem(f.userData.item)){
-        const d = Math.hypot(f.position.x - furn.position.x, f.position.z - furn.position.z);
-        if(d < bestDist){ bestDist = d; bed = f; }
-      }
-    });
-
-    if(!bed){
-      showSaveToast('No se encontró una cama o base en este piso para pegar', '⚠️');
-      return;
-    }
-
-    const bedItem = bed.userData.item;
-    const buroItem = item;
-    const prof = getBedVolumetricProfile(bedItem);
-    const buroHalfW = (buroItem.dim_m[0] || 0.50) / 2;
-    const buroHalfD = (buroItem.dim_m[1] || 0.39) / 2;
-
-    const cos = Math.cos(bed.rotation.y);
-    const sin = Math.sin(bed.rotation.y);
-    const dxWorld = furn.position.x - bed.position.x;
-    const dzWorld = furn.position.z - bed.position.z;
-    const localX = dxWorld * cos - dzWorld * sin;
-    const isLeft = localX < 0;
-
-    const snapLocalX = isLeft
-      ? -(prof.mattressHalfW + buroHalfW + 0.002)
-      :  (prof.mattressHalfW + buroHalfW + 0.002);
-
-    let snapLocalZ = prof.hasWings
-      ? (-prof.halfZ + prof.headboardDepth + buroHalfD + 0.003)
-      : (-prof.halfZ + buroHalfD + 0.002);
-
-    // Si hay una Cabecera independiente detrás de esta Base de Cama y sobresale a los lados,
-    // alinear el respaldo del Buró exactamente al ras frontal de la Cabecera:
-    placedFurniture.forEach(f => {
-      if(f === furn || f === bed || f.userData.level !== lvl) return;
-      if(isCabeceraItem(f.userData.item)){
-        const dCab = Math.hypot(f.position.x - bed.position.x, f.position.z - bed.position.z);
-        if(dCab < 2.2){
-          const cabHalfW = (f.userData.item.dim_m[0] || 2.0) / 2;
-          const cabHalfD = (f.userData.item.dim_m[1] || 0.15) / 2;
-          if(cabHalfW > prof.mattressHalfW + 0.01){
-            const dcx = f.position.x - bed.position.x;
-            const dcz = f.position.z - bed.position.z;
-            const cabLocalZ = dcx * sin + dcz * cos;
-            const cabFrontZ = cabLocalZ + cabHalfD;
-            snapLocalZ = Math.max(snapLocalZ, cabFrontZ + buroHalfD + 0.002);
-          }
+        if(low > 0.003 && low < perpDist){
+          perpDist = low;
+          perpBest = { x: pdir.x, z: pdir.z, dist: low };
         }
       }
     });
 
-    const worldX = bed.position.x + snapLocalX * cos + snapLocalZ * sin;
-    const worldZ = bed.position.z - snapLocalX * sin + snapLocalZ * cos;
-
-    furn.rotation.y = bed.rotation.y;
-    const clamped = clampPositionToWalls(worldX, worldZ, furn.rotation.y, buroItem, lvl, furn, false);
-    furn.position.x = clamped.x;
-    furn.position.z = clamped.z;
+    if(perpBest && perpDist < 0.60){
+      furn.position.x += perpBest.x * perpBest.dist;
+      furn.position.z += perpBest.z * perpBest.dist;
+    }
 
     renderSelectionHighlight();
     saveStateToUrl();
-    showSaveToast('¡Buró pegado al borde exacto de la cama sin atravesar muros!', '🧲');
+    showSaveToast('¡Mueble pegado al ras del obstáculo más cercano!', '🧲');
+  } else {
+    showSaveToast('No se encontró ningún muro ni mueble adyacente para pegar', 'ℹ️');
+  }
+}
+
+const btnSnapToBed = document.getElementById('bSnapToBed');
+if(btnSnapToBed){
+  btnSnapToBed.title = 'Pegar a la pared o producto más cercano (Tecla Fin)';
+  btnSnapToBed.innerHTML = '🧲 Pegar (Fin)';
+  btnSnapToBed.addEventListener('click', () => {
+    snapSelectedToNearest();
   });
 }
+
+let movingFurnitureList = null;
 
 document.getElementById('bMoveSelected').addEventListener('click', () => {
   if(!selectedFurniture) return;
@@ -3238,17 +3264,35 @@ document.getElementById('bMoveSelected').addEventListener('click', () => {
   movingFurniture = furn;
   movingOrig = { pos: furn.position.clone(), rot: furn.rotation.y, lvl: furn.userData.level };
   placingItem = furn.userData.item;
+
+  if(selectedFurnitureList && selectedFurnitureList.length > 1){
+    movingFurnitureList = selectedFurnitureList.map(f => ({
+      furn: f,
+      relX: f.position.x - furn.position.x,
+      relZ: f.position.z - furn.position.z,
+      rotY: f.rotation.y,
+      item: f.userData.item,
+      lvl: f.userData.level
+    }));
+    movingFurnitureList.forEach(m => { m.furn.visible = false; });
+  } else {
+    movingFurnitureList = null;
+    furn.visible = false;
+  }
+
   deselectFurniture();
-  furn.visible = false;
   createGhost(placingItem, movingOrig.rot);
 });
 
 document.getElementById('bDelSelected').addEventListener('click', () => {
-  if(!selectedFurniture) return;
-  recordHistory('remove', selectedFurniture);
-  if(selectedFurniture.parent) selectedFurniture.parent.remove(selectedFurniture);
-  const idx = placedFurniture.indexOf(selectedFurniture);
-  if(idx >= 0) placedFurniture.splice(idx, 1);
+  const targets = (selectedFurnitureList && selectedFurnitureList.length > 0) ? [...selectedFurnitureList] : (selectedFurniture ? [selectedFurniture] : []);
+  if(targets.length === 0) return;
+  targets.forEach(furn => {
+    recordHistory('remove', furn);
+    if(furn.parent) furn.parent.remove(furn);
+    const idx = placedFurniture.indexOf(furn);
+    if(idx >= 0) placedFurniture.splice(idx, 1);
+  });
   deselectFurniture();
   saveStateToUrl();
 });
@@ -3395,15 +3439,25 @@ window.addEventListener('keydown', e => {
       return;
     }
     const STEP = 0.05; // 5 cm de movimiento por tecla
-    let dx = 0, dz = 0;
-    if(e.key === 'ArrowUp') dz = -STEP;
-    else if(e.key === 'ArrowDown') dz = STEP;
-    else if(e.key === 'ArrowLeft') dx = -STEP;
-    else if(e.key === 'ArrowRight') dx = STEP;
-
-    if(dx !== 0 || dz !== 0){
+    if(e.key === 'ArrowUp'){
       e.preventDefault();
-      nudgeSelected(dx, dz);
+      nudgeViewRelative('up', STEP);
+      return;
+    } else if(e.key === 'ArrowDown'){
+      e.preventDefault();
+      nudgeViewRelative('down', STEP);
+      return;
+    } else if(e.key === 'ArrowLeft'){
+      e.preventDefault();
+      nudgeViewRelative('left', STEP);
+      return;
+    } else if(e.key === 'ArrowRight'){
+      e.preventDefault();
+      nudgeViewRelative('right', STEP);
+      return;
+    } else if(e.key === 'End' || e.key === 'Fin'){
+      e.preventDefault();
+      snapSelectedToNearest();
       return;
     }
   }
