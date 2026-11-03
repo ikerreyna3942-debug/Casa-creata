@@ -987,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793732697"></script>
+<script src="modelos_glb_data.js?v=1793745347"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1993,7 +1993,8 @@ function isBedItem(it){
   if(!it || isCabeceraItem(it)) return false;
   const n = (it.name || '').toLowerCase();
   const id = (it.id || '').toLowerCase();
-  return it.category === 'Recámaras' || n.includes('cama') || id.includes('cama') || n.includes('base') || id.includes('base') || n.includes('litera') || id.includes('litera');
+  if(n.includes('cajonera') || id.includes('cajonera') || n.includes('comoda') || id.includes('comoda') || id.includes('buro') || n.includes('buro')) return false;
+  return (it.category === 'Recámaras' && !n.includes('cajonera') && !n.includes('comoda')) || n.includes('cama') || id.includes('cama') || n.includes('base') || id.includes('base') || n.includes('litera') || id.includes('litera');
 }
 
 function isBuroItem(it){
