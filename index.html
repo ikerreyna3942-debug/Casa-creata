@@ -987,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793799739"></script>
+<script src="modelos_glb_data.js?v=1793801011"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -2099,12 +2099,18 @@ function getFurnitureLocalBoxes(item, interactingWithItem=null){
       { minX: -prof.mattressHalfW, maxX: prof.mattressHalfW, minZ: -prof.halfZ, maxZ: prof.halfZ, part: 'mattress' }
     ];
   }
-  // Si es una Sala en L (ej. Sala Mawi o Sofá Cama Asha): perfil en L de 2 cajas para permitir colocar mesas de centro en el hueco frontal
+  // Si es una Sala en L (ej. Sala Mawi, Sofá Cama Asha, Piero, Lexy): perfil en L de 2 cajas para permitir colocar mesas de centro en el hueco frontal
   const idLow = ((item && item.id) || '').toLowerCase();
-  if(idLow.includes('sala_mawi') || idLow.includes('sofa_cama_asha')){
+  if(idLow.includes('sala_mawi') || idLow.includes('sofa_cama_asha') || idLow.includes('piero_der')){
     return [
       { minX: -dx/2, maxX: dx * 0.10, minZ: -dz/2, maxZ: -dz/2 + dz * 0.60, part: 'sofa_body' },
       { minX: dx * 0.10, maxX: dx/2,  minZ: -dz/2, maxZ: dz/2, part: 'sofa_chaise' }
+    ];
+  }
+  if(idLow.includes('piero_izq') || idLow.includes('lexy_izq')){
+    return [
+      { minX: -dx/2, maxX: -dx * 0.10, minZ: -dz/2, maxZ: dz/2, part: 'sofa_chaise' },
+      { minX: -dx * 0.10, maxX: dx/2,  minZ: -dz/2, maxZ: -dz/2 + dz * 0.60, part: 'sofa_body' }
     ];
   }
   // Si es una Mesa de Comedor interactuando con una Silla cuyas medidas caben debajo de la cubierta:
