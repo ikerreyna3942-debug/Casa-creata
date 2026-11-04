@@ -987,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793802806"></script>
+<script src="modelos_glb_data.js?v=1793804349"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1064,7 +1064,7 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, preserveDrawi
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
+renderer.toneMappingExposure = 1.05;
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0e0f12);
@@ -1074,7 +1074,7 @@ const camera = new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 0.1, 500)
 camera.position.set(CENTER.x + 32, 32, CENTER.z + 40);
 
 // HEADLIGHT: Luz direccional frontal vinculada a la cámara para eliminar cualquier sombra oscura
-const headlight = new THREE.DirectionalLight(0xffffff, 1.35);
+const headlight = new THREE.DirectionalLight(0xffffff, 0.40);
 headlight.position.set(0, 0, 1);
 camera.add(headlight);
 scene.add(camera);
@@ -1140,9 +1140,9 @@ canvas.addEventListener('dblclick', (e) => {
 });
 
 // Iluminación ambiental y hemisférica amplia y luminosa
-const ambLight = new THREE.AmbientLight(0xffffff, 1.85);
+const ambLight = new THREE.AmbientLight(0xffffff, 1.35);
 scene.add(ambLight);
-const hemiLight = new THREE.HemisphereLight(0xfffdf7, 0xdfd9cf, 1.25);
+const hemiLight = new THREE.HemisphereLight(0xfffdf7, 0xdfd9cf, 1.05);
 scene.add(hemiLight);
 
 // 4 Luces diagonales suaves desde las 4 esquinas superiores para luz envolvente 360°
@@ -1734,33 +1734,111 @@ function getFurnitureFootprintPolygon(item){
   // 1. Sala Lumno (Curva en arco exacto al modelo 3D)
   if(idLow.includes('lumno')){
     return [
-      [-0.50 * dx,  0.02 * dz],
-      [-0.40 * dx, -0.22 * dz],
-      [-0.30 * dx, -0.37 * dz],
-      [-0.20 * dx, -0.45 * dz],
-      [-0.10 * dx, -0.49 * dz],
+      [-0.48 * dx, -0.02 * dz],
+      [-0.42 * dx, -0.14 * dz],
+      [-0.37 * dx, -0.24 * dz],
+      [-0.33 * dx, -0.33 * dz],
+      [-0.28 * dx, -0.38 * dz],
+      [-0.23 * dx, -0.42 * dz],
+      [-0.18 * dx, -0.46 * dz],
+      [-0.12 * dx, -0.48 * dz],
+      [-0.08 * dx, -0.49 * dz],
       [ 0.00 * dx, -0.50 * dz],
-      [ 0.10 * dx, -0.50 * dz],
-      [ 0.20 * dx, -0.49 * dz],
-      [ 0.30 * dx, -0.45 * dz],
-      [ 0.40 * dx, -0.39 * dz],
-      [ 0.50 * dx, -0.30 * dz],
-      [ 0.50 * dx,  0.06 * dz],
-      [ 0.40 * dx,  0.43 * dz],
-      [ 0.30 * dx,  0.32 * dz],
-      [ 0.20 * dx,  0.18 * dz],
-      [ 0.10 * dx,  0.11 * dz],
+      [ 0.07 * dx, -0.50 * dz],
+      [ 0.13 * dx, -0.50 * dz],
+      [ 0.18 * dx, -0.49 * dz],
+      [ 0.22 * dx, -0.49 * dz],
+      [ 0.27 * dx, -0.46 * dz],
+      [ 0.33 * dx, -0.43 * dz],
+      [ 0.38 * dx, -0.39 * dz],
+      [ 0.43 * dx, -0.35 * dz],
+      [ 0.47 * dx, -0.30 * dz],
+      [ 0.47 * dx,  0.12 * dz],
+      [ 0.43 * dx,  0.43 * dz],
+      [ 0.38 * dx,  0.40 * dz],
+      [ 0.33 * dx,  0.33 * dz],
+      [ 0.27 * dx,  0.26 * dz],
+      [ 0.22 * dx,  0.20 * dz],
+      [ 0.18 * dx,  0.13 * dz],
+      [ 0.13 * dx,  0.12 * dz],
+      [ 0.07 * dx,  0.10 * dz],
       [ 0.00 * dx,  0.09 * dz],
-      [-0.10 * dx,  0.14 * dz],
-      [-0.20 * dx,  0.22 * dz],
-      [-0.30 * dx,  0.44 * dz],
-      [-0.40 * dx,  0.50 * dz],
-      [-0.50 * dx,  0.23 * dz]
+      [-0.08 * dx,  0.10 * dz],
+      [-0.12 * dx,  0.14 * dz],
+      [-0.18 * dx,  0.18 * dz],
+      [-0.23 * dx,  0.24 * dz],
+      [-0.28 * dx,  0.34 * dz],
+      [-0.33 * dx,  0.46 * dz],
+      [-0.37 * dx,  0.50 * dz],
+      [-0.43 * dx,  0.43 * dz],
+      [-0.48 * dx,  0.28 * dz]
     ];
   }
 
-  // 2. Salas en L con Chaise a la Derecha (Mawi, Asha, Piero Derecha)
-  if(idLow.includes('sala_mawi') || idLow.includes('sofa_cama_asha') || idLow.includes('piero_der')){
+  // 2. Sala Piero Derecha (Chaise en ángulo a la derecha, librero/estante a la izquierda)
+  if(idLow.includes('piero_der')){
+    return [
+      [-0.48 * dx, -0.46 * dz],
+      [-0.30 * dx, -0.48 * dz],
+      [ 0.00 * dx, -0.50 * dz],
+      [ 0.20 * dx, -0.48 * dz],
+      [ 0.48 * dx, -0.42 * dz],
+      [ 0.48 * dx,  0.10 * dz],
+      [ 0.43 * dx,  0.50 * dz],
+      [ 0.17 * dx,  0.50 * dz],
+      [ 0.13 * dx,  0.00 * dz],
+      [ 0.03 * dx, -0.04 * dz],
+      [-0.13 * dx,  0.01 * dz],
+      [-0.22 * dx,  0.06 * dz],
+      [-0.32 * dx,  0.11 * dz],
+      [-0.42 * dx,  0.14 * dz],
+      [-0.48 * dx, -0.07 * dz],
+      [-0.48 * dx, -0.46 * dz]
+    ];
+  }
+
+  // 3. Sala Piero Izquierda (Chaise en ángulo a la izquierda, librero/estante a la derecha)
+  if(idLow.includes('piero_izq')){
+    return [
+      [ 0.48 * dx, -0.46 * dz],
+      [ 0.30 * dx, -0.48 * dz],
+      [ 0.00 * dx, -0.50 * dz],
+      [-0.20 * dx, -0.48 * dz],
+      [-0.48 * dx, -0.42 * dz],
+      [-0.48 * dx,  0.10 * dz],
+      [-0.43 * dx,  0.50 * dz],
+      [-0.17 * dx,  0.50 * dz],
+      [-0.13 * dx,  0.00 * dz],
+      [-0.03 * dx, -0.04 * dz],
+      [ 0.13 * dx,  0.01 * dz],
+      [ 0.22 * dx,  0.06 * dz],
+      [ 0.32 * dx,  0.11 * dz],
+      [ 0.42 * dx,  0.14 * dz],
+      [ 0.48 * dx, -0.07 * dz],
+      [ 0.48 * dx, -0.46 * dz]
+    ];
+  }
+
+  // 4. Sala Lexy Izquierda (Chaise a la izquierda, respaldo y asiento corrido a la derecha)
+  if(idLow.includes('lexy_izq')){
+    return [
+      [-0.48 * dx, -0.50 * dz],
+      [ 0.48 * dx, -0.50 * dz],
+      [ 0.48 * dx,  0.20 * dz],
+      [-0.08 * dx,  0.20 * dz],
+      [-0.12 * dx,  0.34 * dz],
+      [-0.17 * dx,  0.44 * dz],
+      [-0.23 * dx,  0.48 * dz],
+      [-0.28 * dx,  0.50 * dz],
+      [-0.33 * dx,  0.50 * dz],
+      [-0.38 * dx,  0.48 * dz],
+      [-0.42 * dx,  0.45 * dz],
+      [-0.48 * dx,  0.36 * dz]
+    ];
+  }
+
+  // 5. Otras Salas en L con Chaise a la Derecha (Mawi, Asha)
+  if(idLow.includes('sala_mawi') || idLow.includes('sofa_cama_asha')){
     return [
       [-dx/2, -dz/2],
       [ dx/2, -dz/2],
@@ -1771,19 +1849,7 @@ function getFurnitureFootprintPolygon(item){
     ];
   }
 
-  // 3. Salas en L con Chaise a la Izquierda (Piero Izquierda, Lexy Izquierda)
-  if(idLow.includes('piero_izq') || idLow.includes('lexy_izq')){
-    return [
-      [-dx/2, -dz/2],
-      [ dx/2, -dz/2],
-      [ dx/2, -dz/2 + dz * 0.60],
-      [-dx * 0.10, -dz/2 + dz * 0.60],
-      [-dx * 0.10,  dz/2],
-      [-dx/2,  dz/2]
-    ];
-  }
-
-  // 4. Camas con alas en la cabecera
+  // 6. Camas con alas en la cabecera
   if(isBedItem(item)){
     const prof = getBedVolumetricProfile(item);
     if(prof && prof.hasWings){
@@ -1805,7 +1871,7 @@ function getFurnitureFootprintPolygon(item){
     }
   }
 
-  // 5. Rectángulo estándar
+  // 7. Rectángulo estándar
   return [
     [-dx/2, -dz/2],
     [ dx/2, -dz/2],
@@ -2001,13 +2067,23 @@ function createFurnitureInstance(item, callback){
     wrapper.position.set(-center2.x, -b2.min.y, -center2.z);
 
     // Calibración de materiales PBR (cero sombras negras, texturas y maderas vibrantes)
+    const itName = (item.name || '').toLowerCase();
+    const itCat = (item.category || '').toLowerCase();
+    const isUpholstered = itCat === 'salas' || itName.includes('sala') || itName.includes('sofa') || itName.includes('sillon') || itName.includes('sofa_cama') || itName.includes('cama');
+
     wrapper.traverse(c => {
       if(c.isMesh){
         c.userData.parentFurniture = group;
         if(c.material){
           c.material = c.material.clone();
-          c.material.metalness = Math.min(c.material.metalness || 0, 0.12);
-          c.material.roughness = THREE.MathUtils.clamp(c.material.roughness || 0.65, 0.3, 0.85);
+          if(isUpholstered){
+            // Telas y terciopelos: acabado mate de alta fidelidad como en estudio fotográfico
+            c.material.metalness = 0.0;
+            c.material.roughness = 0.95;
+          } else {
+            c.material.metalness = Math.min(c.material.metalness || 0, 0.08);
+            c.material.roughness = THREE.MathUtils.clamp(c.material.roughness || 0.65, 0.4, 0.85);
+          }
           if(c.material.map) c.material.map.colorSpace = THREE.SRGBColorSpace;
           c.material.needsUpdate = true;
         }
@@ -2146,33 +2222,50 @@ function getFurnitureLocalBoxes(item, interactingWithItem=null){
     ];
   }
   const idLow = ((item && item.id) || '').toLowerCase();
-  // Sala Lumno: Descomposición en 8 bloques curvos para seguir fielmente el arco del sofá
+  // 1. Sala Lumno: 8 bloques curvos calibrados exactamente al arco del sofá
   if(idLow.includes('lumno')){
     return [
-      { minX: -dx * 0.50,  maxX: -dx * 0.375, minZ: -dz * 0.22, maxZ: dz * 0.50, part: 'lumno_0' },
-      { minX: -dx * 0.375, maxX: -dx * 0.25,  minZ: -dz * 0.40, maxZ: dz * 0.50, part: 'lumno_1' },
-      { minX: -dx * 0.25,  maxX: -dx * 0.125, minZ: -dz * 0.49, maxZ: dz * 0.26, part: 'lumno_2' },
-      { minX: -dx * 0.125, maxX: 0,           minZ: -dz * 0.50, maxZ: dz * 0.14, part: 'lumno_3' },
-      { minX: 0,           maxX: dx * 0.125,  minZ: -dz * 0.50, maxZ: dz * 0.14, part: 'lumno_4' },
-      { minX: dx * 0.125,  maxX: dx * 0.25,   minZ: -dz * 0.49, maxZ: dz * 0.26, part: 'lumno_5' },
-      { minX: dx * 0.25,   maxX: dx * 0.375,  minZ: -dz * 0.40, maxZ: dz * 0.50, part: 'lumno_6' },
-      { minX: dx * 0.375,  maxX: dx * 0.50,   minZ: -dz * 0.22, maxZ: dz * 0.50, part: 'lumno_7' }
+      { minX: -dx * 0.48, maxX: -dx * 0.36, minZ: -dz * 0.24, maxZ: dz * 0.50, part: 'lumno_0' },
+      { minX: -dx * 0.36, maxX: -dx * 0.24, minZ: -dz * 0.42, maxZ: dz * 0.46, part: 'lumno_1' },
+      { minX: -dx * 0.24, maxX: -dx * 0.12, minZ: -dz * 0.48, maxZ: dz * 0.24, part: 'lumno_2' },
+      { minX: -dx * 0.12, maxX: 0,          minZ: -dz * 0.50, maxZ: dz * 0.12, part: 'lumno_3' },
+      { minX: 0,          maxX: dx * 0.12,  minZ: -dz * 0.50, maxZ: dz * 0.12, part: 'lumno_4' },
+      { minX: dx * 0.12,  maxX: dx * 0.24,  minZ: -dz * 0.48, maxZ: dz * 0.20, part: 'lumno_5' },
+      { minX: dx * 0.24,  maxX: dx * 0.36,  minZ: -dz * 0.43, maxZ: dz * 0.35, part: 'lumno_6' },
+      { minX: dx * 0.36,  maxX: dx * 0.48,  minZ: -dz * 0.35, maxZ: dz * 0.43, part: 'lumno_7' }
     ];
   }
-  // Salas en L (Mawi, Asha, Piero, Lexy)
-  if(idLow.includes('sala_mawi') || idLow.includes('sofa_cama_asha') || idLow.includes('piero_der')){
+  // 2. Sala Piero Derecha (Librero izq, Asiento medio, Chaise der)
+  if(idLow.includes('piero_der')){
+    return [
+      { minX: -dx * 0.48, maxX: -dx * 0.30, minZ: -dz * 0.48, maxZ: dz * 0.14, part: 'piero_shelf' },
+      { minX: -dx * 0.30, maxX: dx * 0.15,  minZ: -dz * 0.50, maxZ: dz * 0.02, part: 'piero_seat' },
+      { minX: dx * 0.15,  maxX: dx * 0.48,  minZ: -dz * 0.48, maxZ: dz * 0.50, part: 'piero_chaise' }
+    ];
+  }
+  // 3. Sala Piero Izquierda (Chaise izq, Asiento medio, Librero der)
+  if(idLow.includes('piero_izq')){
+    return [
+      { minX: -dx * 0.48, maxX: -dx * 0.15, minZ: -dz * 0.48, maxZ: dz * 0.50, part: 'piero_chaise' },
+      { minX: -dx * 0.15, maxX: dx * 0.30,  minZ: -dz * 0.50, maxZ: dz * 0.02, part: 'piero_seat' },
+      { minX: dx * 0.30,  maxX: dx * 0.48,  minZ: -dz * 0.48, maxZ: dz * 0.14, part: 'piero_shelf' }
+    ];
+  }
+  // 4. Sala Lexy Izquierda
+  if(idLow.includes('lexy_izq')){
+    return [
+      { minX: -dx * 0.48, maxX: -dx * 0.10, minZ: -dz * 0.50, maxZ: dz * 0.50, part: 'lexy_chaise' },
+      { minX: -dx * 0.10, maxX: dx * 0.48,  minZ: -dz * 0.50, maxZ: dz * 0.20, part: 'lexy_seat' }
+    ];
+  }
+  // 5. Salas en L estándar (Mawi, Asha)
+  if(idLow.includes('sala_mawi') || idLow.includes('sofa_cama_asha')){
     return [
       { minX: -dx/2, maxX: dx * 0.10, minZ: -dz/2, maxZ: -dz/2 + dz * 0.60, part: 'sofa_body' },
       { minX: dx * 0.10, maxX: dx/2,  minZ: -dz/2, maxZ: dz/2, part: 'sofa_chaise' }
     ];
   }
-  if(idLow.includes('piero_izq') || idLow.includes('lexy_izq')){
-    return [
-      { minX: -dx/2, maxX: -dx * 0.10, minZ: -dz/2, maxZ: dz/2, part: 'sofa_chaise' },
-      { minX: -dx * 0.10, maxX: dx/2,  minZ: -dz/2, maxZ: -dz/2 + dz * 0.60, part: 'sofa_body' }
-    ];
-  }
-  // Si es una Mesa de Comedor interactuando con una Silla cuyas medidas caben debajo de la cubierta:
+// Si es una Mesa de Comedor interactuando con una Silla cuyas medidas caben debajo de la cubierta:
   // usa el núcleo de los pedestales/base de la mesa para que la silla pueda meterse debajo de la cubierta
   if(isTableItem(item) && interactingWithItem && canChairTuckUnderTable(interactingWithItem, item)){
     const cW = (interactingWithItem.dim_m && interactingWithItem.dim_m[0]) || 0.62;
