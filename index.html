@@ -11,6 +11,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>CASA CREATA · Showroom 3D Interactivo</title>
+<script>window.APP_BUILD_VERSION = '1793832521';</script>
 <style>
   :root {
     --bg: #0e0f12;
@@ -986,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793832105"></script>
+<script src="modelos_glb_data.js?v=1793832521"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -4501,8 +4502,18 @@ function loadSetupFromJson(data){
       const grp = levelGroups[d.lvl] || levelGroups.PB;
       createFurnitureInstance(item, (inst) => {
         inst.userData.level = d.lvl || 'PB';
-        inst.position.set(Number(d.x) || 0, LOSA, Number(d.z) || 0);
-        inst.rotation.y = Number(d.r) || 0;
+        let posX = Number(d.x) || 0;
+        let posZ = Number(d.z) || 0;
+        let rotY = Number(d.r) || 0;
+        // Auto-resolver colisiones heredadas de enlaces o guardados con muebles encimados
+        const col = checkCollision(posX, posZ, rotY, item, inst.userData.level);
+        if(col.collides){
+          const unstuck = clampPositionToWalls(posX, posZ, rotY, item, inst.userData.level, null, true);
+          posX = unstuck.x;
+          posZ = unstuck.z;
+        }
+        inst.position.set(posX, LOSA, posZ);
+        inst.rotation.y = rotY;
         grp.add(inst);
         placedFurniture.push(inst);
       });
