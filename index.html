@@ -778,6 +778,7 @@
   <span class="pill-sep"></span>
   <button class="pill-btn" id="btnSelectStore" title="Elegir tienda para ver ventas">🏪 Tienda: <b id="lblActiveStore">COLOSIO</b> ▾</button>
   <button class="pill-btn" id="btnAutoRot">🔄 Girar Vista</button>
+  <button class="pill-btn" id="btnView2D" title="Alternar entre Perspectiva 3D y Vista Cenital 2D (Plano Recto)">📐 Plano 2D</button>
   <button class="pill-btn" id="btnResetView">🎯 Centrar</button>
 
 </div>
@@ -987,7 +988,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793820130"></script>
+<script src="modelos_glb_data.js?v=1793823171"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1297,13 +1298,66 @@ function decomposeOrthoPoly(pts){
   return rects;
 }
 
+
+// Pre-procesador arquitectónico: Enrasa castillos/columnas estructurales al paño liso de los muros
+function getEnrasadoCols(lvl){
+  const d = DATA[lvl]; if(!d) return [];
+  const cols = d.cols || [];
+  const walls = d.walls || [];
+  return cols.map(c => {
+    const cx0 = Math.min(...c.p.map(p => p[0])), cx1 = Math.max(...c.p.map(p => p[0]));
+    const cy0 = Math.min(...c.p.map(p => p[1])), cy1 = Math.max(...c.p.map(p => p[1]));
+    const touching = walls.filter(w => {
+      const wx0 = Math.min(...w.p.map(p => p[0])), wx1 = Math.max(...w.p.map(p => p[0]));
+      const wy0 = Math.min(...w.p.map(p => p[1])), wy1 = Math.max(...w.p.map(p => p[1]));
+      return !(cx1 < wx0 - 0.05 || cx0 > wx1 + 0.05 || cy1 < wy0 - 0.05 || cy0 > wy1 + 0.05);
+    });
+    if(touching.length === 0){
+      return { id: c.id, p: c.p, isTouching: false };
+    }
+    let minWx0 = Infinity, maxWx1 = -Infinity, minWy0 = Infinity, maxWy1 = -Infinity;
+    touching.forEach(w => {
+      const wx0 = Math.min(...w.p.map(p => p[0])), wx1 = Math.max(...w.p.map(p => p[0]));
+      const wy0 = Math.min(...w.p.map(p => p[1])), wy1 = Math.max(...w.p.map(p => p[1]));
+      if(wx0 < minWx0) minWx0 = wx0;
+      if(wx1 > maxWx1) maxWx1 = wx1;
+      if(wy0 < minWy0) minWy0 = wy0;
+      if(wy1 > maxWy1) maxWy1 = wy1;
+    });
+
+    let newX0 = cx0, newX1 = cx1, newY0 = cy0, newY1 = cy1;
+    const touchesVertical = touching.some(w => {
+      const wx0 = Math.min(...w.p.map(p => p[0])), wx1 = Math.max(...w.p.map(p => p[0]));
+      return (wx1 - wx0) <= 0.25;
+    });
+    const touchesHorizontal = touching.some(w => {
+      const wy0 = Math.min(...w.p.map(p => p[1])), wy1 = Math.max(...w.p.map(p => p[1]));
+      return (wy1 - wy0) <= 0.25;
+    });
+
+    if(touchesVertical && !touchesHorizontal){
+      newX0 = minWx0; newX1 = maxWx1;
+    } else if(touchesHorizontal && !touchesVertical){
+      newY0 = minWy0; newY1 = maxWy1;
+    } else {
+      newX0 = Math.max(cx0, minWx0); newX1 = Math.min(cx1, maxWx1);
+      newY0 = Math.max(cy0, minWy0); newY1 = Math.min(cy1, maxWy1);
+    }
+    return {
+      id: c.id,
+      p: [[newX0, newY0], [newX1, newY0], [newX1, newY1], [newX0, newY1]],
+      isTouching: true
+    };
+  });
+}
+
 const LEVEL_OBSTACLES = { PB:[], N1:[], N2:[] };
 ['PB','N1','N2'].forEach(lvl => {
   const d = DATA[lvl]; if(!d) return;
   (d.walls || []).forEach(w => {
     decomposeOrthoPoly(w.p).forEach(r => LEVEL_OBSTACLES[lvl].push(r));
   });
-  (d.cols || []).forEach(c => {
+  getEnrasadoCols(lvl).forEach(c => {
     decomposeOrthoPoly(c.p).forEach(r => LEVEL_OBSTACLES[lvl].push(r));
   });
   (d.low || []).forEach(lw => {
@@ -1360,9 +1414,15 @@ function buildBuilding(){
       prism(w.p, LOSA, L.muro, mat, grp, [], true, true);
     });
 
-    // Columnas
-    (d.cols||[]).forEach(c => {
-      prism(c.p, LOSA, L.muro, M.col, grp, [], true, true);
+    // Columnas Enrasadas al Paño de Muros (Acabado Continuo y Limpio)
+    getEnrasadoCols(L.id).forEach(c => {
+      if(c.isTouching){
+        // Enrasada al paño liso de pared: material continuo M.wallInt sin aristas negras intermedias
+        prism(c.p, LOSA, L.muro, M.wallInt, grp, [], false, true);
+      } else {
+        // Columna exenta / pilar estructural en medio del salón
+        prism(c.p, LOSA, L.muro, M.col, grp, [], true, true);
+      }
     });
 
     // Vidrios y ventanales
@@ -1616,6 +1676,63 @@ function animateCameraTo(destCamPos, destTargetPos, duration = 450){
 }
 
 // Botón CENTRAR: vuelo suave e interpolado al producto seleccionado o a la vista general
+
+// =====================================================================
+// CONTROLADOR DE VISTA CENITAL 2D (PLANO TÉCNICO RECTO SIN DISTORSIÓN)
+// =====================================================================
+let is2DViewMode = false;
+let saved3DCamState = null;
+
+const btnView2D = document.getElementById('btnView2D');
+if(btnView2D){
+  btnView2D.addEventListener('click', () => {
+    is2DViewMode = !is2DViewMode;
+    btnView2D.classList.toggle('active', is2DViewMode);
+
+    const activeLvl = (currentFloorMode === 'exploded') ? 'PB' : currentFloorMode;
+    const baseY = (levelGroups[activeLvl] ? levelGroups[activeLvl].position.y : 0) + LOSA;
+
+    if(is2DViewMode){
+      // Guardar posición orbital 3D previa
+      saved3DCamState = {
+        camPos: camera.position.clone(),
+        target: controls.target.clone(),
+        maxPolar: controls.maxPolarAngle,
+        minPolar: controls.minPolarAngle
+      };
+      btnView2D.innerHTML = '🧊 Vista 3D';
+      btnView2D.title = 'Regresar a Perspectiva 3D Orbital';
+
+      // Posicionar cámara exactamente perpendicular cenital mirando al piso
+      const targetY = baseY + 0.5;
+      const camY = baseY + 36.0;
+      const destTarget = new THREE.Vector3(CENTER.x, targetY, CENTER.z);
+      const destCam = new THREE.Vector3(CENTER.x, camY, CENTER.z + 0.001); // 0.001 evita gimbal lock
+
+      // Bloquear ángulo polar a 90° exactos (vista planta 2D sin rotación de perspectiva)
+      controls.minPolarAngle = 0.001;
+      controls.maxPolarAngle = 0.001;
+      animateCameraTo(destCam, destTarget, 500);
+      showSaveToast('Vista Plano 2D Cenital (Muros 100% paralelos y rectos)', '📐');
+    } else {
+      // Restaurar perspectiva 3D libre
+      btnView2D.innerHTML = '📐 Plano 2D';
+      btnView2D.title = 'Alternar a Vista Cenital 2D (Plano Recto)';
+      controls.minPolarAngle = 0;
+      controls.maxPolarAngle = Math.PI * 0.43;
+
+      if(saved3DCamState){
+        animateCameraTo(saved3DCamState.camPos, saved3DCamState.target, 500);
+      } else {
+        const destTarget = new THREE.Vector3(CENTER.x, baseY + 1.2, CENTER.z);
+        const destCam = new THREE.Vector3(CENTER.x + 24, baseY + 20, CENTER.z + 28);
+        animateCameraTo(destCam, destTarget, 500);
+      }
+      showSaveToast('Perspectiva 3D restaurada', '🧊');
+    }
+  });
+}
+
 document.getElementById('btnResetView').addEventListener('click', () => {
   if(selectedFurniture && selectedFurniture.parent){
     const wp = new THREE.Vector3();
@@ -1656,7 +1773,7 @@ let selectedFurniture = null;
 
 function loadGLB(glbName, cb){
   const encoded = encodeURIComponent(glbName);
-  const cacheBuster = '?v=' + '20261104_1100';
+  const cacheBuster = '?v=' + '20261104_1530';
   gltfLoader.load('glb/' + encoded + cacheBuster, cb, undefined, (err) => {
     gltfLoader.load('../PRODUCTOS/TIPO GLB/' + encoded + cacheBuster, cb, undefined, (err2) => {
       console.error('Error cargando modelo GLB:', glbName, err2);
@@ -1735,44 +1852,54 @@ function getFurnitureFootprintPolygon(item){
   // 1. Sala Lumno (Curva en arco exacto al modelo 3D)
   if(idLow.includes('lumno')){
     return [
-      [-0.48 * dx, -0.02 * dz],
-      [-0.42 * dx, -0.14 * dz],
-      [-0.37 * dx, -0.24 * dz],
-      [-0.33 * dx, -0.33 * dz],
-      [-0.28 * dx, -0.38 * dz],
-      [-0.23 * dx, -0.42 * dz],
-      [-0.18 * dx, -0.46 * dz],
-      [-0.12 * dx, -0.48 * dz],
-      [-0.08 * dx, -0.49 * dz],
-      [ 0.00 * dx, -0.50 * dz],
-      [ 0.07 * dx, -0.50 * dz],
-      [ 0.13 * dx, -0.50 * dz],
-      [ 0.18 * dx, -0.49 * dz],
-      [ 0.22 * dx, -0.49 * dz],
-      [ 0.27 * dx, -0.46 * dz],
-      [ 0.33 * dx, -0.43 * dz],
-      [ 0.38 * dx, -0.39 * dz],
-      [ 0.43 * dx, -0.35 * dz],
-      [ 0.47 * dx, -0.30 * dz],
-      [ 0.47 * dx,  0.12 * dz],
-      [ 0.43 * dx,  0.43 * dz],
-      [ 0.38 * dx,  0.40 * dz],
-      [ 0.33 * dx,  0.33 * dz],
-      [ 0.27 * dx,  0.26 * dz],
-      [ 0.22 * dx,  0.20 * dz],
-      [ 0.18 * dx,  0.13 * dz],
-      [ 0.13 * dx,  0.12 * dz],
-      [ 0.07 * dx,  0.10 * dz],
-      [ 0.00 * dx,  0.09 * dz],
-      [-0.08 * dx,  0.10 * dz],
-      [-0.12 * dx,  0.14 * dz],
-      [-0.18 * dx,  0.18 * dz],
-      [-0.23 * dx,  0.24 * dz],
-      [-0.28 * dx,  0.34 * dz],
-      [-0.33 * dx,  0.46 * dz],
-      [-0.37 * dx,  0.50 * dz],
-      [-0.43 * dx,  0.43 * dz],
-      [-0.48 * dx,  0.28 * dz]
+      [-0.479 * dx,  0.004 * dz],
+      [-0.437 * dx, -0.107 * dz],
+      [-0.396 * dx, -0.208 * dz],
+      [-0.354 * dx, -0.280 * dz],
+      [-0.313 * dx, -0.344 * dz],
+      [-0.271 * dx, -0.380 * dz],
+      [-0.229 * dx, -0.416 * dz],
+      [-0.188 * dx, -0.444 * dz],
+      [-0.146 * dx, -0.468 * dz],
+      [-0.104 * dx, -0.486 * dz],
+      [-0.062 * dx, -0.494 * dz],
+      [-0.021 * dx, -0.497 * dz],
+      [ 0.021 * dx, -0.500 * dz],
+      [ 0.062 * dx, -0.499 * dz],
+      [ 0.104 * dx, -0.497 * dz],
+      [ 0.146 * dx, -0.497 * dz],
+      [ 0.188 * dx, -0.492 * dz],
+      [ 0.229 * dx, -0.482 * dz],
+      [ 0.271 * dx, -0.462 * dz],
+      [ 0.313 * dx, -0.436 * dz],
+      [ 0.354 * dx, -0.407 * dz],
+      [ 0.396 * dx, -0.373 * dz],
+      [ 0.437 * dx, -0.338 * dz],
+      [ 0.479 * dx, -0.303 * dz],
+      [ 0.479 * dx,  0.076 * dz],
+      [ 0.437 * dx,  0.430 * dz],
+      [ 0.396 * dx,  0.430 * dz],
+      [ 0.354 * dx,  0.365 * dz],
+      [ 0.313 * dx,  0.309 * dz],
+      [ 0.271 * dx,  0.255 * dz],
+      [ 0.229 * dx,  0.195 * dz],
+      [ 0.188 * dx,  0.141 * dz],
+      [ 0.146 * dx,  0.127 * dz],
+      [ 0.104 * dx,  0.106 * dz],
+      [ 0.062 * dx,  0.100 * dz],
+      [ 0.021 * dx,  0.093 * dz],
+      [-0.021 * dx,  0.089 * dz],
+      [-0.062 * dx,  0.091 * dz],
+      [-0.104 * dx,  0.125 * dz],
+      [-0.146 * dx,  0.154 * dz],
+      [-0.188 * dx,  0.182 * dz],
+      [-0.229 * dx,  0.236 * dz],
+      [-0.271 * dx,  0.330 * dz],
+      [-0.313 * dx,  0.415 * dz],
+      [-0.354 * dx,  0.500 * dz],
+      [-0.396 * dx,  0.495 * dz],
+      [-0.437 * dx,  0.381 * dz],
+      [-0.479 * dx,  0.232 * dz]
     ];
   }
 
@@ -1783,95 +1910,111 @@ function getFurnitureFootprintPolygon(item){
       { minX: dx * 0.12,  maxX: dx * 0.50, minZ: -dz * 0.12, maxZ: dz * 0.50,  part: 'aria_chaise' }
     ];
   }
-  // 2. Sala Piero Derecha (Vértices 3D reales: Chaise der, Estante izq)
+  // 2. Sala Piero Derecha (Vértices 3D calibrados a escala 1:1)
   if(idLow.includes('piero_der')){
     return [
-      [-0.475 * dx, -0.461 * dz],
-      [-0.425 * dx, -0.470 * dz],
-      [-0.375 * dx, -0.471 * dz],
-      [-0.325 * dx, -0.477 * dz],
-      [-0.275 * dx, -0.484 * dz],
-      [-0.225 * dx, -0.491 * dz],
-      [-0.175 * dx, -0.497 * dz],
-      [-0.125 * dx, -0.499 * dz],
-      [-0.075 * dx, -0.500 * dz],
-      [-0.025 * dx, -0.500 * dz],
-      [ 0.025 * dx, -0.498 * dz],
-      [ 0.075 * dx, -0.496 * dz],
-      [ 0.125 * dx, -0.489 * dz],
-      [ 0.175 * dx, -0.481 * dz],
-      [ 0.225 * dx, -0.473 * dz],
-      [ 0.275 * dx, -0.464 * dz],
-      [ 0.325 * dx, -0.458 * dz],
-      [ 0.375 * dx, -0.447 * dz],
-      [ 0.425 * dx, -0.437 * dz],
-      [ 0.475 * dx, -0.415 * dz],
-      [ 0.475 * dx,  0.104 * dz],
-      [ 0.425 * dx,  0.498 * dz],
-      [ 0.375 * dx,  0.497 * dz],
-      [ 0.325 * dx,  0.498 * dz],
-      [ 0.275 * dx,  0.490 * dz],
-      [ 0.225 * dx,  0.498 * dz],
-      [ 0.175 * dx,  0.500 * dz],
-      [ 0.125 * dx,  0.001 * dz],
-      [ 0.075 * dx, -0.015 * dz],
-      [ 0.025 * dx, -0.033 * dz],
-      [-0.025 * dx, -0.036 * dz],
-      [-0.075 * dx, -0.010 * dz],
-      [-0.125 * dx,  0.013 * dz],
-      [-0.175 * dx,  0.036 * dz],
-      [-0.225 * dx,  0.061 * dz],
-      [-0.275 * dx,  0.080 * dz],
-      [-0.325 * dx,  0.109 * dz],
-      [-0.375 * dx,  0.132 * dz],
-      [-0.425 * dx,  0.135 * dz],
-      [-0.475 * dx, -0.074 * dz]
+      [-0.479 * dx, -0.455 * dz],
+      [-0.437 * dx, -0.468 * dz],
+      [-0.396 * dx, -0.471 * dz],
+      [-0.354 * dx, -0.471 * dz],
+      [-0.312 * dx, -0.477 * dz],
+      [-0.271 * dx, -0.484 * dz],
+      [-0.229 * dx, -0.490 * dz],
+      [-0.188 * dx, -0.495 * dz],
+      [-0.146 * dx, -0.497 * dz],
+      [-0.104 * dx, -0.500 * dz],
+      [-0.063 * dx, -0.500 * dz],
+      [-0.021 * dx, -0.500 * dz],
+      [ 0.021 * dx, -0.498 * dz],
+      [ 0.063 * dx, -0.496 * dz],
+      [ 0.104 * dx, -0.492 * dz],
+      [ 0.146 * dx, -0.486 * dz],
+      [ 0.188 * dx, -0.478 * dz],
+      [ 0.229 * dx, -0.472 * dz],
+      [ 0.271 * dx, -0.464 * dz],
+      [ 0.313 * dx, -0.458 * dz],
+      [ 0.354 * dx, -0.453 * dz],
+      [ 0.396 * dx, -0.444 * dz],
+      [ 0.437 * dx, -0.430 * dz],
+      [ 0.479 * dx, -0.414 * dz],
+      [ 0.479 * dx,  0.104 * dz],
+      [ 0.437 * dx,  0.498 * dz],
+      [ 0.396 * dx,  0.498 * dz],
+      [ 0.354 * dx,  0.498 * dz],
+      [ 0.313 * dx,  0.498 * dz],
+      [ 0.271 * dx,  0.490 * dz],
+      [ 0.229 * dx,  0.498 * dz],
+      [ 0.188 * dx,  0.500 * dz],
+      [ 0.146 * dx,  0.496 * dz],
+      [ 0.104 * dx, -0.006 * dz],
+      [ 0.063 * dx, -0.022 * dz],
+      [ 0.021 * dx, -0.033 * dz],
+      [-0.021 * dx, -0.036 * dz],
+      [-0.063 * dx, -0.017 * dz],
+      [-0.104 * dx, -0.004 * dz],
+      [-0.146 * dx,  0.018 * dz],
+      [-0.188 * dx,  0.039 * dz],
+      [-0.229 * dx,  0.061 * dz],
+      [-0.271 * dx,  0.080 * dz],
+      [-0.312 * dx,  0.102 * dz],
+      [-0.354 * dx,  0.124 * dz],
+      [-0.396 * dx,  0.135 * dz],
+      [-0.437 * dx,  0.128 * dz],
+      [-0.479 * dx, -0.133 * dz]
     ];
   }
 
-  // 3. Sala Piero Izquierda (Vértices 3D reales: Chaise izq, Asiento en ángulo der)
+  // 3. Sala Piero Izquierda (Vértices 3D calibrados a escala 1:1)
   if(idLow.includes('piero_izq')){
     return [
-      [-0.475 * dx, -0.471 * dz],
-      [-0.425 * dx, -0.499 * dz],
-      [-0.375 * dx, -0.499 * dz],
-      [-0.325 * dx, -0.499 * dz],
-      [-0.275 * dx, -0.498 * dz],
-      [-0.225 * dx, -0.498 * dz],
-      [-0.175 * dx, -0.499 * dz],
-      [-0.125 * dx, -0.499 * dz],
-      [-0.075 * dx, -0.499 * dz],
-      [-0.025 * dx, -0.500 * dz],
-      [ 0.025 * dx, -0.500 * dz],
-      [ 0.075 * dx, -0.499 * dz],
-      [ 0.125 * dx, -0.498 * dz],
-      [ 0.175 * dx, -0.497 * dz],
-      [ 0.225 * dx, -0.496 * dz],
-      [ 0.275 * dx, -0.493 * dz],
-      [ 0.325 * dx, -0.490 * dz],
-      [ 0.375 * dx, -0.489 * dz],
-      [ 0.425 * dx, -0.471 * dz],
-      [ 0.475 * dx, -0.471 * dz],
-      [ 0.475 * dx, -0.040 * dz],
-      [ 0.425 * dx,  0.183 * dz],
-      [ 0.375 * dx,  0.182 * dz],
-      [ 0.325 * dx,  0.149 * dz],
-      [ 0.275 * dx,  0.121 * dz],
-      [ 0.225 * dx,  0.082 * dz],
-      [ 0.175 * dx,  0.048 * dz],
-      [ 0.125 * dx,  0.020 * dz],
-      [ 0.075 * dx, -0.015 * dz],
-      [ 0.025 * dx, -0.045 * dz],
-      [-0.025 * dx, -0.041 * dz],
-      [-0.075 * dx, -0.034 * dz],
-      [-0.125 * dx, -0.027 * dz],
-      [-0.175 * dx,  0.500 * dz],
-      [-0.225 * dx,  0.500 * dz],
-      [-0.275 * dx,  0.499 * dz],
-      [-0.325 * dx,  0.500 * dz],
-      [-0.375 * dx,  0.500 * dz],
-      [-0.425 * dx,  0.499 * dz],
-      [-0.475 * dx,  0.454 * dz]
+      [-0.479 * dx, -0.471 * dz],
+      [-0.437 * dx, -0.498 * dz],
+      [-0.396 * dx, -0.499 * dz],
+      [-0.354 * dx, -0.499 * dz],
+      [-0.312 * dx, -0.499 * dz],
+      [-0.271 * dx, -0.498 * dz],
+      [-0.229 * dx, -0.498 * dz],
+      [-0.188 * dx, -0.499 * dz],
+      [-0.146 * dx, -0.498 * dz],
+      [-0.104 * dx, -0.499 * dz],
+      [-0.063 * dx, -0.499 * dz],
+      [-0.021 * dx, -0.500 * dz],
+      [ 0.021 * dx, -0.500 * dz],
+      [ 0.063 * dx, -0.499 * dz],
+      [ 0.104 * dx, -0.499 * dz],
+      [ 0.146 * dx, -0.496 * dz],
+      [ 0.188 * dx, -0.497 * dz],
+      [ 0.229 * dx, -0.496 * dz],
+      [ 0.271 * dx, -0.493 * dz],
+      [ 0.313 * dx, -0.492 * dz],
+      [ 0.354 * dx, -0.490 * dz],
+      [ 0.396 * dx, -0.484 * dz],
+      [ 0.437 * dx, -0.471 * dz],
+      [ 0.479 * dx, -0.468 * dz],
+      [ 0.479 * dx, -0.082 * dz],
+      [ 0.437 * dx,  0.167 * dz],
+      [ 0.396 * dx,  0.183 * dz],
+      [ 0.354 * dx,  0.170 * dz],
+      [ 0.313 * dx,  0.144 * dz],
+      [ 0.271 * dx,  0.110 * dz],
+      [ 0.229 * dx,  0.082 * dz],
+      [ 0.188 * dx,  0.057 * dz],
+      [ 0.146 * dx,  0.027 * dz],
+      [ 0.104 * dx,  0.003 * dz],
+      [ 0.063 * dx, -0.021 * dz],
+      [ 0.021 * dx, -0.045 * dz],
+      [-0.021 * dx, -0.041 * dz],
+      [-0.063 * dx, -0.036 * dz],
+      [-0.104 * dx, -0.031 * dz],
+      [-0.146 * dx,  0.499 * dz],
+      [-0.188 * dx,  0.500 * dz],
+      [-0.229 * dx,  0.500 * dz],
+      [-0.271 * dx,  0.499 * dz],
+      [-0.312 * dx,  0.500 * dz],
+      [-0.354 * dx,  0.500 * dz],
+      [-0.396 * dx,  0.499 * dz],
+      [-0.437 * dx,  0.497 * dz],
+      [-0.479 * dx,  0.091 * dz]
     ];
   }
 
@@ -3572,6 +3715,14 @@ function snapSelectedToNearest(){
       furn.position.x += perpBest.x * perpBest.dist;
       furn.position.z += perpBest.z * perpBest.dist;
     }
+    // Snap Ortogonal Magnético: cuadrar la rotación al muro a 0°, 90°, 180° o 270° si está cerca
+    const degCur = Math.round(THREE.MathUtils.radToDeg(furn.rotation.y)) % 360;
+    const orthoAngles = [0, 90, 180, 270, 360];
+    orthoAngles.forEach(targetDeg => {
+      if(Math.abs(degCur - targetDeg) <= 18 || Math.abs((degCur + 360) - targetDeg) <= 18){
+        furn.rotation.y = THREE.MathUtils.degToRad(targetDeg % 360);
+      }
+    });
 
     renderSelectionHighlight();
     saveStateToUrl();
