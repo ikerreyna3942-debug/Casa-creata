@@ -1,43 +1,426 @@
 {
   "v": 2,
-  "store": "ptc",
+  "store": "casa_creata",
   "floor": "PB",
-  "muros": 66,
+  "muros": 20,
   "cam": {
-    "pos": [7.41, 42.42, -14.53],
-    "target": [10.11, 1.2, -12.01]
+    "pos": [
+      17.51,
+      18.9,
+      14.55
+    ],
+    "target": [
+      16.07,
+      -0.68,
+      -6.22
+    ]
   },
   "furniture": [
-    {"id": "cabecera_madrid", "lvl": "PB", "x": 9.955, "z": -9.357, "r": 1.571},
-    {"id": "buro_bejuco", "lvl": "PB", "x": 9.672, "z": -7.933, "r": 4.712},
-    {"id": "base_yute", "lvl": "PB", "x": 8.9, "z": -9.315, "r": 4.712},
-    {"id": "bufetera_santhomas", "lvl": "PB", "x": 11.856, "z": -11.655, "r": 0},
-    {"id": "sofa_zama_ivory", "lvl": "PB", "x": 15.303, "z": -9.262, "r": 1.571},
-    {"id": "mesa_comedor_palsea", "lvl": "PB", "x": 11.769, "z": -9.44, "r": 1.571},
-    {"id": "silla_parme", "lvl": "PB", "x": 11.219, "z": -8.844, "r": 7.854},
-    {"id": "silla_parme", "lvl": "PB", "x": 11.219, "z": -9.465, "r": 7.854},
-    {"id": "silla_parme", "lvl": "PB", "x": 11.219, "z": -10.121, "r": 7.854},
-    {"id": "silla_parme", "lvl": "PB", "x": 12.437, "z": -10.128, "r": 10.996},
-    {"id": "silla_parme", "lvl": "PB", "x": 12.419, "z": -9.507, "r": 10.996},
-    {"id": "silla_parme", "lvl": "PB", "x": 12.419, "z": -8.836, "r": 10.996},
-    {"id": "sillon_auren", "lvl": "PB", "x": 14.392, "z": -11.438, "r": 19.635},
-    {"id": "sillon_bali_olive", "lvl": "PB", "x": 7.579, "z": -12.598, "r": 2.845},
-    {"id": "credenza_bejuco", "lvl": "PB", "x": 6.75, "z": -11.421, "r": 7.854},
-    {"id": "bufetera_platos", "lvl": "PB", "x": 0.61, "z": -13.16, "r": 1.571},
-    {"id": "sillon_bali_olive", "lvl": "PB", "x": 9.331, "z": -12.654, "r": 3.63},
-    {"id": "shelby_sin_brazos", "lvl": "PB", "x": 18.008, "z": -5.075, "r": 12.566},
-    {"id": "shelby_esquinero", "lvl": "PB", "x": 19.25, "z": -5.075, "r": 12.566},
-    {"id": "shelby_brazo_derecho", "lvl": "PB", "x": 19.235, "z": -2.397, "r": 4.712},
-    {"id": "shelby_ottoman", "lvl": "PB", "x": 19.235, "z": -3.834, "r": 4.712},
-    {"id": "shelby_brazo_izquierdo", "lvl": "PB", "x": 16.572, "z": -5.075, "r": 12.566},
-    {"id": "sillon_zur_roja", "lvl": "PB", "x": 15.936, "z": -1.731, "r": 2.723},
-    {"id": "sillon_zur_roja", "lvl": "PB", "x": 17.442, "z": -1.705, "r": 9.791},
-    {"id": "sillon_aarmin", "lvl": "PB", "x": 11.093, "z": -6.603, "r": 0.436},
-    {"id": "sillon_aarmin", "lvl": "PB", "x": 12.876, "z": -6.62, "r": 5.934},
-    {"id": "mesa_centro_bicolor", "lvl": "PB", "x": 11.991, "z": -5.853, "r": 0},
-    {"id": "buro_bejuco", "lvl": "PB", "x": 9.674, "z": -10.697, "r": 4.712},
-    {"id": "buro_mykonos", "lvl": "PB", "x": 13.865, "z": -4.708, "r": 10.996},
-    {"id": "buro_barpe", "lvl": "PB", "x": 14.696, "z": -3.326, "r": 0},
-    {"id": "bufetera_platos", "lvl": "PB", "x": 12.981, "z": -3.935, "r": 0}
+    {
+      "id": "cabecera_madrid",
+      "lvl": "PB",
+      "x": 9.955,
+      "z": -9.357,
+      "r": 1.571
+    },
+    {
+      "id": "buro_bejuco",
+      "lvl": "PB",
+      "x": 9.672,
+      "z": -7.933,
+      "r": 4.712
+    },
+    {
+      "id": "base_yute",
+      "lvl": "PB",
+      "x": 8.9,
+      "z": -9.315,
+      "r": 4.712
+    },
+    {
+      "id": "bufetera_santhomas",
+      "lvl": "PB",
+      "x": 11.856,
+      "z": -11.655,
+      "r": 0
+    },
+    {
+      "id": "sofa_zama_ivory",
+      "lvl": "PB",
+      "x": 15.301,
+      "z": -9.162,
+      "r": 1.571
+    },
+    {
+      "id": "mesa_comedor_palsea",
+      "lvl": "PB",
+      "x": 11.769,
+      "z": -9.44,
+      "r": 1.571
+    },
+    {
+      "id": "silla_parme",
+      "lvl": "PB",
+      "x": 11.219,
+      "z": -8.844,
+      "r": 7.854
+    },
+    {
+      "id": "silla_parme",
+      "lvl": "PB",
+      "x": 11.219,
+      "z": -9.465,
+      "r": 7.854
+    },
+    {
+      "id": "silla_parme",
+      "lvl": "PB",
+      "x": 11.219,
+      "z": -10.121,
+      "r": 7.854
+    },
+    {
+      "id": "silla_parme",
+      "lvl": "PB",
+      "x": 12.437,
+      "z": -10.128,
+      "r": 10.996
+    },
+    {
+      "id": "silla_parme",
+      "lvl": "PB",
+      "x": 12.419,
+      "z": -9.507,
+      "r": 10.996
+    },
+    {
+      "id": "silla_parme",
+      "lvl": "PB",
+      "x": 12.419,
+      "z": -8.836,
+      "r": 10.996
+    },
+    {
+      "id": "sillon_auren",
+      "lvl": "PB",
+      "x": 14.392,
+      "z": -11.438,
+      "r": 19.635
+    },
+    {
+      "id": "sillon_bali_olive",
+      "lvl": "PB",
+      "x": 7.579,
+      "z": -12.598,
+      "r": 2.845
+    },
+    {
+      "id": "credenza_bejuco",
+      "lvl": "PB",
+      "x": 6.75,
+      "z": -11.421,
+      "r": 7.854
+    },
+    {
+      "id": "sillon_bali_olive",
+      "lvl": "PB",
+      "x": 9.331,
+      "z": -12.654,
+      "r": 3.63
+    },
+    {
+      "id": "shelby_sin_brazos",
+      "lvl": "PB",
+      "x": 17.581,
+      "z": -5.085,
+      "r": 12.566
+    },
+    {
+      "id": "shelby_esquinero",
+      "lvl": "PB",
+      "x": 18.823,
+      "z": -5.085,
+      "r": 12.566
+    },
+    {
+      "id": "shelby_brazo_derecho",
+      "lvl": "PB",
+      "x": 18.808,
+      "z": -2.407,
+      "r": 4.712
+    },
+    {
+      "id": "shelby_ottoman",
+      "lvl": "PB",
+      "x": 18.808,
+      "z": -3.844,
+      "r": 4.712
+    },
+    {
+      "id": "shelby_brazo_izquierdo",
+      "lvl": "PB",
+      "x": 16.145,
+      "z": -5.085,
+      "r": 12.566
+    },
+    {
+      "id": "sillon_zur_roja",
+      "lvl": "PB",
+      "x": 15.898,
+      "z": -2.009,
+      "r": 2.723
+    },
+    {
+      "id": "sillon_zur_roja",
+      "lvl": "PB",
+      "x": 17.293,
+      "z": -1.974,
+      "r": 9.791
+    },
+    {
+      "id": "sillon_aarmin",
+      "lvl": "PB",
+      "x": 11.093,
+      "z": -6.603,
+      "r": 0.436
+    },
+    {
+      "id": "sillon_aarmin",
+      "lvl": "PB",
+      "x": 12.876,
+      "z": -6.62,
+      "r": 5.934
+    },
+    {
+      "id": "mesa_centro_bicolor",
+      "lvl": "PB",
+      "x": 11.991,
+      "z": -5.853,
+      "r": 0
+    },
+    {
+      "id": "buro_bejuco",
+      "lvl": "PB",
+      "x": 9.674,
+      "z": -10.697,
+      "r": 4.712
+    },
+    {
+      "id": "cama_saloni_ks",
+      "lvl": "PB",
+      "x": 18.779,
+      "z": -9.43,
+      "r": 4.712
+    },
+    {
+      "id": "sala_mawi",
+      "lvl": "PB",
+      "x": 19.024,
+      "z": -15.745,
+      "r": 4.712
+    },
+    {
+      "id": "mesa_comedor_kamko",
+      "lvl": "PB",
+      "x": 18.208,
+      "z": -12.965,
+      "r": 0
+    },
+    {
+      "id": "silla_santhomas",
+      "lvl": "PB",
+      "x": 18.59,
+      "z": -13.681,
+      "r": 0
+    },
+    {
+      "id": "silla_santhomas",
+      "lvl": "PB",
+      "x": 19.448,
+      "z": -12.94,
+      "r": 4.712
+    },
+    {
+      "id": "silla_santhomas",
+      "lvl": "PB",
+      "x": 18.606,
+      "z": -12.199,
+      "r": 3.142
+    },
+    {
+      "id": "silla_santhomas",
+      "lvl": "PB",
+      "x": 17.763,
+      "z": -12.197,
+      "r": 3.142
+    },
+    {
+      "id": "silla_santhomas",
+      "lvl": "PB",
+      "x": 17.773,
+      "z": -13.681,
+      "r": 0
+    },
+    {
+      "id": "silla_santhomas",
+      "lvl": "PB",
+      "x": 16.863,
+      "z": -12.989,
+      "r": 7.854
+    },
+    {
+      "id": "cama_aura_gellar",
+      "lvl": "PB",
+      "x": 18.86,
+      "z": -18.752,
+      "r": 10.996
+    },
+    {
+      "id": "buro_madrid",
+      "lvl": "PB",
+      "x": 19.469,
+      "z": -17.735,
+      "r": 10.996
+    },
+    {
+      "id": "cajonera_bejuco",
+      "lvl": "PB",
+      "x": 8.468,
+      "z": -11.66,
+      "r": 0
+    },
+    {
+      "id": "cama_santa_fe_kg",
+      "lvl": "PB",
+      "x": 12.62,
+      "z": -19.156,
+      "r": 6.283
+    },
+    {
+      "id": "buro_barpe",
+      "lvl": "PB",
+      "x": 14.091,
+      "z": -19.76,
+      "r": 0
+    },
+    {
+      "id": "buro_barpe",
+      "lvl": "PB",
+      "x": 11.149,
+      "z": -19.76,
+      "r": 0
+    },
+    {
+      "id": "bufetera_barpe",
+      "lvl": "PB",
+      "x": 14.991,
+      "z": -18.502,
+      "r": 4.712
+    },
+    {
+      "id": "sofa_santa_fe_baker_linen",
+      "lvl": "PB",
+      "x": 12.616,
+      "z": -16.764,
+      "r": 3.142
+    },
+    {
+      "id": "mesa_comedor_barril_8p",
+      "lvl": "PB",
+      "x": 2.337,
+      "z": -12.795,
+      "r": 0
+    },
+    {
+      "id": "sofa_cama_uganda_oat",
+      "lvl": "PB",
+      "x": 5.119,
+      "z": -9.107,
+      "r": 1.571
+    },
+    {
+      "id": "buro_madrid",
+      "lvl": "PB",
+      "x": 19.469,
+      "z": -19.758,
+      "r": 10.996
+    },
+    {
+      "id": "credenza_adana",
+      "lvl": "PB",
+      "x": 12.656,
+      "z": -16.078,
+      "r": 0
+    },
+    {
+      "id": "consola_baraman",
+      "lvl": "PB",
+      "x": 19.68,
+      "z": -3.914,
+      "r": 1.571
+    },
+    {
+      "id": "comoda_36",
+      "lvl": "PB",
+      "x": 17.895,
+      "z": -11.21,
+      "r": 0
+    },
+    {
+      "id": "buro_mod_61",
+      "lvl": "PB",
+      "x": 19.749,
+      "z": -10.906,
+      "r": 4.712
+    },
+    {
+      "id": "buro_mod_61",
+      "lvl": "PB",
+      "x": 19.749,
+      "z": -7.954,
+      "r": 4.712
+    },
+    {
+      "id": "silla_nairovi",
+      "lvl": "PB",
+      "x": 2.052,
+      "z": -13.498,
+      "r": 6.283
+    },
+    {
+      "id": "silla_nairovi",
+      "lvl": "PB",
+      "x": 2.674,
+      "z": -13.506,
+      "r": 6.283
+    },
+    {
+      "id": "silla_nairovi",
+      "lvl": "PB",
+      "x": 2.684,
+      "z": -12.132,
+      "r": 9.425
+    },
+    {
+      "id": "silla_nairovi",
+      "lvl": "PB",
+      "x": 2.058,
+      "z": -12.132,
+      "r": 9.425
+    },
+    {
+      "id": "silla_nairovi",
+      "lvl": "PB",
+      "x": 3.291,
+      "z": -12.779,
+      "r": 17.279
+    },
+    {
+      "id": "silla_nairovi",
+      "lvl": "PB",
+      "x": 1.324,
+      "z": -12.777,
+      "r": 20.42
+    }
   ]
 }
