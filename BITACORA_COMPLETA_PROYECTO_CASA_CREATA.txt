@@ -227,3 +227,10 @@ RESOLUCIÓN INTEGRAL: CRISTAL ESBELTO, CASTILLOS ENRASADOS, LUMNO 1:1, CATEGORÍ
 
 6. LIMPIEZA DE TAPIZ EN SALA PIERO BUTTERMILK:
    - Se eliminó el residuo de píxeles curry en el borde frontal del chaise de Buttermilk, conservando la repisa de nogal natural 100% limpia.
+
+7. HOMOGENEIZACIÓN DE FOTOS DE ESTUDIO (FONDO BLANCO 3/4), SALA PIERO MOSS 100% LIMPIA Y LÍMITE DE COLISIÓN DE FACHADA:
+   - Se auditaron las galerías de los 71 productos mediante análisis cromático de esquinas (PIL) para descartar fotos de ambiente/lifestyle (ej. Librero Mazati pasó de foto_3 ambient a foto_1 estudio fondo blanco).
+   - Se fijó la toma de estudio en fondo blanco puro en vista 3/4 (o frontal) con encuadre cuadrado formal uniforme en catálogo y tarjeta lateral.
+   - Sala Piero Moss (Derecha e Izquierda) reempaquetada en GLB eliminando los 13,900 píxeles residuales en tela, garantizando 100% terciopelo verde olivo uniforme y estante de nogal natural impecable.
+   - Límite perimetral maxZ ajustado de -0.25 a -1.20 m (paño interior del cancel de cristal de fachada), imposibilitando cualquier traslape o penetración de mobiliario a través de los ventanales hacia el exterior.
+   - Sincronización oficial de cotas métricas desde Excel maestro de exhibición (Piero: 2.90x1.65x0.65m, Lumno: 3.92x1.55x0.70m, Baraman: 2.00x0.50x0.78m, Mazati: 1.15x0.47x2.20m).

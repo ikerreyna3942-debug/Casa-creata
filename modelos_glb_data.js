@@ -52,7 +52,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sofá Santa Fe",
     "variant_label": "Laca Bellota Gellar Jute G4",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/sofa_santa_fe_baker_linen/foto_1.jpg"
   },
   {
     "id": "sillon_bali_olive",
@@ -101,7 +102,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sillón Ocasional Bali",
     "variant_label": "Baker Olive G3",
     "color_hex": "#5c6b54",
-    "swatch_color": "#5c6b54"
+    "swatch_color": "#5c6b54",
+    "thumb": "fotos/sillon_bali_olive/foto_2.jpg"
   },
   {
     "id": "sillon_bali_natural",
@@ -149,7 +151,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sillón Ocasional Bali",
     "variant_label": "Rusty Natural G3",
     "color_hex": "#b89f80",
-    "swatch_color": "#b89f80"
+    "swatch_color": "#b89f80",
+    "thumb": "fotos/sillon_bali_natural/foto_3.jpg"
   },
   {
     "id": "sillon_chester",
@@ -189,14 +192,15 @@ window.CATALOGO_PRODUCTOS = [
     "gallery": [
       "fotos/sillon_chester/foto_1.jpg",
       "fotos/sillon_chester/foto_4.jpg",
-      "fotos/sillon_chester/foto_2.jpg",
-      "fotos/sillon_chester/foto_3.jpg"
+      "fotos/sillon_chester/foto_3.jpg",
+      "fotos/sillon_chester/foto_2.jpg"
     ],
     "group_id": "sillon_chester",
     "group_title": "Sillón Chester",
     "variant_label": "Pata Negra Forever Moss",
     "color_hex": "#5c6b54",
-    "swatch_color": "#5c6b54"
+    "swatch_color": "#5c6b54",
+    "thumb": "fotos/sillon_chester/foto_1.jpg"
   },
   {
     "id": "sillon_zur_sand",
@@ -244,7 +248,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sillón Ocasional Zur",
     "variant_label": "Claire Sand 07",
     "color_hex": "#d8cab8",
-    "swatch_color": "#d8cab8"
+    "swatch_color": "#d8cab8",
+    "thumb": "fotos/sillon_zur_sand/foto_5.jpg"
   },
   {
     "id": "sillon_zur_roja",
@@ -291,7 +296,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sillón Ocasional Zur",
     "variant_label": "Piel Roja",
     "color_hex": "#8a3324",
-    "swatch_color": "#8a3324"
+    "swatch_color": "#8a3324",
+    "thumb": "fotos/sillon_zur_roja/foto_2.jpg"
   },
   {
     "id": "sofa_rennes_grey",
@@ -331,15 +337,16 @@ window.CATALOGO_PRODUCTOS = [
     "gallery": [
       "fotos/sofa_rennes_grey/foto_1.jpg",
       "fotos/sofa_rennes_grey/foto_3.jpg",
-      "fotos/sofa_rennes_grey/foto_2.jpg",
       "fotos/sofa_rennes_grey/foto_4.jpg",
-      "fotos/sofa_rennes_grey/foto_5.jpg"
+      "fotos/sofa_rennes_grey/foto_5.jpg",
+      "fotos/sofa_rennes_grey/foto_2.jpg"
     ],
     "group_id": "sofa_rennes_grey",
     "group_title": "Sofá Cama Rennes",
     "variant_label": "Sorrento Grey",
     "color_hex": "#7a7d80",
-    "swatch_color": "#7a7d80"
+    "swatch_color": "#7a7d80",
+    "thumb": "fotos/sofa_rennes_grey/foto_1.jpg"
   },
   {
     "id": "buro_bejuco",
@@ -387,7 +394,8 @@ window.CATALOGO_PRODUCTOS = [
     "variant_label": "Rosa Morada Sólida Panel",
     "color_hex": "#c2a382",
     "swatch_color": "#c2a382",
-    "subcategoria": "Burós"
+    "subcategoria": "Burós",
+    "thumb": "fotos/buro_bejuco/foto_1.jpg"
   },
   {
     "id": "buro_yute",
@@ -435,7 +443,8 @@ window.CATALOGO_PRODUCTOS = [
     "variant_label": "Rosa Morada Carga Inalámbrica",
     "color_hex": "#c2a382",
     "swatch_color": "#c2a382",
-    "subcategoria": "Burós"
+    "subcategoria": "Burós",
+    "thumb": "fotos/buro_yute/foto_3.jpg"
   },
   {
     "id": "buro_barpe",
@@ -483,7 +492,8 @@ window.CATALOGO_PRODUCTOS = [
     "variant_label": "Rosa Morada con LED",
     "color_hex": "#c2a382",
     "swatch_color": "#c2a382",
-    "subcategoria": "Burós"
+    "subcategoria": "Burós",
+    "thumb": "fotos/buro_barpe/foto_3.jpg"
   },
   {
     "id": "buro_platos",
@@ -531,7 +541,8 @@ window.CATALOGO_PRODUCTOS = [
     "variant_label": "Parota",
     "color_hex": "#c2a382",
     "swatch_color": "#c2a382",
-    "subcategoria": "Burós"
+    "subcategoria": "Burós",
+    "thumb": "fotos/buro_platos/foto_4.jpg"
   },
   {
     "id": "buro_africa",
@@ -579,7 +590,8 @@ window.CATALOGO_PRODUCTOS = [
     "variant_label": "Rosa Morada",
     "color_hex": "#c2a382",
     "swatch_color": "#c2a382",
-    "subcategoria": "Burós"
+    "subcategoria": "Burós",
+    "thumb": "fotos/buro_africa/foto_3.jpg"
   },
   {
     "id": "buro_madrid",
@@ -627,7 +639,8 @@ window.CATALOGO_PRODUCTOS = [
     "variant_label": "Rosa Morada Liso",
     "color_hex": "#c2a382",
     "swatch_color": "#c2a382",
-    "subcategoria": "Burós"
+    "subcategoria": "Burós",
+    "thumb": "fotos/buro_madrid/foto_4.jpg"
   },
   {
     "id": "buro_mykonos",
@@ -674,7 +687,8 @@ window.CATALOGO_PRODUCTOS = [
     "variant_label": "Tabaco Claro",
     "color_hex": "#6e4f3a",
     "swatch_color": "#6e4f3a",
-    "subcategoria": "Burós"
+    "subcategoria": "Burós",
+    "thumb": "fotos/buro_mykonos/foto_2.jpg"
   },
   {
     "id": "buro_santorini_der",
@@ -724,7 +738,8 @@ window.CATALOGO_PRODUCTOS = [
     "variant_label": "Derecho",
     "color_hex": "#a67b5b",
     "swatch_color": "#a67b5b",
-    "subcategoria": "Burós"
+    "subcategoria": "Burós",
+    "thumb": "fotos/buro_santorini_der/foto_5.jpg"
   },
   {
     "id": "buro_santorini_izq",
@@ -773,7 +788,8 @@ window.CATALOGO_PRODUCTOS = [
     "variant_label": "Izquierdo",
     "color_hex": "#8c6244",
     "swatch_color": "#8c6244",
-    "subcategoria": "Burós"
+    "subcategoria": "Burós",
+    "thumb": "fotos/buro_santorini_izq/foto_2.jpg"
   },
   {
     "id": "cama_aura_gellar",
@@ -818,7 +834,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Base de Cama Aura QS",
     "variant_label": "Gellar Marble G4",
     "color_hex": "#b8b3ac",
-    "swatch_color": "#b8b3ac"
+    "swatch_color": "#b8b3ac",
+    "thumb": "fotos/cama_aura_gellar/foto_1.jpg"
   },
   {
     "id": "cama_aura_rhona",
@@ -863,7 +880,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Base de Cama Aura QS",
     "variant_label": "Rhona Ecru G2",
     "color_hex": "#e8e1d5",
-    "swatch_color": "#e8e1d5"
+    "swatch_color": "#e8e1d5",
+    "thumb": "fotos/cama_aura_rhona/foto_1.jpg"
   },
   {
     "id": "cama_santa_fe_kg",
@@ -910,7 +928,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Cama Santa Fe KS",
     "variant_label": "Espiga NT Gellar Marble G4",
     "color_hex": "#d5d0c7",
-    "swatch_color": "#d5d0c7"
+    "swatch_color": "#d5d0c7",
+    "thumb": "fotos/cama_santa_fe_kg/foto_2.jpg"
   },
   {
     "id": "cama_amareto",
@@ -955,7 +974,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Cama Amareto KS",
     "variant_label": "Distraction Natural",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/cama_amareto/foto_1.jpg"
   },
   {
     "id": "litera_vento",
@@ -1002,7 +1022,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Litera Vento",
     "variant_label": "Madera Sólida Mushroom",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/litera_vento/foto_3.jpg"
   },
   {
     "id": "bufetera_barpe",
@@ -1038,18 +1059,19 @@ window.CATALOGO_PRODUCTOS = [
       "playa": 0,
       "casa_creata": 0
     },
-    "photo": "fotos/bufetera_barpe/foto_4.jpg",
+    "photo": "fotos/bufetera_barpe/foto_2.jpg",
     "gallery": [
-      "fotos/bufetera_barpe/foto_4.jpg",
-      "fotos/bufetera_barpe/foto_3.jpg",
       "fotos/bufetera_barpe/foto_2.jpg",
-      "fotos/bufetera_barpe/foto_1.jpg"
+      "fotos/bufetera_barpe/foto_1.jpg",
+      "fotos/bufetera_barpe/foto_4.jpg",
+      "fotos/bufetera_barpe/foto_3.jpg"
     ],
     "group_id": "bufetera_barpe",
     "group_title": "Bufetera Barpe",
     "variant_label": "Nuez",
     "color_hex": "#6e4f3a",
-    "swatch_color": "#6e4f3a"
+    "swatch_color": "#6e4f3a",
+    "thumb": "fotos/bufetera_barpe/foto_2.jpg"
   },
   {
     "id": "bufetera_bejuco",
@@ -1097,7 +1119,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Bufetera Bejuco",
     "variant_label": "Rosa Morada Sólida Panel",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/bufetera_bejuco/foto_2.jpg"
   },
   {
     "id": "bufetera_madrid",
@@ -1144,7 +1167,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Bufetera Madrid",
     "variant_label": "Rosa Morada Sólida Panel",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/bufetera_madrid/foto_2.jpg"
   },
   {
     "id": "bufetera_platos",
@@ -1192,7 +1216,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Bufetera Platos",
     "variant_label": "Parota",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/bufetera_platos/foto_5.jpg"
   },
   {
     "id": "bufetera_santhomas",
@@ -1228,18 +1253,19 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/bufetera_santhomas/foto_2.jpg",
+    "photo": "fotos/bufetera_santhomas/foto_4.jpg",
     "gallery": [
-      "fotos/bufetera_santhomas/foto_2.jpg",
       "fotos/bufetera_santhomas/foto_4.jpg",
       "fotos/bufetera_santhomas/foto_3.jpg",
-      "fotos/bufetera_santhomas/foto_1.jpg"
+      "fotos/bufetera_santhomas/foto_1.jpg",
+      "fotos/bufetera_santhomas/foto_2.jpg"
     ],
     "group_id": "bufetera_santhomas",
     "group_title": "Bufetera Santhomas",
     "variant_label": "Noche",
     "color_hex": "#2b2a29",
-    "swatch_color": "#2b2a29"
+    "swatch_color": "#2b2a29",
+    "thumb": "fotos/bufetera_santhomas/foto_4.jpg"
   },
   {
     "id": "silla_santhomas",
@@ -1285,7 +1311,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Silla Santhomas",
     "variant_label": "Laca Bellota Pixel Linen",
     "color_hex": "#e8e1d5",
-    "swatch_color": "#e8e1d5"
+    "swatch_color": "#e8e1d5",
+    "thumb": "fotos/silla_santhomas/foto_3.jpg"
   },
   {
     "id": "credenza_bejuco",
@@ -1333,7 +1360,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Credenza Bejuco",
     "variant_label": "Rosa Morada Sólida Panel",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/credenza_bejuco/foto_4.jpg"
   },
   {
     "id": "base_yute",
@@ -1381,7 +1409,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Base de Cama Yute KS",
     "variant_label": "Nuez / Rosa Morada",
     "color_hex": "#6e4f3a",
-    "swatch_color": "#6e4f3a"
+    "swatch_color": "#6e4f3a",
+    "thumb": "fotos/base_yute/foto_5.jpg"
   },
   {
     "id": "cabecera_madrid",
@@ -1428,7 +1457,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Cabecera Madrid KS",
     "variant_label": "Nuez / Rosa Morada",
     "color_hex": "#6e4f3a",
-    "swatch_color": "#6e4f3a"
+    "swatch_color": "#6e4f3a",
+    "thumb": "fotos/cabecera_madrid/foto_3.jpg"
   },
   {
     "id": "sofa_zama_ivory",
@@ -1467,18 +1497,19 @@ window.CATALOGO_PRODUCTOS = [
     "photo": "fotos/sofa_zama_ivory/foto_5.jpg",
     "gallery": [
       "fotos/sofa_zama_ivory/foto_5.jpg",
+      "fotos/sofa_zama_ivory/foto_3.jpg",
+      "fotos/sofa_zama_ivory/foto_7.jpg",
       "fotos/sofa_zama_ivory/foto_2.jpg",
       "fotos/sofa_zama_ivory/foto_4.jpg",
-      "fotos/sofa_zama_ivory/foto_3.jpg",
       "fotos/sofa_zama_ivory/foto_1.jpg",
-      "fotos/sofa_zama_ivory/foto_6.jpg",
-      "fotos/sofa_zama_ivory/foto_7.jpg"
+      "fotos/sofa_zama_ivory/foto_6.jpg"
     ],
     "group_id": "sofa_zama_ivory",
     "group_title": "Sofá Zama",
     "variant_label": "Luxor Ivory",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/sofa_zama_ivory/foto_5.jpg"
   },
   {
     "id": "sillon_auren",
@@ -1513,18 +1544,19 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sillon_auren/foto_2.jpg",
+    "photo": "fotos/sillon_auren/foto_1.jpg",
     "gallery": [
+      "fotos/sillon_auren/foto_1.jpg",
       "fotos/sillon_auren/foto_2.jpg",
       "fotos/sillon_auren/foto_3.jpg",
-      "fotos/sillon_auren/foto_4.jpg",
-      "fotos/sillon_auren/foto_1.jpg"
+      "fotos/sillon_auren/foto_4.jpg"
     ],
     "group_id": "sillon_auren",
     "group_title": "Sillón Ocasional Auren",
     "variant_label": "Rosa Morada / Rusty Natural",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/sillon_auren/foto_1.jpg"
   },
   {
     "id": "mesa_comedor_palsea",
@@ -1546,18 +1578,19 @@ window.CATALOGO_PRODUCTOS = [
       1.05,
       0.75
     ],
-    "photo": "fotos/mesa_comedor_palsea/foto_1.jpg",
+    "photo": "fotos/mesa_comedor_palsea/foto_4.jpg",
     "gallery": [
-      "fotos/mesa_comedor_palsea/foto_1.jpg",
       "fotos/mesa_comedor_palsea/foto_4.jpg",
       "fotos/mesa_comedor_palsea/foto_3.jpg",
+      "fotos/mesa_comedor_palsea/foto_1.jpg",
       "fotos/mesa_comedor_palsea/foto_2.jpg"
     ],
     "group_id": "mesa_comedor_palsea",
     "group_title": "Mesa de Comedor Palsea",
     "variant_label": "Natural",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/mesa_comedor_palsea/foto_4.jpg"
   },
   {
     "id": "silla_parme",
@@ -1590,7 +1623,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Silla Parme",
     "variant_label": "Madera / Tapiz Ivory",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/silla_parme/foto_4.jpg"
   },
   {
     "id": "shelby_esquinero",
@@ -1820,10 +1854,10 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sillon_aarmin/foto_5.jpg",
+    "photo": "fotos/sillon_aarmin/foto_2.jpg",
     "gallery": [
-      "fotos/sillon_aarmin/foto_5.jpg",
       "fotos/sillon_aarmin/foto_2.jpg",
+      "fotos/sillon_aarmin/foto_5.jpg",
       "fotos/sillon_aarmin/foto_1.jpg",
       "fotos/sillon_aarmin/foto_3.jpg",
       "fotos/sillon_aarmin/foto_4.jpg"
@@ -1832,7 +1866,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sillón Ocasional Aarmin",
     "variant_label": "Rosa Morada / Nordic Grey & Point Ivory",
     "color_hex": "#7a7d80",
-    "swatch_color": "#7a7d80"
+    "swatch_color": "#7a7d80",
+    "thumb": "fotos/sillon_aarmin/foto_2.jpg"
   },
   {
     "id": "mesa_centro_bicolor",
@@ -1866,7 +1901,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Mesa de Centro Bicolor",
     "variant_label": "Madera Natural / Nogal Bicolor",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/mesa_centro_bicolor/foto_1.jpg"
   },
   {
     "id": "cama_san_jose_ks",
@@ -1906,18 +1942,19 @@ window.CATALOGO_PRODUCTOS = [
     "photo": "fotos/cama_san_jose_ks/foto_2.jpg",
     "gallery": [
       "fotos/cama_san_jose_ks/foto_2.jpg",
-      "fotos/cama_san_jose_ks/foto_7.jpg",
-      "fotos/cama_san_jose_ks/foto_6.jpg",
-      "fotos/cama_san_jose_ks/foto_5.jpg",
       "fotos/cama_san_jose_ks/foto_3.jpg",
       "fotos/cama_san_jose_ks/foto_4.jpg",
-      "fotos/cama_san_jose_ks/foto_1.jpg"
+      "fotos/cama_san_jose_ks/foto_1.jpg",
+      "fotos/cama_san_jose_ks/foto_7.jpg",
+      "fotos/cama_san_jose_ks/foto_6.jpg",
+      "fotos/cama_san_jose_ks/foto_5.jpg"
     ],
     "group_id": "cama_san_jose_ks",
     "group_title": "Base de Cama San José KS",
     "variant_label": "Berkeley Natural",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/cama_san_jose_ks/foto_2.jpg"
   },
   {
     "id": "cama_saloni_ks",
@@ -1966,7 +2003,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Cama Saloni KS",
     "variant_label": "Hady Ivory",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/cama_saloni_ks/foto_4.jpg"
   },
   {
     "id": "cajonera_bejuco",
@@ -2015,7 +2053,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Cajonera Bejuco",
     "variant_label": "Rosa Morada Sólida Panel",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/cajonera_bejuco/foto_2.jpg"
   },
   {
     "id": "sala_mawi",
@@ -2063,7 +2102,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sala Modular Mawi",
     "variant_label": "Hadi Linen",
     "color_hex": "#e8e1d5",
-    "swatch_color": "#e8e1d5"
+    "swatch_color": "#e8e1d5",
+    "thumb": "fotos/sala_mawi/foto_4.jpg"
   },
   {
     "id": "sofa_cama_asha_oat",
@@ -2113,7 +2153,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sofá Cama Asha",
     "variant_label": "Braxton Oat",
     "color_hex": "#c8b9a6",
-    "swatch_color": "#c8b9a6"
+    "swatch_color": "#c8b9a6",
+    "thumb": "fotos/sofa_cama_asha_oat/foto_4.jpg"
   },
   {
     "id": "sofa_cama_asha_snow",
@@ -2162,7 +2203,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sofá Cama Asha",
     "variant_label": "Braxton Snow",
     "color_hex": "#e8e6e1",
-    "swatch_color": "#e8e6e1"
+    "swatch_color": "#e8e6e1",
+    "thumb": "fotos/sofa_cama_asha_snow/foto_3.jpg"
   },
   {
     "id": "sofa_cama_uganda_oat",
@@ -2201,17 +2243,18 @@ window.CATALOGO_PRODUCTOS = [
     "photo": "fotos/sofa_cama_uganda_oat/foto_2.jpg",
     "gallery": [
       "fotos/sofa_cama_uganda_oat/foto_2.jpg",
-      "fotos/sofa_cama_uganda_oat/foto_6.jpg",
       "fotos/sofa_cama_uganda_oat/foto_5.jpg",
       "fotos/sofa_cama_uganda_oat/foto_4.jpg",
-      "fotos/sofa_cama_uganda_oat/foto_1.jpg",
-      "fotos/sofa_cama_uganda_oat/foto_3.jpg"
+      "fotos/sofa_cama_uganda_oat/foto_3.jpg",
+      "fotos/sofa_cama_uganda_oat/foto_6.jpg",
+      "fotos/sofa_cama_uganda_oat/foto_1.jpg"
     ],
     "group_id": "familia_sofa_cama_uganda",
     "group_title": "Sofá Cama Uganda",
     "variant_label": "Braxton Oat",
     "color_hex": "#c8b9a6",
-    "swatch_color": "#c8b9a6"
+    "swatch_color": "#c8b9a6",
+    "thumb": "fotos/sofa_cama_uganda_oat/foto_2.jpg"
   },
   {
     "id": "sofa_cama_uganda_snow",
@@ -2247,18 +2290,19 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sofa_cama_uganda_snow/foto_1.jpg",
+    "photo": "fotos/sofa_cama_uganda_snow/foto_4.jpg",
     "gallery": [
-      "fotos/sofa_cama_uganda_snow/foto_1.jpg",
       "fotos/sofa_cama_uganda_snow/foto_4.jpg",
       "fotos/sofa_cama_uganda_snow/foto_3.jpg",
+      "fotos/sofa_cama_uganda_snow/foto_1.jpg",
       "fotos/sofa_cama_uganda_snow/foto_2.jpg"
     ],
     "group_id": "familia_sofa_cama_uganda",
     "group_title": "Sofá Cama Uganda",
     "variant_label": "Braxton Snow",
     "color_hex": "#e8e6e1",
-    "swatch_color": "#e8e6e1"
+    "swatch_color": "#e8e6e1",
+    "thumb": "fotos/sofa_cama_uganda_snow/foto_4.jpg"
   },
   {
     "id": "mesa_comedor_kamko",
@@ -2306,7 +2350,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Mesa de Comedor Kamko",
     "variant_label": "Rosa Morada",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/mesa_comedor_kamko/foto_5.jpg"
   },
   {
     "id": "mesa_comedor_barril_8p",
@@ -2354,7 +2399,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Mesa de Comedor Barril 8P",
     "variant_label": "Rosa Morada Sólida / Nuez",
     "color_hex": "#6e4f3a",
-    "swatch_color": "#6e4f3a"
+    "swatch_color": "#6e4f3a",
+    "thumb": "fotos/mesa_comedor_barril_8p/foto_2.jpg"
   },
   {
     "id": "credenza_adana",
@@ -2395,15 +2441,16 @@ window.CATALOGO_PRODUCTOS = [
       "fotos/credenza_adana/foto_3.jpg",
       "fotos/credenza_adana/foto_6.jpg",
       "fotos/credenza_adana/foto_2.jpg",
-      "fotos/credenza_adana/foto_4.jpg",
       "fotos/credenza_adana/foto_5.jpg",
-      "fotos/credenza_adana/foto_1.jpg"
+      "fotos/credenza_adana/foto_1.jpg",
+      "fotos/credenza_adana/foto_4.jpg"
     ],
     "group_id": "credenza_adana",
     "group_title": "Credenza Adana",
     "variant_label": "Parota",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/credenza_adana/foto_3.jpg"
   },
   {
     "id": "consola_baraman",
@@ -2417,12 +2464,12 @@ window.CATALOGO_PRODUCTOS = [
     "sheet_name": "CONSOLA BARAMAN KN248614 CONSOLE TABLE BT006 TRAVERTINE 214X50X78 CM",
     "proveedor": "KEU",
     "dim_m": [
-      2.14,
+      2.0,
       0.5,
       0.78
     ],
     "dim_cm": [
-      214,
+      200,
       50,
       78
     ],
@@ -2442,16 +2489,17 @@ window.CATALOGO_PRODUCTOS = [
     "photo": "fotos/consola_baraman/foto_2.jpg",
     "gallery": [
       "fotos/consola_baraman/foto_2.jpg",
-      "fotos/consola_baraman/foto_4.jpg",
-      "fotos/consola_baraman/foto_3.jpg",
       "fotos/consola_baraman/foto_5.jpg",
-      "fotos/consola_baraman/foto_1.jpg"
+      "fotos/consola_baraman/foto_1.jpg",
+      "fotos/consola_baraman/foto_3.jpg",
+      "fotos/consola_baraman/foto_4.jpg"
     ],
     "group_id": "consola_baraman",
     "group_title": "Consola Baraman",
     "variant_label": "Travertine",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/consola_baraman/foto_2.jpg"
   },
   {
     "id": "comoda_36",
@@ -2500,7 +2548,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Cómoda Mod. 36",
     "variant_label": "Rosa Morada Clara",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/comoda_36/foto_3.jpg"
   },
   {
     "id": "buro_mod_61",
@@ -2539,18 +2588,19 @@ window.CATALOGO_PRODUCTOS = [
     "photo": "fotos/buro_mod_61/foto_1.jpg",
     "gallery": [
       "fotos/buro_mod_61/foto_1.jpg",
-      "fotos/buro_mod_61/foto_5.jpg",
       "fotos/buro_mod_61/foto_6.jpg",
       "fotos/buro_mod_61/foto_4.jpg",
       "fotos/buro_mod_61/foto_3.jpg",
-      "fotos/buro_mod_61/foto_2.jpg"
+      "fotos/buro_mod_61/foto_2.jpg",
+      "fotos/buro_mod_61/foto_5.jpg"
     ],
     "group_id": "buro_mod_61",
     "group_title": "Buró Mod. 61",
     "variant_label": "Rosa Morada Clara",
     "color_hex": "#c2a382",
     "swatch_color": "#c2a382",
-    "subcategoria": "Burós"
+    "subcategoria": "Burós",
+    "thumb": "fotos/buro_mod_61/foto_1.jpg"
   },
   {
     "id": "silla_nairovi",
@@ -2586,12 +2636,12 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/silla_nairovi/foto_3.jpg",
+    "photo": "fotos/silla_nairovi/foto_1.jpg",
     "gallery": [
+      "fotos/silla_nairovi/foto_1.jpg",
       "fotos/silla_nairovi/foto_3.jpg",
       "fotos/silla_nairovi/foto_5.jpg",
       "fotos/silla_nairovi/foto_4.jpg",
-      "fotos/silla_nairovi/foto_1.jpg",
       "fotos/silla_nairovi/foto_2.jpg",
       "fotos/silla_nairovi/foto_6.jpg"
     ],
@@ -2599,7 +2649,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Silla Nairovi",
     "variant_label": "Rosa Morada Sólida Rhona Ivory",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/silla_nairovi/foto_1.jpg"
   },
   {
     "id": "silla_canadad",
@@ -2635,20 +2686,21 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/silla_canadad/foto_5.jpg",
+    "photo": "fotos/silla_canadad/foto_1.jpg",
     "gallery": [
+      "fotos/silla_canadad/foto_1.jpg",
       "fotos/silla_canadad/foto_5.jpg",
       "fotos/silla_canadad/foto_3.jpg",
       "fotos/silla_canadad/foto_4.jpg",
       "fotos/silla_canadad/foto_2.jpg",
-      "fotos/silla_canadad/foto_6.jpg",
-      "fotos/silla_canadad/foto_1.jpg"
+      "fotos/silla_canadad/foto_6.jpg"
     ],
     "group_id": "silla_canadad",
     "group_title": "Silla Canadad",
     "variant_label": "Rosa Morada Sólida Rusty Natural",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/silla_canadad/foto_1.jpg"
   },
   {
     "id": "sala_piero_der_curry",
@@ -2663,12 +2715,12 @@ window.CATALOGO_PRODUCTOS = [
     "proveedor": "CASA V&V",
     "dim_cm": [
       290,
-      188,
+      165,
       65
     ],
     "dim_m": [
       2.9,
-      1.88,
+      1.65,
       0.65
     ],
     "lock_dim": true,
@@ -2685,19 +2737,20 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_piero_der_curry/foto_5.jpg",
+    "photo": "fotos/sala_piero_der_curry/foto_1.jpg",
     "gallery": [
-      "fotos/sala_piero_der_curry/foto_5.jpg",
       "fotos/sala_piero_der_curry/foto_1.jpg",
       "fotos/sala_piero_der_curry/foto_4.jpg",
-      "fotos/sala_piero_der_curry/foto_3.jpg",
-      "fotos/sala_piero_der_curry/foto_2.jpg"
+      "fotos/sala_piero_der_curry/foto_2.jpg",
+      "fotos/sala_piero_der_curry/foto_5.jpg",
+      "fotos/sala_piero_der_curry/foto_3.jpg"
     ],
     "group_id": "familia_sala_piero_der",
     "group_title": "Sala Piero Derecha",
     "variant_label": "Forever Curry",
     "color_hex": "#c77d28",
-    "swatch_color": "#c77d28"
+    "swatch_color": "#c77d28",
+    "thumb": "fotos/sala_piero_der_curry/foto_1.jpg"
   },
   {
     "id": "sala_piero_izq_curry",
@@ -2712,12 +2765,12 @@ window.CATALOGO_PRODUCTOS = [
     "proveedor": "CASA V&V",
     "dim_cm": [
       290,
-      188,
+      165,
       65
     ],
     "dim_m": [
       2.9,
-      1.88,
+      1.65,
       0.65
     ],
     "lock_dim": true,
@@ -2734,19 +2787,20 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_piero_izq_curry/foto_5.jpg",
+    "photo": "fotos/sala_piero_izq_curry/foto_4.jpg",
     "gallery": [
-      "fotos/sala_piero_izq_curry/foto_5.jpg",
-      "fotos/sala_piero_izq_curry/foto_3.jpg",
       "fotos/sala_piero_izq_curry/foto_4.jpg",
       "fotos/sala_piero_izq_curry/foto_1.jpg",
-      "fotos/sala_piero_izq_curry/foto_2.jpg"
+      "fotos/sala_piero_izq_curry/foto_2.jpg",
+      "fotos/sala_piero_izq_curry/foto_5.jpg",
+      "fotos/sala_piero_izq_curry/foto_3.jpg"
     ],
     "group_id": "familia_sala_piero_izq",
     "group_title": "Sala Piero Izquierda",
     "variant_label": "Forever Curry",
     "color_hex": "#c77d28",
-    "swatch_color": "#c77d28"
+    "swatch_color": "#c77d28",
+    "thumb": "fotos/sala_piero_izq_curry/foto_4.jpg"
   },
   {
     "id": "sala_piero_der_buttermilk",
@@ -2761,12 +2815,12 @@ window.CATALOGO_PRODUCTOS = [
     "proveedor": "CASA V&V",
     "dim_cm": [
       290,
-      188,
+      165,
       65
     ],
     "dim_m": [
       2.9,
-      1.88,
+      1.65,
       0.65
     ],
     "lock_dim": true,
@@ -2794,7 +2848,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sala Piero Derecha",
     "variant_label": "Forever Buttermilk",
     "color_hex": "#e9dbc5",
-    "swatch_color": "#e9dbc5"
+    "swatch_color": "#e9dbc5",
+    "thumb": "fotos/sala_piero_der_buttermilk/foto_4.jpg"
   },
   {
     "id": "sala_piero_izq_buttermilk",
@@ -2809,12 +2864,12 @@ window.CATALOGO_PRODUCTOS = [
     "proveedor": "CASA V&V",
     "dim_cm": [
       290,
-      188,
+      165,
       65
     ],
     "dim_m": [
       2.9,
-      1.88,
+      1.65,
       0.65
     ],
     "lock_dim": true,
@@ -2842,7 +2897,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sala Piero Izquierda",
     "variant_label": "Forever Buttermilk",
     "color_hex": "#e9dbc5",
-    "swatch_color": "#e9dbc5"
+    "swatch_color": "#e9dbc5",
+    "thumb": "fotos/sala_piero_izq_buttermilk/foto_2.jpg"
   },
   {
     "id": "sala_aria_osi_flax",
@@ -2882,16 +2938,17 @@ window.CATALOGO_PRODUCTOS = [
     "photo": "fotos/sala_aria_osi_flax/foto_1.jpg",
     "gallery": [
       "fotos/sala_aria_osi_flax/foto_1.jpg",
+      "fotos/sala_aria_osi_flax/foto_4.jpg",
       "fotos/sala_aria_osi_flax/foto_2.jpg",
       "fotos/sala_aria_osi_flax/foto_3.jpg",
-      "fotos/sala_aria_osi_flax/foto_4.jpg",
       "fotos/sala_aria_osi_flax/foto_5.jpg"
     ],
     "group_id": "familia_sala_aria",
     "group_title": "Sala Modular Aria",
     "variant_label": "OSI Flax",
     "color_hex": "#c8b9a6",
-    "swatch_color": "#c8b9a6"
+    "swatch_color": "#c8b9a6",
+    "thumb": "fotos/sala_aria_osi_flax/foto_1.jpg"
   },
   {
     "id": "sala_aria_osi_ivory",
@@ -2931,15 +2988,16 @@ window.CATALOGO_PRODUCTOS = [
     "photo": "fotos/sala_aria_osi_ivory/foto_1.jpg",
     "gallery": [
       "fotos/sala_aria_osi_ivory/foto_1.jpg",
+      "fotos/sala_aria_osi_ivory/foto_2.jpg",
       "fotos/sala_aria_osi_ivory/foto_3.jpg",
-      "fotos/sala_aria_osi_ivory/foto_4.jpg",
-      "fotos/sala_aria_osi_ivory/foto_2.jpg"
+      "fotos/sala_aria_osi_ivory/foto_4.jpg"
     ],
     "group_id": "familia_sala_aria",
     "group_title": "Sala Modular Aria",
     "variant_label": "OSI Ivory",
     "color_hex": "#ece6da",
-    "swatch_color": "#ece6da"
+    "swatch_color": "#ece6da",
+    "thumb": "fotos/sala_aria_osi_ivory/foto_1.jpg"
   },
   {
     "id": "sala_lumno_baker_linen",
@@ -2954,12 +3012,12 @@ window.CATALOGO_PRODUCTOS = [
     "proveedor": "CASA V&V",
     "dim_cm": [
       392,
-      184,
+      155,
       70
     ],
     "dim_m": [
       3.92,
-      1.84,
+      1.55,
       0.7
     ],
     "lock_dim": true,
@@ -2979,15 +3037,16 @@ window.CATALOGO_PRODUCTOS = [
     "photo": "fotos/sala_lumno_baker_linen/foto_1.jpg",
     "gallery": [
       "fotos/sala_lumno_baker_linen/foto_1.jpg",
-      "fotos/sala_lumno_baker_linen/foto_3.jpg",
       "fotos/sala_lumno_baker_linen/foto_4.jpg",
-      "fotos/sala_lumno_baker_linen/foto_2.jpg"
+      "fotos/sala_lumno_baker_linen/foto_2.jpg",
+      "fotos/sala_lumno_baker_linen/foto_3.jpg"
     ],
     "group_id": "familia_sala_lumno",
     "group_title": "Sala Modular Lumno",
     "variant_label": "Baker Linen",
     "color_hex": "#dfd5c6",
-    "swatch_color": "#dfd5c6"
+    "swatch_color": "#dfd5c6",
+    "thumb": "fotos/sala_lumno_baker_linen/foto_1.jpg"
   },
   {
     "id": "sala_lumno_baker_mushroom",
@@ -3002,12 +3061,12 @@ window.CATALOGO_PRODUCTOS = [
     "proveedor": "CASA V&V",
     "dim_cm": [
       392,
-      184,
+      155,
       70
     ],
     "dim_m": [
       3.92,
-      1.84,
+      1.55,
       0.7
     ],
     "lock_dim": true,
@@ -3035,7 +3094,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sala Modular Lumno",
     "variant_label": "Baker Mushroom",
     "color_hex": "#8c7e75",
-    "swatch_color": "#8c7e75"
+    "swatch_color": "#8c7e75",
+    "thumb": "fotos/sala_lumno_baker_mushroom/foto_2.jpg"
   },
   {
     "id": "sala_lexy_izq_prisma_olive",
@@ -3083,7 +3143,8 @@ window.CATALOGO_PRODUCTOS = [
     "group_title": "Sala Lexy Izquierda",
     "variant_label": "Prisma Olive",
     "color_hex": "#5c6b54",
-    "swatch_color": "#5c6b54"
+    "swatch_color": "#5c6b54",
+    "thumb": "fotos/sala_lexy_izq_prisma_olive/foto_4.jpg"
   },
   {
     "id": "sala_piero_der_moss",
@@ -3098,12 +3159,12 @@ window.CATALOGO_PRODUCTOS = [
     "proveedor": "CASA V&V",
     "dim_cm": [
       290,
-      188,
+      165,
       65
     ],
     "dim_m": [
       2.9,
-      1.88,
+      1.65,
       0.65
     ],
     "lock_dim": true,
@@ -3120,18 +3181,19 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_piero_der_moss/foto_3.jpg",
+    "photo": "fotos/sala_piero_der_moss/foto_2.jpg",
     "gallery": [
-      "fotos/sala_piero_der_moss/foto_3.jpg",
-      "fotos/sala_piero_der_moss/foto_4.jpg",
       "fotos/sala_piero_der_moss/foto_2.jpg",
-      "fotos/sala_piero_der_moss/foto_1.jpg"
+      "fotos/sala_piero_der_moss/foto_1.jpg",
+      "fotos/sala_piero_der_moss/foto_3.jpg",
+      "fotos/sala_piero_der_moss/foto_4.jpg"
     ],
     "group_id": "familia_sala_piero_der",
     "group_title": "Sala Piero Derecha",
     "variant_label": "Forever Plus Moss",
     "color_hex": "#585616",
-    "swatch_color": "#585616"
+    "swatch_color": "#585616",
+    "thumb": "fotos/sala_piero_der_moss/foto_2.jpg"
   },
   {
     "id": "sala_piero_izq_moss",
@@ -3146,12 +3208,12 @@ window.CATALOGO_PRODUCTOS = [
     "proveedor": "CASA V&V",
     "dim_cm": [
       290,
-      188,
+      165,
       65
     ],
     "dim_m": [
       2.9,
-      1.88,
+      1.65,
       0.65
     ],
     "lock_dim": true,
@@ -3168,18 +3230,19 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_piero_izq_moss/foto_3.jpg",
+    "photo": "fotos/sala_piero_izq_moss/foto_2.jpg",
     "gallery": [
-      "fotos/sala_piero_izq_moss/foto_3.jpg",
       "fotos/sala_piero_izq_moss/foto_2.jpg",
-      "fotos/sala_piero_izq_moss/foto_4.jpg",
-      "fotos/sala_piero_izq_moss/foto_1.jpg"
+      "fotos/sala_piero_izq_moss/foto_1.jpg",
+      "fotos/sala_piero_izq_moss/foto_3.jpg",
+      "fotos/sala_piero_izq_moss/foto_4.jpg"
     ],
     "group_id": "familia_sala_piero_izq",
     "group_title": "Sala Piero Izquierda",
     "variant_label": "Forever Plus Moss",
     "color_hex": "#585616",
-    "swatch_color": "#585616"
+    "swatch_color": "#585616",
+    "thumb": "fotos/sala_piero_izq_moss/foto_2.jpg"
   },
   {
     "id": "librero_mazati_bellota",
@@ -3195,12 +3258,12 @@ window.CATALOGO_PRODUCTOS = [
     "dim_cm": [
       115,
       47,
-      230
+      220
     ],
     "dim_m": [
       1.15,
       0.47,
-      2.3
+      2.2
     ],
     "lock_dim": true,
     "stock": {
@@ -3216,20 +3279,21 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/librero_mazati_bellota/foto_3.jpg",
+    "photo": "fotos/librero_mazati_bellota/foto_1.jpg",
     "gallery": [
-      "fotos/librero_mazati_bellota/foto_3.jpg",
+      "fotos/librero_mazati_bellota/foto_1.jpg",
       "fotos/librero_mazati_bellota/foto_5.jpg",
       "fotos/librero_mazati_bellota/foto_6.jpg",
       "fotos/librero_mazati_bellota/foto_2.jpg",
       "fotos/librero_mazati_bellota/foto_4.jpg",
-      "fotos/librero_mazati_bellota/foto_1.jpg"
+      "fotos/librero_mazati_bellota/foto_3.jpg"
     ],
     "group_id": "librero_mazati_bellota",
     "group_title": "Librero Mazati",
     "variant_label": "Encino Laca Bellota",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/librero_mazati_bellota/foto_1.jpg"
   },
   {
     "id": "sillon_unipata",
@@ -3269,17 +3333,18 @@ window.CATALOGO_PRODUCTOS = [
     "photo": "fotos/sillon_unipata/foto_2.jpg",
     "gallery": [
       "fotos/sillon_unipata/foto_2.jpg",
-      "fotos/sillon_unipata/foto_3.jpg",
       "fotos/sillon_unipata/foto_4.jpg",
       "fotos/sillon_unipata/foto_6.jpg",
       "fotos/sillon_unipata/foto_5.jpg",
-      "fotos/sillon_unipata/foto_1.jpg"
+      "fotos/sillon_unipata/foto_1.jpg",
+      "fotos/sillon_unipata/foto_3.jpg"
     ],
     "group_id": "sillon_unipata",
     "group_title": "Sillón Unipata",
     "variant_label": "Brentwood Bone / Luxor Ivory",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/sillon_unipata/foto_2.jpg"
   },
   {
     "id": "sillon_kate",
@@ -3321,14 +3386,15 @@ window.CATALOGO_PRODUCTOS = [
       "fotos/sillon_kate/foto_6.jpg",
       "fotos/sillon_kate/foto_2.jpg",
       "fotos/sillon_kate/foto_5.jpg",
-      "fotos/sillon_kate/foto_3.jpg",
       "fotos/sillon_kate/foto_4.jpg",
-      "fotos/sillon_kate/foto_1.jpg"
+      "fotos/sillon_kate/foto_1.jpg",
+      "fotos/sillon_kate/foto_3.jpg"
     ],
     "group_id": "sillon_kate",
     "group_title": "Sillón Kate",
     "variant_label": "Beige / Cuerda Coffee",
     "color_hex": "#c2a382",
-    "swatch_color": "#c2a382"
+    "swatch_color": "#c2a382",
+    "thumb": "fotos/sillon_kate/foto_6.jpg"
   }
 ];
