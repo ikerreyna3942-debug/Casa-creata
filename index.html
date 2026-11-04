@@ -843,9 +843,8 @@
     <div class="cat-chips-bar">
       <button class="cat-chip active" data-cat="all">Todos</button>
       <button class="cat-chip" data-cat="Salas">Salas</button>
-      <button class="cat-chip" data-cat="Recámaras">Recámaras</button>
-      <button class="cat-chip" data-cat="Burós">Burós</button>
       <button class="cat-chip" data-cat="Comedores">Comedores</button>
+      <button class="cat-chip" data-cat="Recámaras">Recámaras</button>
       <button class="cat-chip" data-cat="Auxiliares">Auxiliares</button>
     </div>
     <button class="btn-close-catalog" id="btnCloseCatalog" title="Cerrar Catálogo">✕</button>
@@ -987,7 +986,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793826925"></script>
+<script src="modelos_glb_data.js?v=1793828145"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1361,14 +1360,46 @@ function buildBuilding(){
       prism(w.p, LOSA, L.muro, mat, grp, [], true, true);
     });
 
-    // Columnas
+    // Columnas enrasadas al paño interior de los muros perimetrales
     (d.cols||[]).forEach(c => {
-      prism(c.p, LOSA, L.muro, M.col, grp, [], true, true);
+      let pts = c.p.map(pt => [pt[0], pt[1]]);
+      const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+      let minX = Math.min(...xs), maxX = Math.max(...xs);
+      let minY = Math.min(...ys), maxY = Math.max(...ys);
+
+      // Enrasar cara interior con muro derecho
+      if(maxX >= 20.20 && minX < 20.00){
+        minX = 20.01;
+      }
+      // Enrasar cara interior con muro izquierdo
+      if(minX <= 0.01 && maxX > 0.20){
+        maxX = 0.20;
+      }
+      // Enrasar cara interior con muro posterior norte
+      if(maxY >= 20.45 && minY < 20.25){
+        minY = 20.27;
+      }
+      const flushPts = [[minX, minY], [maxX, minY], [maxX, maxY], [minX, maxY]];
+      prism(flushPts, LOSA, L.muro, M.col, grp, [], true, true);
     });
 
-    // Vidrios y ventanales
+    // Vidrios y ventanales esbeltos (cancelería arquitectónica realista de 4 cm)
     (d.glass||[]).forEach(g => {
-      prism(g.p, LOSA, ALT_VENTANA, M.glass, grp, [], false, false);
+      const pts = g.p;
+      const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+      const minX = Math.min(...xs), maxX = Math.max(...xs);
+      const minY = Math.min(...ys), maxY = Math.max(...ys);
+      const dx = maxX - minX, dy = maxY - minY;
+      const THICK = 0.04; // 4 cm de espesor arquitectónico
+      let slimPts;
+      if(dx >= dy){
+        const cy = (minY + maxY) / 2;
+        slimPts = [[minX, cy - THICK/2], [maxX, cy - THICK/2], [maxX, cy + THICK/2], [minX, cy + THICK/2]];
+      } else {
+        const cx = (minX + maxX) / 2;
+        slimPts = [[cx - THICK/2, minY], [cx + THICK/2, minY], [cx + THICK/2, maxY], [cx - THICK/2, maxY]];
+      }
+      prism(slimPts, LOSA, ALT_VENTANA, M.glass, grp, [], false, false);
     });
 
     // Muretes bajos
@@ -1734,57 +1765,43 @@ function getFurnitureFootprintPolygon(item){
   const dz = (item && item.dim_m && item.dim_m[1]) ? item.dim_m[1] : 1.0;
   const idLow = ((item && item.id) || '').toLowerCase();
 
-  // 1. Sala Lumno (Curva en arco exacto al modelo 3D)
+  // 1. Sala Lumno (Curva simétrica calibrada al arco del sofá 1:1)
   if(idLow.includes('lumno')){
     return [
-      [-0.479 * dx,  0.004 * dz],
-      [-0.437 * dx, -0.107 * dz],
-      [-0.396 * dx, -0.208 * dz],
-      [-0.354 * dx, -0.280 * dz],
-      [-0.313 * dx, -0.344 * dz],
-      [-0.271 * dx, -0.380 * dz],
-      [-0.229 * dx, -0.416 * dz],
-      [-0.188 * dx, -0.444 * dz],
-      [-0.146 * dx, -0.468 * dz],
-      [-0.104 * dx, -0.486 * dz],
-      [-0.062 * dx, -0.494 * dz],
-      [-0.021 * dx, -0.497 * dz],
-      [ 0.021 * dx, -0.500 * dz],
-      [ 0.062 * dx, -0.499 * dz],
-      [ 0.104 * dx, -0.497 * dz],
-      [ 0.146 * dx, -0.497 * dz],
-      [ 0.188 * dx, -0.492 * dz],
-      [ 0.229 * dx, -0.482 * dz],
-      [ 0.271 * dx, -0.462 * dz],
-      [ 0.313 * dx, -0.436 * dz],
-      [ 0.354 * dx, -0.407 * dz],
-      [ 0.396 * dx, -0.373 * dz],
-      [ 0.437 * dx, -0.338 * dz],
-      [ 0.479 * dx, -0.303 * dz],
-      [ 0.479 * dx,  0.076 * dz],
-      [ 0.437 * dx,  0.430 * dz],
-      [ 0.396 * dx,  0.430 * dz],
-      [ 0.354 * dx,  0.365 * dz],
-      [ 0.313 * dx,  0.309 * dz],
-      [ 0.271 * dx,  0.255 * dz],
-      [ 0.229 * dx,  0.195 * dz],
-      [ 0.188 * dx,  0.141 * dz],
-      [ 0.146 * dx,  0.127 * dz],
-      [ 0.104 * dx,  0.106 * dz],
-      [ 0.062 * dx,  0.100 * dz],
-      [ 0.021 * dx,  0.093 * dz],
-      [-0.021 * dx,  0.089 * dz],
-      [-0.062 * dx,  0.091 * dz],
-      [-0.104 * dx,  0.125 * dz],
-      [-0.146 * dx,  0.154 * dz],
-      [-0.188 * dx,  0.182 * dz],
-      [-0.229 * dx,  0.236 * dz],
-      [-0.271 * dx,  0.330 * dz],
-      [-0.313 * dx,  0.415 * dz],
-      [-0.354 * dx,  0.500 * dz],
-      [-0.396 * dx,  0.495 * dz],
-      [-0.437 * dx,  0.381 * dz],
-      [-0.479 * dx,  0.232 * dz]
+      [-0.48 * dx, -0.181 * dz],
+      [-0.42 * dx, -0.273 * dz],
+      [-0.36 * dx, -0.360 * dz],
+      [-0.30 * dx, -0.407 * dz],
+      [-0.24 * dx, -0.441 * dz],
+      [-0.18 * dx, -0.467 * dz],
+      [-0.12 * dx, -0.482 * dz],
+      [-0.06 * dx, -0.492 * dz],
+      [ 0.00 * dx, -0.496 * dz],
+      [ 0.06 * dx, -0.492 * dz],
+      [ 0.12 * dx, -0.482 * dz],
+      [ 0.18 * dx, -0.467 * dz],
+      [ 0.24 * dx, -0.441 * dz],
+      [ 0.30 * dx, -0.407 * dz],
+      [ 0.36 * dx, -0.360 * dz],
+      [ 0.42 * dx, -0.273 * dz],
+      [ 0.48 * dx, -0.181 * dz],
+      [ 0.48 * dx,  0.192 * dz],
+      [ 0.42 * dx,  0.416 * dz],
+      [ 0.36 * dx,  0.416 * dz],
+      [ 0.30 * dx,  0.326 * dz],
+      [ 0.24 * dx,  0.232 * dz],
+      [ 0.18 * dx,  0.153 * dz],
+      [ 0.12 * dx,  0.105 * dz],
+      [ 0.06 * dx,  0.077 * dz],
+      [ 0.00 * dx,  0.076 * dz],
+      [-0.06 * dx,  0.077 * dz],
+      [-0.12 * dx,  0.105 * dz],
+      [-0.18 * dx,  0.153 * dz],
+      [-0.24 * dx,  0.232 * dz],
+      [-0.30 * dx,  0.326 * dz],
+      [-0.36 * dx,  0.416 * dz],
+      [-0.42 * dx,  0.416 * dz],
+      [-0.48 * dx,  0.192 * dz]
     ];
   }
 
@@ -2301,17 +2318,17 @@ function getFurnitureLocalBoxes(item, interactingWithItem=null){
     ];
   }
   const idLow = ((item && item.id) || '').toLowerCase();
-  // 1. Sala Lumno: 8 bloques curvos calibrados exactamente al arco del sofá
+  // 1. Sala Lumno: 8 bloques curvos simétricos calibrados al arco del sofá
   if(idLow.includes('lumno')){
     return [
-      { minX: -dx * 0.48, maxX: -dx * 0.36, minZ: -dz * 0.24, maxZ: dz * 0.50, part: 'lumno_0' },
-      { minX: -dx * 0.36, maxX: -dx * 0.24, minZ: -dz * 0.42, maxZ: dz * 0.46, part: 'lumno_1' },
-      { minX: -dx * 0.24, maxX: -dx * 0.12, minZ: -dz * 0.48, maxZ: dz * 0.24, part: 'lumno_2' },
-      { minX: -dx * 0.12, maxX: 0,          minZ: -dz * 0.50, maxZ: dz * 0.12, part: 'lumno_3' },
-      { minX: 0,          maxX: dx * 0.12,  minZ: -dz * 0.50, maxZ: dz * 0.12, part: 'lumno_4' },
+      { minX: -dx * 0.48, maxX: -dx * 0.36, minZ: -dz * 0.32, maxZ: dz * 0.42, part: 'lumno_0' },
+      { minX: -dx * 0.36, maxX: -dx * 0.24, minZ: -dz * 0.44, maxZ: dz * 0.33, part: 'lumno_1' },
+      { minX: -dx * 0.24, maxX: -dx * 0.12, minZ: -dz * 0.48, maxZ: dz * 0.20, part: 'lumno_2' },
+      { minX: -dx * 0.12, maxX: 0,          minZ: -dz * 0.50, maxZ: dz * 0.10, part: 'lumno_3' },
+      { minX: 0,          maxX: dx * 0.12,  minZ: -dz * 0.50, maxZ: dz * 0.10, part: 'lumno_4' },
       { minX: dx * 0.12,  maxX: dx * 0.24,  minZ: -dz * 0.48, maxZ: dz * 0.20, part: 'lumno_5' },
-      { minX: dx * 0.24,  maxX: dx * 0.36,  minZ: -dz * 0.43, maxZ: dz * 0.35, part: 'lumno_6' },
-      { minX: dx * 0.36,  maxX: dx * 0.48,  minZ: -dz * 0.35, maxZ: dz * 0.43, part: 'lumno_7' }
+      { minX: dx * 0.24,  maxX: dx * 0.36,  minZ: -dz * 0.44, maxZ: dz * 0.33, part: 'lumno_6' },
+      { minX: dx * 0.36,  maxX: dx * 0.48,  minZ: -dz * 0.32, maxZ: dz * 0.42, part: 'lumno_7' }
     ];
   }
   // 2. Sala Piero Derecha (Librero izq, Asiento medio, Chaise der)
@@ -3125,14 +3142,17 @@ function selectFurniture(furn, isMulti = false){
   });
 
   const chipsWrap = document.getElementById('cardVariantChips');
-  const siblings = RAW_CATALOG.filter(x => x.group_id === item.group_id);
+  const validGroupId = (item && item.group_id && typeof item.group_id === 'string' && item.group_id.trim() !== '') ? item.group_id : null;
+  const siblings = validGroupId ? RAW_CATALOG.filter(x => x.group_id && x.group_id === validGroupId) : [];
   if(siblings.length > 1 && selectedFurnitureList.length === 1){
     chipsWrap.style.display = 'flex';
     chipsWrap.innerHTML = '';
     siblings.forEach(sib => {
       const chip = document.createElement('div');
       chip.className = 'variant-chip' + (sib.id === item.id ? ' active' : '');
-      chip.innerHTML = `<span class="chip-dot" style="background:${sib.color_hex}"></span><span>${sib.variant_label}</span>`;
+      const hex = sib.color_hex || '#c2a382';
+      const lbl = sib.variant_label || sib.variant || 'Acabado';
+      chip.innerHTML = `<span class="chip-dot" style="background:${hex}"></span><span>${lbl}</span>`;
       chip.addEventListener('click', () => switchFurnitureVariant(furn, sib));
       chipsWrap.appendChild(chip);
     });
@@ -3687,12 +3707,11 @@ function renderCatalog(catFilter){
 
   RAW_CATALOG.forEach(p => {
     if(catFilter !== 'all'){
-      if(catFilter === 'Recámaras' && (p.category !== 'Recámaras' && p.category !== 'Burós')) return;
-      if(catFilter === 'Burós' && p.category !== 'Burós') return;
-      if(catFilter !== 'Recámaras' && catFilter !== 'Burós' && p.category.toLowerCase() !== catFilter.toLowerCase()) return;
+      if(p.category.toLowerCase() !== catFilter.toLowerCase()) return;
     }
-    if(!displayedGroups.has(p.group_id)){
-      displayedGroups.add(p.group_id);
+    const gid = p.group_id || p.id;
+    if(!displayedGroups.has(gid)){
+      displayedGroups.add(gid);
       items.push(p);
     }
   });

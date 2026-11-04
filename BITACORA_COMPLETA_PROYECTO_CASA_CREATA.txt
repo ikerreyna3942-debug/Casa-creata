@@ -196,3 +196,34 @@ CAMAS, BASES Y CABECERAS (REGLA DE ENSAMBLAJE DE DORMITORIO):
 ================================================================================
 FIN DE LA BITÁCORA. NO MODIFICAR SIN AUTORIZACIÓN.
 ================================================================================
+
+================================================================================
+RESOLUCIÓN INTEGRAL: CRISTAL ESBELTO, CASTILLOS ENRASADOS, LUMNO 1:1, CATEGORÍAS Y VARIANTES - 2026-11-04 16:35:00
+================================================================================
+1. REDUCCIÓN Y ESBELTEZ DEL CRISTAL ARQUITECTÓNICO:
+   - Se reemplazó el volumen macizo de 30 cm de espesor por una cancelería arquitectónica esbelta de 4 cm (0.04 m) centrada en el vano.
+   - Aplica automáticamente en PB, N1 y N2, brindando transparencia, ligereza y fidelidad arquitectónica real.
+
+2. ENRASADO AL PAÑO INTERIOR DE CASTILLOS PERIMETRALES:
+   - Los castillos de 40x40 cm insertos en muros de 20 cm sobresalían 20 cm creando mochetas o dientes toscos hacia el interior de las habitaciones.
+   - Se ajustó su cara interior para quedar 100% al paño interior con los muros contiguos (20 cm de espesor en el paño de pared), eliminando los estorbos visuales y físicos.
+   - Las columnas aisladas o de vestíbulo abierto se preservan en su sección estructural cuadrada completa.
+
+3. CALIBRACIÓN SIMÉTRICA Y HUELLA DE LA SALA LUMNO:
+   - Se identificó que la malla GLB original de Sala Lumno estaba modelada con una inclinación angular de 8.0° en el plano XZ, lo que distorsionaba la simetría y alargaba un extremo más que el otro.
+   - Se horneó una rotación compensatoria de 8.0° directamente en los vértices y normales de SALA LUMNO LIMEN.glb y SALA LUMNO MUSHROOM.glb, dejándolas en orientación perfectamente horizontal y 100% simétrica.
+   - Se generó un nuevo polígono de huella de 34 vértices en arco circular armónico y continuo, idéntico a la fotografía oficial de catálogo.
+   - Se actualizaron las cajas de colisión para ser perfectamente reflejadas y simétricas.
+
+4. CORRECCIÓN Y ORDEN DE CATEGORÍAS EN LA BARRA:
+   - Se eliminó el botón suelto de "Burós" de la barra principal.
+   - Se fijó la barra en los 4 pilares comerciales oficiales: [Todos] [Salas] [Comedores] [Recámaras] [Auxiliares].
+   - Los 10 burós fueron re-clasificados dentro de "Recámaras", permitiendo encontrarlos fluidamente al filtrar por Recámaras.
+
+5. ELIMINACIÓN DE CASCADA DE BOTONES "UNDEFINED":
+   - Se erradicó el fallo que comparaba undefined === undefined y mostraba 71 botones rotos.
+   - Se mapearon los 71 productos con su group_id, group_title, variant_label y color_hex oficial.
+   - Se agregó validación defensiva estricta para que únicamente se desplieguen chips de acabados cuando existen variantes reales (ej. Piero Derecha: Forever Curry, Forever Buttermilk, Forever Plus Moss).
+
+6. LIMPIEZA DE TAPIZ EN SALA PIERO BUTTERMILK:
+   - Se eliminó el residuo de píxeles curry en el borde frontal del chaise de Buttermilk, conservando la repisa de nogal natural 100% limpia.
