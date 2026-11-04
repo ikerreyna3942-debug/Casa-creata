@@ -987,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793819033"></script>
+<script src="modelos_glb_data.js?v=1793820130"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -4135,6 +4135,27 @@ window.MASTER_DEFAULT_LAYOUT = {
       "x": 1.324,
       "z": -12.777,
       "r": 20.42
+    },
+    {
+      "id": "librero_mazati_bellota",
+      "lvl": "PB",
+      "x": 14.6,
+      "z": -6.0,
+      "r": 0
+    },
+    {
+      "id": "sillon_unipata",
+      "lvl": "PB",
+      "x": 10.8,
+      "z": -16.6,
+      "r": 1.571
+    },
+    {
+      "id": "sillon_kate",
+      "lvl": "PB",
+      "x": 4.0,
+      "z": -11.2,
+      "r": 0
     }
   ]
 };
@@ -4468,6 +4489,15 @@ function restoreInitialState(){
 
   if(!targetObj || getFurnitureList(targetObj).length === 0){
     targetObj = window.MASTER_DEFAULT_LAYOUT;
+  } else if(window.MASTER_DEFAULT_LAYOUT && Array.isArray(window.MASTER_DEFAULT_LAYOUT.furniture)){
+    const curList = getFurnitureList(targetObj);
+    const placedSet = new Set(curList.map(f => f.id));
+    window.MASTER_DEFAULT_LAYOUT.furniture.forEach(mf => {
+      if(!placedSet.has(mf.id)){
+        curList.push(Object.assign({}, mf));
+        placedSet.add(mf.id);
+      }
+    });
   }
 
   if(targetObj){
