@@ -30,7 +30,7 @@ REGLAS AQUÍ DOCUMENTADAS SIN LA AUTORIZACIÓN EXPRESA DEL USUARIO.
   * Vanos de puertas (batientes y corredizas) y ductos de ventilación perfectamente respetados.
 
 ================================================================================
-2. CATÁLOGO COMPLETO DE PRODUCTOS (68 MUEBLES MAREADOS Y HOMOLOGADOS)
+2. CATÁLOGO COMPLETO DE PRODUCTOS (71 MUEBLES MAPEADOS Y HOMOLOGADOS)
 ================================================================================
 Todos los productos están vinculados a su archivo .GLB con medidas métricas [Frente, Fondo, Alto] en metros, sincronizados con la base de datos de Google Sheets (CASA CREATA / ANIPA).
 
@@ -114,6 +114,25 @@ LISTA MAESTRA DE SALAS Y MÓDULOS DE SALA:
     - SOFA CAMA UGANDA BRAXTON (2.00 x 1.05 x 0.85 m)
     - SOFACAM CITY NIZA FOSTER (1.95 x 1.00 x 0.80 m)
     - SILLON OCASIONAL AUREA, BALI, CHESTER, ZUR, etc.
+
+13. NUEVOS SILLONES OCASIONALES INTEGRADOS:
+    - SILLON UNIPATA
+      * SKU: YO1PUNIBRBOPC
+      * Dimensiones reales: 0.79 m x 0.87 m x 0.87 m
+      * Archivo GLB: SILLON UNIPATA.glb
+      * Proveedor: YOI | Rosa Morada Tono Parota | Brentwood Bone / Luxor Ivory
+    - SILLON KATE
+      * SKU: GMM1PKATBEIWO
+      * Dimensiones reales: 0.73 m x 0.76 m x 0.78 m
+      * Archivo GLB: SILLON KATE.glb
+      * Proveedor: KEU | Tela Beige y Cuerda tono Coffee
+
+14. LIBREROS Y MUEBLES AUXILIARES:
+    - LIBRERO MAZATI BELLOTA
+      * SKU: ATXLIBMAZENCA
+      * Dimensiones reales: 1.15 m x 0.47 m x 2.30 m
+      * Archivo GLB: LIBRERO MAZATI BELLOTA.glb
+      * Proveedor: ARTEX | Encino Laca Bellota | Categoría: Auxiliares
 
 COMEDORES, MESAS Y SILLAS:
 --------------------------------------------------------------------------------

@@ -3191,5 +3191,152 @@ window.CATALOGO_PRODUCTOS = [
     "flip": false,
     "swatch_color": "#5c6b54",
     "color_hex": "#5c6b54"
+  },
+  {
+    "id": "librero_mazati_bellota",
+    "name": "MAZATI LIBRERO ENCINO LACA BELLOTA 115X47X230 CM",
+    "short_name": "Librero Mazati",
+    "group_id": "librero_mazati_bellota",
+    "group_title": "Librero Mazati",
+    "variant_label": "Encino Laca Bellota",
+    "variant": "Encino Laca Bellota",
+    "category": "Auxiliares",
+    "glb": "LIBRERO MAZATI BELLOTA.glb",
+    "sku": "ATXLIBMAZENCA",
+    "proveedor": "ARTEX",
+    "dim_m": [
+      1.15,
+      0.47,
+      2.3
+    ],
+    "dim_cm": [
+      115,
+      47,
+      230
+    ],
+    "stock": {
+      "cedis": 0,
+      "playa": 0,
+      "colosio": 0,
+      "ptc": 0,
+      "casa_creata": 0
+    },
+    "ventas": {
+      "casa_creata": 0,
+      "playa": 0,
+      "colosio": 0,
+      "ptc": 0
+    },
+    "photo": "fotos/librero_mazati_bellota/foto_1.jpg",
+    "thumb": "fotos/librero_mazati_bellota/foto_1.jpg",
+    "gallery": [
+      "fotos/librero_mazati_bellota/foto_1.jpg",
+      "fotos/librero_mazati_bellota/foto_2.jpg",
+      "fotos/librero_mazati_bellota/foto_3.jpg",
+      "fotos/librero_mazati_bellota/foto_4.jpg",
+      "fotos/librero_mazati_bellota/foto_5.jpg",
+      "fotos/librero_mazati_bellota/foto_6.jpg"
+    ],
+    "flip": false,
+    "swatch_color": "#c2a382",
+    "color_hex": "#c2a382"
+  },
+  {
+    "id": "sillon_unipata",
+    "name": "UNIPATA SILLON ROSA MORADA PAROTA CLARO VISTA BRENTWOOD BONE INT LUXOR IVORY 87X79X87 CM",
+    "short_name": "Sillón Unipata",
+    "group_id": "sillon_unipata",
+    "group_title": "Sillón Unipata",
+    "variant_label": "Brentwood Bone / Luxor Ivory",
+    "variant": "Brentwood Bone / Luxor Ivory",
+    "category": "Salas",
+    "glb": "SILLON UNIPATA.glb",
+    "sku": "YO1PUNIBRBOPC",
+    "proveedor": "YOI",
+    "dim_m": [
+      0.79,
+      0.87,
+      0.87
+    ],
+    "dim_cm": [
+      79,
+      87,
+      87
+    ],
+    "stock": {
+      "cedis": 4,
+      "playa": 0,
+      "colosio": 0,
+      "ptc": 0,
+      "casa_creata": 0
+    },
+    "ventas": {
+      "casa_creata": 0,
+      "playa": 0,
+      "colosio": 0,
+      "ptc": 0
+    },
+    "photo": "fotos/sillon_unipata/foto_1.jpg",
+    "thumb": "fotos/sillon_unipata/foto_1.jpg",
+    "gallery": [
+      "fotos/sillon_unipata/foto_1.jpg",
+      "fotos/sillon_unipata/foto_2.jpg",
+      "fotos/sillon_unipata/foto_3.jpg",
+      "fotos/sillon_unipata/foto_4.jpg",
+      "fotos/sillon_unipata/foto_5.jpg",
+      "fotos/sillon_unipata/foto_6.jpg"
+    ],
+    "flip": false,
+    "swatch_color": "#c2a382",
+    "color_hex": "#c2a382"
+  },
+  {
+    "id": "sillon_kate",
+    "name": "KATE SILLON OCASIONAL BEIGE CUERDA COFFEE 73X76X78 CM",
+    "short_name": "Sillón Kate",
+    "group_id": "sillon_kate",
+    "group_title": "Sillón Kate",
+    "variant_label": "Beige / Cuerda Coffee",
+    "variant": "Beige / Cuerda Coffee",
+    "category": "Salas",
+    "glb": "SILLON KATE.glb",
+    "sku": "GMM1PKATBEIWO",
+    "proveedor": "KEU",
+    "dim_m": [
+      0.73,
+      0.76,
+      0.78
+    ],
+    "dim_cm": [
+      73,
+      76,
+      78
+    ],
+    "stock": {
+      "cedis": 0,
+      "playa": 0,
+      "colosio": 0,
+      "ptc": 0,
+      "casa_creata": 0
+    },
+    "ventas": {
+      "casa_creata": 0,
+      "playa": 0,
+      "colosio": 0,
+      "ptc": 0
+    },
+    "photo": "fotos/sillon_kate/foto_1.jpg",
+    "thumb": "fotos/sillon_kate/foto_1.jpg",
+    "gallery": [
+      "fotos/sillon_kate/foto_1.jpg",
+      "fotos/sillon_kate/foto_2.jpg",
+      "fotos/sillon_kate/foto_3.jpg",
+      "fotos/sillon_kate/foto_4.jpg",
+      "fotos/sillon_kate/foto_5.jpg",
+      "fotos/sillon_kate/foto_6.jpg"
+    ],
+    "flip": false,
+    "swatch_color": "#c2a382",
+    "color_hex": "#c2a382"
   }
 ];
