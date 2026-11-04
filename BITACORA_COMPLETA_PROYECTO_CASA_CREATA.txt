@@ -1,0 +1,179 @@
+================================================================================
+   BITÁCORA TÉCNICA Y MAESTRA DEL PROYECTO: SHOWROOM VIRTUAL 3D CASA CREATA
+   GRUPO ANIPA / CASA CREATA — VERSIÓN ESTABLE 3.0
+================================================================================
+Fecha de actualización: 4 de Noviembre de 2026
+URL de Producción: https://ikerreyna3942-debug.github.io/Casa-creata/
+Repositorio remoto: https://github.com/ikerreyna3942-debug/Casa-creata.git
+
+ESTE DOCUMENTO ES LA FUENTE ÚNICA DE LA VERDAD (SSOT).
+PROHIBIDO ELIMINAR, ALTERAR O MODIFICAR CUALQUIERA DE LAS FUNCIONALIDADES O
+REGLAS AQUÍ DOCUMENTADAS SIN LA AUTORIZACIÓN EXPRESA DEL USUARIO.
+
+================================================================================
+1. ARQUITECTURA Y MEDIDAS REALES DEL PLANO ARQUITECTÓNICO (DWG)
+================================================================================
+1.1 Escala y Coordenadas Métricas en Three.js:
+- Escala: 1:1 estricta. 1 unidad en 3D equivale exactamente a 1.00 metro real.
+- Ejes estructurales del plano arquitectónico original (DWG):
+  * Ejes A a E (Ancho horizontal X): 20.21 metros.
+  * Ejes 1 a 8 (Largo vertical Z): 23.77 metros.
+  * Límites perimetrales de muros exteriores (PERIMETER_BOUNDS):
+    - Min X = 0.25 m | Max X = 19.96 m
+    - Min Z = -23.77 m | Max Z = -0.25 m
+- Niveles de Planta:
+  * Planta Baja (PB): Altura de piso Y = 0.00 m
+  * Planta Alta (PA): Altura de piso Y = 3.30 m
+- Muros y Columnas (LEVEL_OBSTACLES):
+  * Muros perimetrales: Espesor de 0.20 m a 0.25 m con acabados en blanco marfil.
+  * Muros interiores: Tabiques de 0.15 m y columnas estructurales calibradas a partir del plano CAD.
+  * Vanos de puertas (batientes y corredizas) y ductos de ventilación perfectamente respetados.
+
+================================================================================
+2. CATÁLOGO COMPLETO DE PRODUCTOS (68 MUEBLES MAREADOS Y HOMOLOGADOS)
+================================================================================
+Todos los productos están vinculados a su archivo .GLB con medidas métricas [Frente, Fondo, Alto] en metros, sincronizados con la base de datos de Google Sheets (CASA CREATA / ANIPA).
+
+LISTA MAESTRA DE SALAS Y MÓDULOS DE SALA:
+--------------------------------------------------------------------------------
+1. SALA PIERO DERECHA CURRY
+   - SKU: CVVSALPIEFPBU
+   - Dimensiones: 2.90 m x 1.88 m x 0.65 m
+   - Archivo GLB: SALA PIERO DERECHA CURRY.glb (9,281 vértices)
+   - Geometría: Librero/estante en lateral izquierdo, asiento corrido medio, chaise angular en lateral derecho.
+   - Silueta de huella (Footprint): Ajuste punto por punto sobre vértices 3D.
+
+2. SALA PIERO IZQUIERDA CURRY
+   - SKU: CVVSALPIEFBIZ
+   - Dimensiones: 2.90 m x 1.88 m x 0.65 m
+   - Archivo GLB: SALA PIERO IZQUIERDA CURRY.glb (6,730 vértices)
+   - Geometría: Chaise en lateral izquierdo, asiento corrido medio, librero/estante en lateral derecho.
+   - Silueta de huella (Footprint): Ajuste punto por punto sobre vértices 3D.
+
+3. SALA PIERO DERECHA BUTTERMILK
+   - SKU: CVVSALPIEFPBU
+   - Dimensiones: 2.90 m x 1.88 m x 0.65 m
+   - Archivo GLB: SALA PIERO DERECHA BUTERMIK.glb
+   - Homologación: Comparte exactamente la misma malla 3D de 9,281 vértices que la Curry con textura horneada de tela Buttermilk.
+
+4. SALA PIERO IZQUIERDA BUTTERMILK
+   - SKU: CVVSALPIEFMIZ
+   - Dimensiones: 2.90 m x 1.88 m x 0.65 m
+   - Archivo GLB: SALA PIERO IZQUIERDA BUTERMIK.glb
+   - Homologación: Comparte exactamente la misma malla 3D de 6,730 vértices que la Curry con textura horneada de tela Buttermilk.
+
+5. SALA PIERO DERECHA MOSS
+   - SKU: CVVSALPIEFPMO
+   - Dimensiones: 2.90 m x 1.88 m x 0.65 m
+   - Archivo GLB: SALA PIERO DERECHA MOSS.glb
+   - Homologación: Comparte exactamente la misma malla 3D de 9,281 vértices que la Curry con textura horneada de terciopelo Forever Moss.
+
+6. SALA PIERO IZQUIERDA MOSS
+   - SKU: CVVSALPIEFMIZ
+   - Dimensiones: 2.90 m x 1.88 m x 0.65 m
+   - Archivo GLB: SALA PIERO IZQUIERDA MOSS.glb
+   - Homologación: Comparte exactamente la misma malla 3D de 6,730 vértices que la Curry con textura horneada de terciopelo Forever Moss.
+
+7. SALA LUMNO BAKER LINEN
+   - SKU: CVVSALLUNBALI
+   - Dimensiones: 2.45 m x 1.05 m x 0.70 m (Escala natural 1:1 sin distorsión)
+   - Archivo GLB: SALA LUMNO LIMEN.glb
+   - Geometría: Sofá curvo continuo de diseño orgánico.
+   - Colisión: 8 sub-cajas OBB tangenciales a lo largo del arco orgánico.
+
+8. SALA LUMNO BAKER MUSHROOM
+   - SKU: CVVSALLUNBAMU
+   - Dimensiones: 2.45 m x 1.05 m x 0.70 m (Escala natural 1:1 sin distorsión)
+   - Archivo GLB: SALA LUMNO MUSHROOM.glb
+   - Geometría: Sofá curvo continuo de diseño orgánico en tono Mushroom.
+
+9. SALA LEXY IZQUIERDA PRISMA OLIVE
+   - SKU: CVVSALLEXPROL
+   - Dimensiones: 2.79 m x 1.40 m x 0.63 m
+   - Archivo GLB: SALA LEXY IZQUIERDA.glb
+   - Geometría: Chaise a la izquierda, asiento corrido y respaldo curvo a la derecha.
+
+10. SALA ARIA OSI FLAX
+    - SKU: CVVSALAARIOF
+    - Dimensiones: 2.80 m x 2.80 m x 0.70 m
+    - Archivo GLB: SALA ARIA OSI FLAX.glb
+    - Geometría: Sofá modular en L de amplio confort.
+
+11. SALA ARIA OSI IVORY
+    - SKU: CVVSALAARIOI
+    - Dimensiones: 2.80 m x 2.80 m x 0.70 m
+    - Archivo GLB: SALA ARIA OSI IVORY.glb
+    - Geometría: Sofá modular en L en tono marfil.
+
+12. OTRAS SALAS Y SOFÁS EN EL CATÁLOGO:
+    - SALA CARRARA 3 PZAS (3.30 x 2.10 x 0.85 m)
+    - SALA MAWI (2.80 x 1.80 x 0.75 m)
+    - SOFA SANTA FE G4 GELLAR JUTE (2.40 x 1.05 x 0.85 m)
+    - SOFA ZAMA LUXOR IVORY (2.30 x 1.00 x 0.82 m)
+    - SOFA CAMA ASHA BRAXTON (2.10 x 1.60 x 0.85 m)
+    - SOFA CAMA UGANDA BRAXTON (2.00 x 1.05 x 0.85 m)
+    - SOFACAM CITY NIZA FOSTER (1.95 x 1.00 x 0.80 m)
+    - SILLON OCASIONAL AUREA, BALI, CHESTER, ZUR, etc.
+
+COMEDORES, MESAS Y SILLAS:
+--------------------------------------------------------------------------------
+- MESA DE COMEDOR EMELIA GRANDE (2.80 x 1.20 x 0.75 m)
+- MESA PRINCETON (2.60 x 1.10 x 0.75 m)
+- MESA BARRIL (1.80 x 1.20 x 0.75 m)
+- COMEDOR MINIMA, LEONARDO, AFRICAN ENCINO, etc.
+- Regla de Comedor Inteligente: Las sillas pueden meterse bajo la cubierta de la mesa hasta el pedestal o patas centrales sin reportar colisión falsa.
+
+CAMAS, BASES Y CABECERAS (REGLA DE ENSAMBLAJE DE DORMITORIO):
+--------------------------------------------------------------------------------
+- CAMA QS CELINE, PORTOFINO, SAN JOSE KS, AURA, LITERA VENTO, etc.
+- Perfil Volumétrico en T para camas con alas:
+  * La cabecera ancha se extiende a los lados.
+  * Los burós pueden deslizarse y colocarse al ras (1 mm) directamente frente a las alas laterales de la cabecera.
+
+================================================================================
+3. SISTEMA DE COLISIONES, EMPAQUE Y NUDGE (FLECHAS DE MOVIMIENTO)
+================================================================================
+3.1 Principio de Cero Atoramiento (Zero-Lock Collision System):
+- La función 'nudgeSingleFurniture(furn, dx, dz)' utiliza un algoritmo de paso con bisección sub-milimétrica sobre 'checkCollision'.
+- Si la posición deseada está libre, el mueble se mueve inmediatamente.
+- Si choca contra una pared u otro mueble, una búsqueda binaria de 7 iteraciones calcula el punto exacto de contacto (precisión menor a 1 mm).
+- Si la trayectoria diagonal topa, permite el deslizamiento axial automático (deslizar a lo largo del muro en X o en Z).
+- Esto garantiza que las flechas del teclado (ArrowUp, ArrowDown, ArrowLeft, ArrowRight) y los botones de la cruceta táctil en pantalla (▲, ◀, ▶, ▼) NUNCA se queden congelados.
+
+3.2 Contornos y Huellas Reales (Footprints):
+- En lugar de usar cajas rectangulares genéricas que dejan huecos vacíos gigantescos, los sofás curvos y en L (Piero, Lumno, Lexy, Aria, Mawi) tienen su silueta poligonal calculada directamente desde los vértices de su malla 3D.
+- Las colisiones respetan las curvas y los ángulos reales del mueble, permitiendo acercarlo al ras de los muros sin topes fantasma.
+
+================================================================================
+4. SISTEMA DE CAPAS, INTERFAZ Y FUNCIONES DE TIENDA
+================================================================================
+- Selector de Tienda Activa: Botón switch para alternar entre "CASA CREATA" y "ANIPA".
+- Filtro por Niveles: Planta Baja (PB) y Planta Alta (PA).
+- Semáforo Comercial de Ventas:
+  * Verde (Rotación Alta): Ventas > 9 unidades.
+  * Naranja (Media-Alta): Ventas entre 6 y 9 unidades.
+  * Amarillo (Baja-Media): Ventas entre 4 y 5 unidades.
+  * Rojo (Baja): Ventas entre 0 y 3 unidades.
+- Contornos de Muebles: Se pintan dinámicamente con el color del semáforo comercial de la tienda seleccionada.
+- Panel de Producto Seleccionado:
+  * Nombre, SKU, categoría, medidas, precio, stock por sucursal (CEDIS, Playa, Colosio, PTC, Creata) y ventas.
+  * Selector de variantes de tela/color con cambio instantáneo de modelo 3D.
+  * Galería de fotos reales de alta resolución tomadas en tienda.
+  * Cruceta de micro-desplazamiento (±0.05 m) relativa a la cámara.
+  * Botones de rotación (Girar 45° / 90°), cambio de nivel (PB / PA) y eliminación.
+- Guardado y Carga de Distribuciones:
+  * Encriptación en URL (#plan=...) para compartir el diseño 3D con un simple link.
+  * Guardado local en memoria del navegador con nombre personalizado y fecha.
+
+================================================================================
+5. PIPELINE DE COMPILACIÓN Y DESPLIEGUE CONTINUO
+================================================================================
+- Scripts de sincronización en 'AGENTE/SCRIPTS/':
+  * 'auto_sync_catalog.py': Sincroniza catálogo de Google Sheets con metadata local.
+  * 'build_catalog_js.py': Compila 'catalog_data.js' para el frontend.
+  * 'deploy_to_github_pages.py': Despliega automáticamente a GitHub Pages usando credenciales seguras de Windows Credential Manager.
+- Cache-Busting: Cada versión incluye un query string único en assets y scripts (?v=3.0) para asegurar que el navegador cargue la versión más reciente sin necesidad de borrar caché manualmente.
+
+================================================================================
+FIN DE LA BITÁCORA. NO MODIFICAR SIN AUTORIZACIÓN.
+================================================================================
