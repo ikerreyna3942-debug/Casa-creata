@@ -10,13 +10,12 @@ window.CATALOGO_PRODUCTOS = [
     "id": "sofa_santa_fe_baker_linen",
     "name": "SANTA FE SOFA LACA BELLOTA GELLAR JUTE G4 230X95X70 CM",
     "short_name": "Sofá Santa Fe",
-    "group_id": "sofa_santa_fe_baker_linen",
-    "group_title": "Sofá Santa Fe",
-    "variant_label": "Laca Bellota Gellar Jute G4",
     "variant": "Laca Bellota Gellar Jute G4",
     "category": "Salas",
     "glb": "SOFA SANTA FE BAKER LINEN.glb",
+    "folder": "SALAS/Love seat y Sofa/Santa fe/BAKER LINEN",
     "sku": "ATX3PSFEGJLB",
+    "sheet_name": "SANTA FE SOFA LACA BELLOTA GELLAR JUTE G4 230X95X70 CM",
     "proveedor": "ARTEX",
     "dim_m": [
       2.3,
@@ -42,29 +41,24 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 0
     },
     "photo": "fotos/sofa_santa_fe_baker_linen/foto_1.jpg",
-    "thumb": "fotos/sofa_santa_fe_baker_linen/foto_1.jpg",
     "gallery": [
       "fotos/sofa_santa_fe_baker_linen/foto_1.jpg",
-      "fotos/sofa_santa_fe_baker_linen/foto_2.jpg",
+      "fotos/sofa_santa_fe_baker_linen/foto_5.jpg",
       "fotos/sofa_santa_fe_baker_linen/foto_3.jpg",
       "fotos/sofa_santa_fe_baker_linen/foto_4.jpg",
-      "fotos/sofa_santa_fe_baker_linen/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/sofa_santa_fe_baker_linen/foto_2.jpg"
+    ]
   },
   {
     "id": "sillon_bali_olive",
     "name": "BALI SILLON OCASIONAL LACA BELLOTA BAKER OLIVE G3 96X79X81 CM",
     "short_name": "Sillón Bali Olive",
-    "group_id": "familia_sillon_bali",
-    "group_title": "Sillón Ocasional Bali",
-    "variant_label": "Baker Olive G3",
     "variant": "Laca Bellota Baker Olive G3",
     "category": "Salas",
     "glb": "SILLON BALI.glb",
+    "folder": "SALAS/Sillones/Bali/Baker olive bellota",
     "sku": "ATX1PBALBOLB",
+    "sheet_name": "BALI SILLON OCASIONAL LACA BELLOTA BAKER OLIVE G3 96X79X81 CM",
     "proveedor": "ARTEX",
     "dim_m": [
       0.96,
@@ -89,31 +83,26 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sillon_bali_olive/foto_1.jpg",
-    "thumb": "fotos/sillon_bali_olive/foto_1.jpg",
+    "photo": "fotos/sillon_bali_olive/foto_2.jpg",
     "gallery": [
-      "fotos/sillon_bali_olive/foto_1.jpg",
       "fotos/sillon_bali_olive/foto_2.jpg",
       "fotos/sillon_bali_olive/foto_3.jpg",
+      "fotos/sillon_bali_olive/foto_1.jpg",
+      "fotos/sillon_bali_olive/foto_6.jpg",
       "fotos/sillon_bali_olive/foto_4.jpg",
-      "fotos/sillon_bali_olive/foto_5.jpg",
-      "fotos/sillon_bali_olive/foto_6.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#5c6b54",
-    "color_hex": "#5c6b54"
+      "fotos/sillon_bali_olive/foto_5.jpg"
+    ]
   },
   {
     "id": "sillon_bali_natural",
     "name": "BALI SILLON OCASIONAL LACA BELLOTA RUSTY NATURAL G3 96X79X81 CM",
     "short_name": "Sillón Bali Natural",
-    "group_id": "familia_sillon_bali",
-    "group_title": "Sillón Ocasional Bali",
-    "variant_label": "Rusty Natural G3",
     "variant": "Laca Bellota Rusty Natural G3",
     "category": "Salas",
     "glb": "SILLON BALI NATURAL.glb",
+    "folder": "SALAS/Sillones/Bali/Rusty natural bellota",
     "sku": "ATX1PBALRNLB",
+    "sheet_name": "BALI SILLON OCASIONAL LACA BELLOTA RUSTY NATURAL G3 96X79X81 CM",
     "proveedor": "ARTEX",
     "dim_m": [
       0.96,
@@ -138,30 +127,25 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sillon_bali_natural/foto_1.jpg",
-    "thumb": "fotos/sillon_bali_natural/foto_1.jpg",
+    "photo": "fotos/sillon_bali_natural/foto_3.jpg",
     "gallery": [
-      "fotos/sillon_bali_natural/foto_1.jpg",
-      "fotos/sillon_bali_natural/foto_2.jpg",
       "fotos/sillon_bali_natural/foto_3.jpg",
-      "fotos/sillon_bali_natural/foto_4.jpg",
-      "fotos/sillon_bali_natural/foto_5.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#b89f80",
-    "color_hex": "#b89f80"
+      "fotos/sillon_bali_natural/foto_5.jpg",
+      "fotos/sillon_bali_natural/foto_2.jpg",
+      "fotos/sillon_bali_natural/foto_1.jpg",
+      "fotos/sillon_bali_natural/foto_4.jpg"
+    ]
   },
   {
     "id": "sillon_chester",
     "name": "CHESTER SILLON PATA NEGRA FOREVER MOSS 68X80X85 CM",
     "short_name": "Sillón Chester",
-    "group_id": "sillon_chester",
-    "group_title": "Sillón Chester",
-    "variant_label": "Pata Negra Forever Moss",
     "variant": "Pata Negra Forever Moss",
     "category": "Salas",
     "glb": "SILLON CHESTER.glb",
+    "folder": "SALAS/Sillones/Chester/Forever moss",
     "sku": "DYF1PCHESFMPN",
+    "sheet_name": "CHESTER SILLON PATA NEGRA FOREVER MOSS 68X80X85 CM",
     "proveedor": "DYFASA",
     "dim_m": [
       0.68,
@@ -187,28 +171,23 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 0
     },
     "photo": "fotos/sillon_chester/foto_1.jpg",
-    "thumb": "fotos/sillon_chester/foto_1.jpg",
     "gallery": [
       "fotos/sillon_chester/foto_1.jpg",
+      "fotos/sillon_chester/foto_4.jpg",
       "fotos/sillon_chester/foto_2.jpg",
-      "fotos/sillon_chester/foto_3.jpg",
-      "fotos/sillon_chester/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#5c6b54",
-    "color_hex": "#5c6b54"
+      "fotos/sillon_chester/foto_3.jpg"
+    ]
   },
   {
     "id": "sillon_zur_sand",
     "name": "ZUR SILLON OCASIONAL ROSA MORADA TONO NATURAL SAND 07 69X86X82 CM",
     "short_name": "Sillón Zur Sand",
-    "group_id": "familia_sillon_zur",
-    "group_title": "Sillón Ocasional Zur",
-    "variant_label": "Claire Sand 07",
     "variant": "Rosa Morada Sand 07",
     "category": "Salas",
     "glb": "SILLON ZUR CLAIRE SAND.glb",
+    "folder": "SALAS/Sillones/Zur ocasional/Claire Sand",
     "sku": "YO1PZURSA07RM",
+    "sheet_name": "ZUR SILLON OCASIONAL ROSA MORADA TONO NATURAL SAND 07 69X86X82 CM",
     "proveedor": "YOI",
     "dim_m": [
       0.69,
@@ -233,30 +212,25 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 1,
       "ptc": 0
     },
-    "photo": "fotos/sillon_zur_sand/foto_1.jpg",
-    "thumb": "fotos/sillon_zur_sand/foto_1.jpg",
+    "photo": "fotos/sillon_zur_sand/foto_5.jpg",
     "gallery": [
-      "fotos/sillon_zur_sand/foto_1.jpg",
-      "fotos/sillon_zur_sand/foto_2.jpg",
+      "fotos/sillon_zur_sand/foto_5.jpg",
       "fotos/sillon_zur_sand/foto_3.jpg",
+      "fotos/sillon_zur_sand/foto_2.jpg",
       "fotos/sillon_zur_sand/foto_4.jpg",
-      "fotos/sillon_zur_sand/foto_5.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#d8cab8",
-    "color_hex": "#d8cab8"
+      "fotos/sillon_zur_sand/foto_1.jpg"
+    ]
   },
   {
     "id": "sillon_zur_roja",
     "name": "ZUR SILLON OCASIONAL ROSA MORADA TONO NATURAL SAND 07 69X86X82 CM",
     "short_name": "Sillón Zur Piel",
-    "group_id": "familia_sillon_zur",
-    "group_title": "Sillón Ocasional Zur",
-    "variant_label": "Piel Roja",
     "variant": "Rosa Morada Piel Roja",
     "category": "Salas",
     "glb": "SILLON ZUR PIEL ROJA.glb",
+    "folder": "SALAS/Sillones/Zur ocasional/Pierl roja",
     "sku": "YO1PZURSA07RM",
+    "sheet_name": "ZUR SILLON OCASIONAL ROSA MORADA TONO NATURAL SAND 07 69X86X82 CM",
     "proveedor": "YOI",
     "dim_m": [
       0.69,
@@ -281,29 +255,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 1,
       "ptc": 0
     },
-    "photo": "fotos/sillon_zur_roja/foto_1.jpg",
-    "thumb": "fotos/sillon_zur_roja/foto_1.jpg",
+    "photo": "fotos/sillon_zur_roja/foto_2.jpg",
     "gallery": [
-      "fotos/sillon_zur_roja/foto_1.jpg",
       "fotos/sillon_zur_roja/foto_2.jpg",
       "fotos/sillon_zur_roja/foto_3.jpg",
+      "fotos/sillon_zur_roja/foto_1.jpg",
       "fotos/sillon_zur_roja/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#8a3324",
-    "color_hex": "#8a3324"
+    ]
   },
   {
     "id": "sofa_rennes_grey",
     "name": "RENNES SOFA CAMA SORRENTO GREY 200X105X78 CM",
     "short_name": "Sofá Cama Rennes",
-    "group_id": "sofa_rennes_grey",
-    "group_title": "Sofá Cama Rennes",
-    "variant_label": "Sorrento Grey",
     "variant": "Sorrento Grey",
     "category": "Salas",
     "glb": "SOFA RENNES SORRENTO GREY.glb",
+    "folder": "SALAS/Sofa camas y futones/Rennes/Sorrento grey",
     "sku": "ATXSCRENNESSG",
+    "sheet_name": "RENNES SOFA CAMA SORRENTO GREY 200X105X78 CM",
     "proveedor": "ARTEX",
     "dim_m": [
       2.0,
@@ -329,29 +298,24 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 7
     },
     "photo": "fotos/sofa_rennes_grey/foto_1.jpg",
-    "thumb": "fotos/sofa_rennes_grey/foto_1.jpg",
     "gallery": [
       "fotos/sofa_rennes_grey/foto_1.jpg",
-      "fotos/sofa_rennes_grey/foto_2.jpg",
       "fotos/sofa_rennes_grey/foto_3.jpg",
+      "fotos/sofa_rennes_grey/foto_2.jpg",
       "fotos/sofa_rennes_grey/foto_4.jpg",
       "fotos/sofa_rennes_grey/foto_5.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#7a7d80",
-    "color_hex": "#7a7d80"
+    ]
   },
   {
     "id": "buro_bejuco",
     "name": "BEJUCO BURO SOLIDA PANEL ROSA MORADA 70X40X60 CM",
     "short_name": "Buró Bejuco",
-    "group_id": "buro_bejuco",
-    "group_title": "Buró Bejuco",
-    "variant_label": "Rosa Morada Sólida Panel",
     "variant": "Rosa Morada Sólida Panel",
     "category": "Burós",
     "glb": "BURO BEJUCO juco.glb",
+    "folder": "RECAMARAS/Buros/Bejuco",
     "sku": "MOBURBEJRROMO",
+    "sheet_name": "BEJUCO BURO SOLIDA PANEL ROSA MORADA 70X40X60 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       0.7,
@@ -377,28 +341,23 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 1
     },
     "photo": "fotos/buro_bejuco/foto_1.jpg",
-    "thumb": "fotos/buro_bejuco/foto_1.jpg",
     "gallery": [
       "fotos/buro_bejuco/foto_1.jpg",
       "fotos/buro_bejuco/foto_2.jpg",
-      "fotos/buro_bejuco/foto_3.jpg",
-      "fotos/buro_bejuco/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/buro_bejuco/foto_4.jpg",
+      "fotos/buro_bejuco/foto_3.jpg"
+    ]
   },
   {
     "id": "buro_yute",
     "name": "YUTE BURO SOLIDA PANEL ROSA MORADA CON CONTACTO CARGA INALAMBRICA 70X40X60 CM",
     "short_name": "Buró Yute",
-    "group_id": "buro_yute",
-    "group_title": "Buró Yute",
-    "variant_label": "Rosa Morada Carga Inalámbrica",
     "variant": "Rosa Morada Carga Inalámbrica",
     "category": "Burós",
     "glb": "BURO YUTE.glb",
+    "folder": "RECAMARAS/Buros/Yute",
     "sku": "MOBBURYUTROMO",
+    "sheet_name": "YUTE BURO SOLIDA PANEL ROSA MORADA CON CONTACTO CARGA INALAMBRICA 70X40X60 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       0.7,
@@ -423,29 +382,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 1
     },
-    "photo": "fotos/buro_yute/foto_1.jpg",
-    "thumb": "fotos/buro_yute/foto_1.jpg",
+    "photo": "fotos/buro_yute/foto_3.jpg",
     "gallery": [
-      "fotos/buro_yute/foto_1.jpg",
-      "fotos/buro_yute/foto_2.jpg",
       "fotos/buro_yute/foto_3.jpg",
-      "fotos/buro_yute/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/buro_yute/foto_4.jpg",
+      "fotos/buro_yute/foto_2.jpg",
+      "fotos/buro_yute/foto_1.jpg"
+    ]
   },
   {
     "id": "buro_barpe",
     "name": "BARPE BURO SOLIDA PANEL ROSA MORADA CON LED 70X40X60 CM",
     "short_name": "Buró Barpe",
-    "group_id": "buro_barpe",
-    "group_title": "Buró Barpe",
-    "variant_label": "Rosa Morada con LED",
     "variant": "Rosa Morada con LED",
     "category": "Burós",
     "glb": "BURO BARPER NUEZ.glb",
+    "folder": "RECAMARAS/Buros/Barpe",
     "sku": "MOBBURBARLED",
+    "sheet_name": "BARPE BURO SOLIDA PANEL ROSA MORADA CON LED 70X40X60 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       0.7,
@@ -470,29 +424,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 1
     },
-    "photo": "fotos/buro_barpe/foto_1.jpg",
-    "thumb": "fotos/buro_barpe/foto_1.jpg",
+    "photo": "fotos/buro_barpe/foto_3.jpg",
     "gallery": [
-      "fotos/buro_barpe/foto_1.jpg",
-      "fotos/buro_barpe/foto_2.jpg",
       "fotos/buro_barpe/foto_3.jpg",
-      "fotos/buro_barpe/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/buro_barpe/foto_2.jpg",
+      "fotos/buro_barpe/foto_4.jpg",
+      "fotos/buro_barpe/foto_1.jpg"
+    ]
   },
   {
     "id": "buro_platos",
     "name": "PLATOS BURO PAROTA 70X40X60 CM",
     "short_name": "Buró Platos",
-    "group_id": "buro_platos",
-    "group_title": "Buró Platos",
-    "variant_label": "Parota",
     "variant": "Parota",
     "category": "Burós",
     "glb": "BURO PLATOS.glb",
+    "folder": "RECAMARAS/Buros/Platos",
     "sku": "MOBBURPLAPAR",
+    "sheet_name": "PLATOS BURO PAROTA 70X40X60 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       0.7,
@@ -517,29 +466,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 1
     },
-    "photo": "fotos/buro_platos/foto_1.jpg",
-    "thumb": "fotos/buro_platos/foto_1.jpg",
+    "photo": "fotos/buro_platos/foto_4.jpg",
     "gallery": [
-      "fotos/buro_platos/foto_1.jpg",
-      "fotos/buro_platos/foto_2.jpg",
+      "fotos/buro_platos/foto_4.jpg",
       "fotos/buro_platos/foto_3.jpg",
-      "fotos/buro_platos/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/buro_platos/foto_2.jpg",
+      "fotos/buro_platos/foto_1.jpg"
+    ]
   },
   {
     "id": "buro_africa",
     "name": "AFRICA BURO ROSA MORADA 50X40X60 CM",
     "short_name": "Buró África",
-    "group_id": "buro_africa",
-    "group_title": "Buró África",
-    "variant_label": "Rosa Morada",
     "variant": "Rosa Morada",
     "category": "Burós",
     "glb": "BURO AFRICA.glb",
+    "folder": "RECAMARAS/Buros/Africa",
     "sku": "MOBBURAFRROMO",
+    "sheet_name": "AFRICA BURO ROSA MORADA 50X40X60 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       0.5,
@@ -564,29 +508,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 1
     },
-    "photo": "fotos/buro_africa/foto_1.jpg",
-    "thumb": "fotos/buro_africa/foto_1.jpg",
+    "photo": "fotos/buro_africa/foto_3.jpg",
     "gallery": [
-      "fotos/buro_africa/foto_1.jpg",
-      "fotos/buro_africa/foto_2.jpg",
       "fotos/buro_africa/foto_3.jpg",
-      "fotos/buro_africa/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/buro_africa/foto_4.jpg",
+      "fotos/buro_africa/foto_1.jpg",
+      "fotos/buro_africa/foto_2.jpg"
+    ]
   },
   {
     "id": "buro_madrid",
     "name": "MADRID BURO SOLIDA PANEL ROSA MORADA LISO 50X40X60 CM",
     "short_name": "Buró Madrid",
-    "group_id": "buro_madrid",
-    "group_title": "Buró Madrid",
-    "variant_label": "Rosa Morada Liso",
     "variant": "Rosa Morada Liso",
     "category": "Burós",
     "glb": "BURO MADRID.glb",
+    "folder": "RECAMARAS/Buros/Madrid",
     "sku": "MOBCOMMADROMO",
+    "sheet_name": "MADRID BURO SOLIDA PANEL ROSA MORADA LISO 50X40X60 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       0.5,
@@ -611,29 +550,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 1
     },
-    "photo": "fotos/buro_madrid/foto_1.jpg",
-    "thumb": "fotos/buro_madrid/foto_1.jpg",
+    "photo": "fotos/buro_madrid/foto_4.jpg",
     "gallery": [
-      "fotos/buro_madrid/foto_1.jpg",
-      "fotos/buro_madrid/foto_2.jpg",
+      "fotos/buro_madrid/foto_4.jpg",
       "fotos/buro_madrid/foto_3.jpg",
-      "fotos/buro_madrid/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/buro_madrid/foto_2.jpg",
+      "fotos/buro_madrid/foto_1.jpg"
+    ]
   },
   {
     "id": "buro_mykonos",
     "name": "MYKONOS BURO TABACO CLARO 50X39X60 CM",
     "short_name": "Buró Mykonos",
-    "group_id": "buro_mykonos",
-    "group_title": "Buró Mykonos",
-    "variant_label": "Tabaco Claro",
     "variant": "Tabaco Claro",
     "category": "Burós",
     "glb": "BURO MYKONOS TABACO CLARO.glb",
+    "folder": "RECAMARAS/Buros/Mykonos/Tabaco claro",
     "sku": "BARBUROMYKNOS",
+    "sheet_name": "MYKONOS BURO TABACO CLARO 50X39X60 CM",
     "proveedor": "BARSA",
     "dim_m": [
       0.5,
@@ -658,28 +592,23 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 2,
       "ptc": 1
     },
-    "photo": "fotos/buro_mykonos/foto_1.jpg",
-    "thumb": "fotos/buro_mykonos/foto_1.jpg",
+    "photo": "fotos/buro_mykonos/foto_2.jpg",
     "gallery": [
-      "fotos/buro_mykonos/foto_1.jpg",
       "fotos/buro_mykonos/foto_2.jpg",
+      "fotos/buro_mykonos/foto_1.jpg",
       "fotos/buro_mykonos/foto_3.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#6e4f3a",
-    "color_hex": "#6e4f3a"
+    ]
   },
   {
     "id": "buro_santorini_der",
     "name": "SANTORINI BURO DER ROSA MORADA 60X39X60 CM",
     "short_name": "Buró Santorini Der.",
-    "group_id": "familia_buro_santorini",
-    "group_title": "Buró Santorini Rosa Morada",
-    "variant_label": "Derecho",
     "variant": "Rosa Morada Derecho",
     "category": "Burós",
     "glb": "BURO SANTORINI DERglb.glb",
+    "folder": "RECAMARAS/Buros/Santororini/Derecho",
     "sku": "BARBURSAN60RM",
+    "sheet_name": "SANTORINI BURO DER ROSA MORADA 60X39X60 CM",
     "proveedor": "BARSA",
     "dim_m": [
       0.6,
@@ -704,31 +633,26 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 1,
       "ptc": 1
     },
-    "photo": "fotos/buro_santorini_der/foto_1.jpg",
-    "thumb": "fotos/buro_santorini_der/foto_1.jpg",
+    "photo": "fotos/buro_santorini_der/foto_5.jpg",
     "gallery": [
-      "fotos/buro_santorini_der/foto_1.jpg",
-      "fotos/buro_santorini_der/foto_2.jpg",
-      "fotos/buro_santorini_der/foto_3.jpg",
-      "fotos/buro_santorini_der/foto_4.jpg",
       "fotos/buro_santorini_der/foto_5.jpg",
-      "fotos/buro_santorini_der/foto_6.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#a67b5b",
-    "color_hex": "#a67b5b"
+      "fotos/buro_santorini_der/foto_6.jpg",
+      "fotos/buro_santorini_der/foto_1.jpg",
+      "fotos/buro_santorini_der/foto_4.jpg",
+      "fotos/buro_santorini_der/foto_2.jpg",
+      "fotos/buro_santorini_der/foto_3.jpg"
+    ]
   },
   {
     "id": "buro_santorini_izq",
     "name": "SANTORINI BURO IZQ ROSA MORADA 60X39X60 CM",
     "short_name": "Buró Santorini Izq.",
-    "group_id": "familia_buro_santorini",
-    "group_title": "Buró Santorini Rosa Morada",
-    "variant_label": "Izquierdo",
     "variant": "Rosa Morada Izquierdo",
     "category": "Burós",
     "glb": "BURO SANTORINI IZQ.glb",
+    "folder": "RECAMARAS/Buros/Santororini/Izquierdo",
     "sku": "BARBURSANIZRM",
+    "sheet_name": "SANTORINI BURO IZQ ROSA MORADA 60X39X60 CM",
     "proveedor": "BARSA",
     "dim_m": [
       0.6,
@@ -753,30 +677,25 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 1,
       "ptc": 1
     },
-    "photo": "fotos/buro_santorini_izq/foto_1.jpg",
-    "thumb": "fotos/buro_santorini_izq/foto_1.jpg",
+    "photo": "fotos/buro_santorini_izq/foto_2.jpg",
     "gallery": [
-      "fotos/buro_santorini_izq/foto_1.jpg",
       "fotos/buro_santorini_izq/foto_2.jpg",
-      "fotos/buro_santorini_izq/foto_3.jpg",
       "fotos/buro_santorini_izq/foto_4.jpg",
-      "fotos/buro_santorini_izq/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#8c6244",
-    "color_hex": "#8c6244"
+      "fotos/buro_santorini_izq/foto_1.jpg",
+      "fotos/buro_santorini_izq/foto_5.jpg",
+      "fotos/buro_santorini_izq/foto_3.jpg"
+    ]
   },
   {
     "id": "cama_aura_gellar",
     "name": "AURA BASE DE CAMA QS LACA BELLOTA GELLAR MARBLE G4 184X218X115 CM",
     "short_name": "Cama Aura QS Gellar",
-    "group_id": "familia_cama_aura",
-    "group_title": "Base de Cama Aura QS",
-    "variant_label": "Gellar Marble G4",
     "variant": "Gellar Marble G4",
     "category": "Recámaras",
     "glb": "CAMA AURA GELLAR MARBLE.glb",
+    "folder": "RECAMARAS/Camas/Aura/GELLAR MARBLE",
     "sku": "ATXCAMAUQSGMB",
+    "sheet_name": "AURA BASE DE CAMA QS LACA BELLOTA GELLAR MARBLE G4 184X218X115 CM",
     "proveedor": "ARTEX",
     "dim_m": [
       1.84,
@@ -802,26 +721,21 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 0
     },
     "photo": "fotos/cama_aura_gellar/foto_1.jpg",
-    "thumb": "fotos/cama_aura_gellar/foto_1.jpg",
     "gallery": [
       "fotos/cama_aura_gellar/foto_1.jpg",
       "fotos/cama_aura_gellar/foto_2.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#b8b3ac",
-    "color_hex": "#b8b3ac"
+    ]
   },
   {
     "id": "cama_aura_rhona",
     "name": "AURA BASE DE CAMA QS LACA BELLOTA RHONA ECRU G2 184X218X115 CM",
     "short_name": "Cama Aura QS Rhona",
-    "group_id": "familia_cama_aura",
-    "group_title": "Base de Cama Aura QS",
-    "variant_label": "Rhona Ecru G2",
     "variant": "Rhona Ecru G2",
     "category": "Recámaras",
     "glb": "CAMA AURA RHONA ECRU.glb",
+    "folder": "RECAMARAS/Camas/Aura/RHONA ECRU",
     "sku": "ATXCAMAUQSREB",
+    "sheet_name": "AURA BASE DE CAMA QS LACA BELLOTA RHONA ECRU G2 184X218X115 CM",
     "proveedor": "ARTEX",
     "dim_m": [
       1.84,
@@ -847,26 +761,21 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 0
     },
     "photo": "fotos/cama_aura_rhona/foto_1.jpg",
-    "thumb": "fotos/cama_aura_rhona/foto_1.jpg",
     "gallery": [
       "fotos/cama_aura_rhona/foto_1.jpg",
       "fotos/cama_aura_rhona/foto_2.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#e8e1d5",
-    "color_hex": "#e8e1d5"
+    ]
   },
   {
     "id": "cama_santa_fe_kg",
     "name": "SANTA FE BASE DE CAMA KS ESPIGA NT GELLAR MARBLE G4 300X217X115 CM",
     "short_name": "Cama Santa Fe KS",
-    "group_id": "cama_santa_fe_kg",
-    "group_title": "Cama Santa Fe KS",
-    "variant_label": "Espiga NT Gellar Marble G4",
     "variant": "Espiga NT Gellar Marble G4",
     "category": "Recámaras",
     "glb": "CAMA SANTA FE KG GELLAR MARBLE.glb",
+    "folder": "RECAMARAS/Camas/Santa fe/GELLAR MARBLE",
     "sku": "ATXCAMSFEKSGM",
+    "sheet_name": "SANTA FE BASE DE CAMA KS ESPIGA NT GELLAR MARBLE G4 300X217X115 CM",
     "proveedor": "ARTEX",
     "dim_m": [
       3.0,
@@ -891,29 +800,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 1,
       "ptc": 1
     },
-    "photo": "fotos/cama_santa_fe_kg/foto_1.jpg",
-    "thumb": "fotos/cama_santa_fe_kg/foto_1.jpg",
+    "photo": "fotos/cama_santa_fe_kg/foto_2.jpg",
     "gallery": [
-      "fotos/cama_santa_fe_kg/foto_1.jpg",
       "fotos/cama_santa_fe_kg/foto_2.jpg",
       "fotos/cama_santa_fe_kg/foto_3.jpg",
+      "fotos/cama_santa_fe_kg/foto_1.jpg",
       "fotos/cama_santa_fe_kg/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#d5d0c7",
-    "color_hex": "#d5d0c7"
+    ]
   },
   {
     "id": "cama_amareto",
     "name": "AMARETO BASE DE CAMA KS DISTRACTION NATURAL 200X215X115 CM",
     "short_name": "Cama Amareto KS",
-    "group_id": "cama_amareto",
-    "group_title": "Cama Amareto KS",
-    "variant_label": "Distraction Natural",
     "variant": "Distraction Natural",
     "category": "Recámaras",
     "glb": "CAMA AMAERETO.GLB",
+    "folder": "RECAMARAS/Camas/Amareto",
     "sku": "ARMCAMAMAKS",
+    "sheet_name": "AMARETO BASE DE CAMA KS DISTRACTION NATURAL 200X215X115 CM",
     "proveedor": "ARMONY",
     "dim_m": [
       2.0,
@@ -939,26 +843,21 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 0
     },
     "photo": "fotos/cama_amareto/foto_1.jpg",
-    "thumb": "fotos/cama_amareto/foto_1.jpg",
     "gallery": [
       "fotos/cama_amareto/foto_1.jpg",
       "fotos/cama_amareto/foto_2.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    ]
   },
   {
     "id": "litera_vento",
     "name": "VENTO LITERA MADERA SOLIDA COLOR MUSHROOM 155X200X196 CM",
     "short_name": "Litera Vento",
-    "group_id": "litera_vento",
-    "group_title": "Litera Vento",
-    "variant_label": "Madera Sólida Mushroom",
     "variant": "Madera Sólida Mushroom",
     "category": "Recámaras",
     "glb": "LITERA VENTO.glb",
+    "folder": "RECAMARAS/LIiteras/Vento",
     "sku": "CHALITVENMSMU",
+    "sheet_name": "VENTO LITERA MADERA SOLIDA COLOR MUSHROOM 155X200X196 CM",
     "proveedor": "CHAVOYA",
     "dim_m": [
       1.55,
@@ -983,29 +882,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 1,
       "ptc": 0
     },
-    "photo": "fotos/litera_vento/foto_1.jpg",
-    "thumb": "fotos/litera_vento/foto_1.jpg",
+    "photo": "fotos/litera_vento/foto_3.jpg",
     "gallery": [
+      "fotos/litera_vento/foto_3.jpg",
       "fotos/litera_vento/foto_1.jpg",
       "fotos/litera_vento/foto_2.jpg",
-      "fotos/litera_vento/foto_3.jpg",
       "fotos/litera_vento/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    ]
   },
   {
     "id": "bufetera_barpe",
     "name": "BUFETERA BARPE NUEZ 180X45X85 CM",
     "short_name": "Bufetera Barpe",
-    "group_id": "bufetera_barpe",
-    "group_title": "Bufetera Barpe",
-    "variant_label": "Nuez",
     "variant": "Nuez",
     "category": "Comedores",
     "glb": "BUFETERA BARPE NUEZ.glb",
+    "folder": "COMEDORES/Bufeteras/Barpe/Nuez",
     "sku": "MOBBUFBARNUEZ",
+    "sheet_name": "BUFETERA BARPE NUEZ",
     "proveedor": "MOBEL INN",
     "dim_m": [
       1.8,
@@ -1030,29 +924,24 @@ window.CATALOGO_PRODUCTOS = [
       "playa": 0,
       "casa_creata": 0
     },
-    "photo": "fotos/bufetera_barpe/foto_1.jpg",
-    "thumb": "fotos/bufetera_barpe/foto_1.jpg",
+    "photo": "fotos/bufetera_barpe/foto_4.jpg",
     "gallery": [
-      "fotos/bufetera_barpe/foto_1.jpg",
-      "fotos/bufetera_barpe/foto_2.jpg",
+      "fotos/bufetera_barpe/foto_4.jpg",
       "fotos/bufetera_barpe/foto_3.jpg",
-      "fotos/bufetera_barpe/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#6e4f3a",
-    "color_hex": "#6e4f3a"
+      "fotos/bufetera_barpe/foto_2.jpg",
+      "fotos/bufetera_barpe/foto_1.jpg"
+    ]
   },
   {
     "id": "bufetera_bejuco",
     "name": "BEJUCO BUFETERA SOLIDA PANEL ROSA MORADA 220X40X85 CM",
     "short_name": "Bufetera Bejuco",
-    "group_id": "bufetera_bejuco",
-    "group_title": "Bufetera Bejuco",
-    "variant_label": "Rosa Morada Sólida Panel",
     "variant": "Rosa Morada Sólida Panel",
     "category": "Comedores",
     "glb": "BUFETERA BEJUCO NUEZ.glb",
+    "folder": "COMEDORES/Bufeteras/Bejuco",
     "sku": "MOBCOMBEJROMO",
+    "sheet_name": "BEJUCO BUFETERA SOLIDA PANEL ROSA MORADA 220X40X85 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       2.2,
@@ -1077,30 +966,25 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 1
     },
-    "photo": "fotos/bufetera_bejuco/foto_1.jpg",
-    "thumb": "fotos/bufetera_bejuco/foto_1.jpg",
+    "photo": "fotos/bufetera_bejuco/foto_2.jpg",
     "gallery": [
-      "fotos/bufetera_bejuco/foto_1.jpg",
       "fotos/bufetera_bejuco/foto_2.jpg",
       "fotos/bufetera_bejuco/foto_3.jpg",
+      "fotos/bufetera_bejuco/foto_5.jpg",
       "fotos/bufetera_bejuco/foto_4.jpg",
-      "fotos/bufetera_bejuco/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/bufetera_bejuco/foto_1.jpg"
+    ]
   },
   {
     "id": "bufetera_madrid",
     "name": "MADRID BUFETERA SOLIDA PANEL ROSA MORADA 180X40X80 CM",
     "short_name": "Bufetera Madrid",
-    "group_id": "bufetera_madrid",
-    "group_title": "Bufetera Madrid",
-    "variant_label": "Rosa Morada Sólida Panel",
     "variant": "Rosa Morada Sólida Panel",
     "category": "Comedores",
     "glb": "BUFETERA MADRID NUEZ.glb",
+    "folder": "COMEDORES/Bufeteras/Madrid/Nuez",
     "sku": "MOBBURMADROMO",
+    "sheet_name": "MADRID BUFETERA SOLIDA PANEL ROSA MORADA 180X40X80 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       1.8,
@@ -1125,29 +1009,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/bufetera_madrid/foto_1.jpg",
-    "thumb": "fotos/bufetera_madrid/foto_1.jpg",
+    "photo": "fotos/bufetera_madrid/foto_2.jpg",
     "gallery": [
-      "fotos/bufetera_madrid/foto_1.jpg",
       "fotos/bufetera_madrid/foto_2.jpg",
       "fotos/bufetera_madrid/foto_3.jpg",
+      "fotos/bufetera_madrid/foto_1.jpg",
       "fotos/bufetera_madrid/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    ]
   },
   {
     "id": "bufetera_platos",
     "name": "PLATOS BUFETERA PAROTA 240X40X80 CM",
     "short_name": "Bufetera Platos",
-    "group_id": "bufetera_platos",
-    "group_title": "Bufetera Platos",
-    "variant_label": "Parota",
     "variant": "Parota",
     "category": "Comedores",
     "glb": "BUFETERA PLATOS NUEZ.glb",
+    "folder": "COMEDORES/Bufeteras/Platos/Nuez",
     "sku": "MOBBUFPLAPAR",
+    "sheet_name": "PLATOS BUFETERA PAROTA 240X40X80 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       2.4,
@@ -1172,30 +1051,25 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 11
     },
-    "photo": "fotos/bufetera_platos/foto_1.jpg",
-    "thumb": "fotos/bufetera_platos/foto_1.jpg",
+    "photo": "fotos/bufetera_platos/foto_5.jpg",
     "gallery": [
-      "fotos/bufetera_platos/foto_1.jpg",
+      "fotos/bufetera_platos/foto_5.jpg",
       "fotos/bufetera_platos/foto_2.jpg",
       "fotos/bufetera_platos/foto_3.jpg",
-      "fotos/bufetera_platos/foto_4.jpg",
-      "fotos/bufetera_platos/foto_5.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/bufetera_platos/foto_1.jpg",
+      "fotos/bufetera_platos/foto_4.jpg"
+    ]
   },
   {
     "id": "bufetera_santhomas",
     "name": "SANTHOMAS BUFETERA NOCHE 240X41X80 CM",
     "short_name": "Bufetera Santhomas",
-    "group_id": "bufetera_santhomas",
-    "group_title": "Bufetera Santhomas",
-    "variant_label": "Noche",
     "variant": "Noche",
     "category": "Comedores",
     "glb": "BUFETERA SANTHOMAS NOCHE.glb",
+    "folder": "COMEDORES/Bufeteras/Santhomas/NOCHE",
     "sku": "ATXBUFSTHNONT",
+    "sheet_name": "SANTHOMAS BUFETERA NOCHE 240X41X80 CM",
     "proveedor": "ARTEX",
     "dim_m": [
       2.4,
@@ -1220,29 +1094,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/bufetera_santhomas/foto_1.jpg",
-    "thumb": "fotos/bufetera_santhomas/foto_1.jpg",
+    "photo": "fotos/bufetera_santhomas/foto_2.jpg",
     "gallery": [
-      "fotos/bufetera_santhomas/foto_1.jpg",
       "fotos/bufetera_santhomas/foto_2.jpg",
+      "fotos/bufetera_santhomas/foto_4.jpg",
       "fotos/bufetera_santhomas/foto_3.jpg",
-      "fotos/bufetera_santhomas/foto_4.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#2b2a29",
-    "color_hex": "#2b2a29"
+      "fotos/bufetera_santhomas/foto_1.jpg"
+    ]
   },
   {
     "id": "silla_santhomas",
     "name": "SANTHOMAS SILLA LACA BELLOTA PIXEL LINEN GG 63X63X81 CM",
     "short_name": "Silla Santhomas",
-    "group_id": "silla_santhomas",
-    "group_title": "Silla Santhomas",
-    "variant_label": "Laca Bellota Pixel Linen",
     "variant": "Laca Bellota Pixel Linen",
     "category": "Comedores",
     "glb": "SILLA Shantomas.glb",
+    "folder": "COMEDORES/Sillas/Shantomas",
     "sku": "ATXSILSTHPLLB",
+    "sheet_name": "SANTHOMAS SILLA LACA BELLOTA PIXEL LINEN GG 63X63X81 CM",
     "proveedor": "ARTEX",
     "dim_m": [
       0.63,
@@ -1267,28 +1136,23 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/silla_santhomas/foto_1.jpg",
-    "thumb": "fotos/silla_santhomas/foto_1.jpg",
+    "photo": "fotos/silla_santhomas/foto_3.jpg",
     "gallery": [
-      "fotos/silla_santhomas/foto_1.jpg",
+      "fotos/silla_santhomas/foto_3.jpg",
       "fotos/silla_santhomas/foto_2.jpg",
-      "fotos/silla_santhomas/foto_3.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#e8e1d5",
-    "color_hex": "#e8e1d5"
+      "fotos/silla_santhomas/foto_1.jpg"
+    ]
   },
   {
     "id": "credenza_bejuco",
     "name": "BEJUCO CREDENZA SOLIDA PANEL ROSA ORADA 220X40X80 CM",
     "short_name": "Credenza Bejuco",
-    "group_id": "credenza_bejuco",
-    "group_title": "Credenza Bejuco",
-    "variant_label": "Rosa Morada Sólida Panel",
     "variant": "Rosa Morada Sólida Panel",
     "category": "Auxiliares",
     "glb": "CREDENZA BEJUCO NUEZ.glb",
+    "folder": "AUXILIARES/Credenzas/Bejuco/NUEZ",
     "sku": "MOBCREBEJROMO",
+    "sheet_name": "BEJUCO CREDENZA SOLIDA PANEL ROSA ORADA 220X40X80 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       2.2,
@@ -1313,30 +1177,25 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/credenza_bejuco/foto_1.jpg",
-    "thumb": "fotos/credenza_bejuco/foto_1.jpg",
+    "photo": "fotos/credenza_bejuco/foto_4.jpg",
     "gallery": [
-      "fotos/credenza_bejuco/foto_1.jpg",
-      "fotos/credenza_bejuco/foto_2.jpg",
-      "fotos/credenza_bejuco/foto_3.jpg",
       "fotos/credenza_bejuco/foto_4.jpg",
-      "fotos/credenza_bejuco/foto_5.jpg"
-    ],
-    "flip": true,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/credenza_bejuco/foto_2.jpg",
+      "fotos/credenza_bejuco/foto_5.jpg",
+      "fotos/credenza_bejuco/foto_3.jpg",
+      "fotos/credenza_bejuco/foto_1.jpg"
+    ]
   },
   {
     "id": "base_yute",
     "name": "YUTE BASE DE CAMA KS SOLIDA PANEL ROSA MORADA 206X195X35 CM",
     "short_name": "Base de Cama Yute KS",
-    "group_id": "base_yute",
-    "group_title": "Base de Cama Yute KS",
-    "variant_label": "Nuez / Rosa Morada",
     "variant": "Nuez / Rosa Morada",
     "category": "Recámaras",
     "glb": "BASE YUTE.glb",
+    "folder": "RECAMARAS/Bases/YUTE/ks",
     "sku": "MOBBASKSYUT",
+    "sheet_name": "YUTE BASE DE CAMA KS SOLIDA PANEL ROSA MORADA 206X195X35 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       2.06,
@@ -1361,30 +1220,25 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/base_yute/foto_1.jpg",
-    "thumb": "fotos/base_yute/foto_1.jpg",
+    "photo": "fotos/base_yute/foto_5.jpg",
     "gallery": [
-      "fotos/base_yute/foto_1.jpg",
+      "fotos/base_yute/foto_5.jpg",
       "fotos/base_yute/foto_2.jpg",
       "fotos/base_yute/foto_3.jpg",
-      "fotos/base_yute/foto_4.jpg",
-      "fotos/base_yute/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#6e4f3a",
-    "color_hex": "#6e4f3a"
+      "fotos/base_yute/foto_1.jpg",
+      "fotos/base_yute/foto_4.jpg"
+    ]
   },
   {
     "id": "cabecera_madrid",
     "name": "MADRID CABECERA KS SOLIDA PANEL ROSA MORADA 246X15X140 CM",
     "short_name": "Cabecera Madrid KS",
-    "group_id": "cabecera_madrid",
-    "group_title": "Cabecera Madrid KS",
-    "variant_label": "Nuez / Rosa Morada",
     "variant": "Nuez / Rosa Morada",
     "category": "Recámaras",
     "glb": "CABECERA MADRID.glb",
+    "folder": "RECAMARAS/Cabeceras/Madrid/Nuez",
     "sku": "MOBCABMADKSRM",
+    "sheet_name": "MADRIR CABECERA KS SOLIDA PANEL ROSA MORADA 246X40X140 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       2.46,
@@ -1409,29 +1263,24 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/cabecera_madrid/foto_1.jpg",
-    "thumb": "fotos/cabecera_madrid/foto_1.jpg",
+    "photo": "fotos/cabecera_madrid/foto_3.jpg",
     "gallery": [
-      "fotos/cabecera_madrid/foto_1.jpg",
-      "fotos/cabecera_madrid/foto_2.jpg",
       "fotos/cabecera_madrid/foto_3.jpg",
-      "fotos/cabecera_madrid/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#6e4f3a",
-    "color_hex": "#6e4f3a"
+      "fotos/cabecera_madrid/foto_1.jpg",
+      "fotos/cabecera_madrid/foto_4.jpg",
+      "fotos/cabecera_madrid/foto_2.jpg"
+    ]
   },
   {
     "id": "sofa_zama_ivory",
     "name": "ZAMA SOFA LUXOR IVORY 225X90X90 CM",
     "short_name": "Sofá Zama",
-    "group_id": "sofa_zama_ivory",
-    "group_title": "Sofá Zama",
-    "variant_label": "Luxor Ivory",
     "variant": "Luxor Ivory",
     "category": "Salas",
     "glb": "SOFA ZAMA LUXOR IVORY.glb",
+    "folder": "SALAS/Love seat y Sofa/Zama/LUXOR IVORY",
     "sku": "YO3PZAMALUIV",
+    "sheet_name": "ZAMA SOFA LUXOR IVORY 225X90X90 CM",
     "proveedor": "YOI",
     "dim_m": [
       2.25,
@@ -1456,42 +1305,36 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sofa_zama_ivory/foto_1.jpg",
-    "thumb": "fotos/sofa_zama_ivory/foto_1.jpg",
+    "photo": "fotos/sofa_zama_ivory/foto_5.jpg",
     "gallery": [
-      "fotos/sofa_zama_ivory/foto_1.jpg",
-      "fotos/sofa_zama_ivory/foto_2.jpg",
-      "fotos/sofa_zama_ivory/foto_3.jpg",
-      "fotos/sofa_zama_ivory/foto_4.jpg",
       "fotos/sofa_zama_ivory/foto_5.jpg",
+      "fotos/sofa_zama_ivory/foto_2.jpg",
+      "fotos/sofa_zama_ivory/foto_4.jpg",
+      "fotos/sofa_zama_ivory/foto_3.jpg",
+      "fotos/sofa_zama_ivory/foto_1.jpg",
       "fotos/sofa_zama_ivory/foto_6.jpg",
       "fotos/sofa_zama_ivory/foto_7.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    ]
   },
   {
     "id": "sillon_auren",
     "name": "AUREN SILLON OCASIONAL ROSA MORADA TONO NATURAL RUSTY NATURA 86X90X87 CM",
     "short_name": "Sillón Ocasional Auren",
-    "group_id": "sillon_auren",
-    "group_title": "Sillón Ocasional Auren",
-    "variant_label": "Rosa Morada / Rusty Natural",
     "variant": "Rosa Morada / Rusty Natural",
     "category": "Salas",
     "glb": "SILLON AUREN.glb",
+    "folder": "SALAS/Sillones/Auren/Rusty Natural",
     "sku": "YO1PAURRUNARM",
     "proveedor": "YOI",
-    "dim_m": [
-      0.86,
-      0.9,
-      0.87
-    ],
     "dim_cm": [
       86,
       90,
       87
+    ],
+    "dim_m": [
+      0.86,
+      0.9,
+      0.87
     ],
     "stock": {
       "cedis": 3,
@@ -1506,111 +1349,89 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sillon_auren/foto_1.jpg",
-    "thumb": "fotos/sillon_auren/foto_1.jpg",
+    "photo": "fotos/sillon_auren/foto_2.jpg",
     "gallery": [
-      "fotos/sillon_auren/foto_1.jpg",
       "fotos/sillon_auren/foto_2.jpg",
       "fotos/sillon_auren/foto_3.jpg",
-      "fotos/sillon_auren/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/sillon_auren/foto_4.jpg",
+      "fotos/sillon_auren/foto_1.jpg"
+    ]
   },
   {
     "id": "mesa_comedor_palsea",
     "name": "PALSEA MESA DE COMEDOR 180X105X75 CM",
     "short_name": "Mesa de Comedor Palsea",
-    "group_id": "mesa_comedor_palsea",
-    "group_title": "Mesa de Comedor Palsea",
-    "variant_label": "Natural",
     "variant": "Natural",
     "category": "Comedores",
     "glb": "MESA DE COMEDOR PALSEA.glb",
+    "folder": "COMEDORES/Mesas de comedor/Palsea",
     "sku": "MESAPALSEA180",
     "proveedor": "CASA CREATA",
-    "dim_m": [
-      1.8,
-      1.05,
-      0.75
-    ],
     "dim_cm": [
       180.0,
       105.0,
       75.0
     ],
-    "stock": {},
-    "ventas": {},
+    "dim_m": [
+      1.8,
+      1.05,
+      0.75
+    ],
     "photo": "fotos/mesa_comedor_palsea/foto_1.jpg",
-    "thumb": "fotos/mesa_comedor_palsea/foto_1.jpg",
     "gallery": [
       "fotos/mesa_comedor_palsea/foto_1.jpg",
-      "fotos/mesa_comedor_palsea/foto_2.jpg",
+      "fotos/mesa_comedor_palsea/foto_4.jpg",
       "fotos/mesa_comedor_palsea/foto_3.jpg",
-      "fotos/mesa_comedor_palsea/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/mesa_comedor_palsea/foto_2.jpg"
+    ]
   },
   {
     "id": "silla_parme",
     "name": "PARME SILLA DE COMEDOR 62X62X81 CM",
     "short_name": "Silla Parme",
-    "group_id": "silla_parme",
-    "group_title": "Silla Parme",
-    "variant_label": "Madera / Tapiz Ivory",
     "variant": "Madera / Tapiz Ivory",
     "category": "Comedores",
     "glb": "SILLA PARME.glb",
+    "folder": "COMEDORES/Sillas/Parme",
     "sku": "SILLAPARME",
     "proveedor": "CASA CREATA",
-    "dim_m": [
-      0.62,
-      0.62,
-      0.81
-    ],
     "dim_cm": [
       62.0,
       62.0,
       81.0
     ],
-    "stock": {},
-    "ventas": {},
-    "photo": "fotos/silla_parme/foto_1.jpg",
-    "thumb": "fotos/silla_parme/foto_1.jpg",
+    "dim_m": [
+      0.62,
+      0.62,
+      0.81
+    ],
+    "photo": "fotos/silla_parme/foto_4.jpg",
     "gallery": [
+      "fotos/silla_parme/foto_4.jpg",
       "fotos/silla_parme/foto_1.jpg",
       "fotos/silla_parme/foto_2.jpg",
-      "fotos/silla_parme/foto_3.jpg",
-      "fotos/silla_parme/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/silla_parme/foto_3.jpg"
+    ]
   },
   {
     "id": "shelby_esquinero",
     "name": "SHELBY ESQUINERO NAPOLI 01 COORD A NAPOLI 01 113X113X91 CM",
     "short_name": "Shelby Esquinero",
-    "group_id": "shelby_esquinero",
-    "group_title": "Shelby Esquinero",
-    "variant_label": "Napoli 01",
     "variant": "Napoli 01",
     "category": "Salas",
     "glb": "SHELBY ESQUINERO.glb",
+    "folder": "SALAS/Salas/Shelby/Esquinero",
     "sku": "ARMSHEESQNA01",
     "proveedor": "ARMONY",
-    "dim_m": [
-      1.13,
-      1.13,
-      0.91
-    ],
     "dim_cm": [
       113,
       113,
       91
+    ],
+    "dim_m": [
+      1.13,
+      1.13,
+      0.91
     ],
     "stock": {
       "cedis": 0,
@@ -1624,37 +1445,27 @@ window.CATALOGO_PRODUCTOS = [
       "playa": 0,
       "colosio": 0,
       "ptc": 0
-    },
-    "photo": "fotos/shelby_esquinero/foto_1.jpg",
-    "thumb": "fotos/shelby_esquinero/foto_1.jpg",
-    "gallery": [
-      "fotos/shelby_esquinero/foto_1.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    }
   },
   {
     "id": "shelby_brazo_derecho",
     "name": "SHELBY SILLON BRAZO DER NAPOLI 01 COORD A NAPOLI 01 152X113X91 CM",
     "short_name": "Shelby Brazo Derecho",
-    "group_id": "shelby_brazo_derecho",
-    "group_title": "Shelby Brazo Derecho",
-    "variant_label": "Napoli 01",
     "variant": "Napoli 01",
     "category": "Salas",
     "glb": "SHELBY BRAZO DERECHO.glb",
+    "folder": "SALAS/Salas/Shelby/Brazo Derecho",
     "sku": "ARMSHE1PDERN1",
     "proveedor": "ARMONY",
-    "dim_m": [
-      1.52,
-      1.13,
-      0.91
-    ],
     "dim_cm": [
       152,
       113,
       91
+    ],
+    "dim_m": [
+      1.52,
+      1.13,
+      0.91
     ],
     "stock": {
       "cedis": 0,
@@ -1668,38 +1479,28 @@ window.CATALOGO_PRODUCTOS = [
       "playa": 0,
       "colosio": 0,
       "ptc": 0
-    },
-    "photo": "fotos/shelby_brazo_derecho/foto_1.jpg",
-    "thumb": "fotos/shelby_brazo_derecho/foto_1.jpg",
-    "gallery": [
-      "fotos/shelby_brazo_derecho/foto_1.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    }
   },
   {
     "id": "shelby_brazo_izquierdo",
     "name": "SHELBY SILLON BRAZO IZQ NAPOLI 01 COORD A NAPOLI 01 152X113X91 CM",
     "short_name": "Shelby Brazo Izquierdo",
-    "group_id": "shelby_brazo_izquierdo",
-    "group_title": "Shelby Brazo Izquierdo",
-    "variant_label": "Napoli 01",
     "variant": "Napoli 01",
     "category": "Salas",
     "glb": "SHELBY BRAZO IZQUIERDO.glb",
+    "folder": "SALAS/Salas/Shelby/Brazo Izquierdo",
     "sku": "ARMSHE1PIZQN1",
     "proveedor": "ARMONY",
-    "dim_m": [
-      1.52,
-      1.13,
-      0.91
-    ],
     "dim_cm": [
       152,
       113,
       91
     ],
+    "dim_m": [
+      1.52,
+      1.13,
+      0.91
+    ],
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -1712,38 +1513,28 @@ window.CATALOGO_PRODUCTOS = [
       "playa": 0,
       "colosio": 0,
       "ptc": 0
-    },
-    "photo": "fotos/shelby_brazo_izquierdo/foto_1.jpg",
-    "thumb": "fotos/shelby_brazo_izquierdo/foto_1.jpg",
-    "gallery": [
-      "fotos/shelby_brazo_izquierdo/foto_1.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    }
   },
   {
     "id": "shelby_sin_brazos",
     "name": "SHELBY SILLON SIN BRAZOS NAPOLI 01 COORD A 135X113X91 CM",
     "short_name": "Shelby Sin Brazos",
-    "group_id": "shelby_sin_brazos",
-    "group_title": "Shelby Sin Brazos",
-    "variant_label": "Napoli 01",
     "variant": "Napoli 01",
     "category": "Salas",
     "glb": "SHELBY SIN BRAZOS.glb",
+    "folder": "SALAS/Salas/Shelby/Sin Brazos",
     "sku": "ARMSHE1PMODN1",
     "proveedor": "ARMONY",
-    "dim_m": [
-      1.35,
-      1.13,
-      0.91
-    ],
     "dim_cm": [
       135,
       113,
       91
     ],
+    "dim_m": [
+      1.35,
+      1.13,
+      0.91
+    ],
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -1756,37 +1547,27 @@ window.CATALOGO_PRODUCTOS = [
       "playa": 0,
       "colosio": 0,
       "ptc": 0
-    },
-    "photo": "fotos/shelby_sin_brazos/foto_1.jpg",
-    "thumb": "fotos/shelby_sin_brazos/foto_1.jpg",
-    "gallery": [
-      "fotos/shelby_sin_brazos/foto_1.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    }
   },
   {
     "id": "shelby_ottoman",
     "name": "SHELBY OTTOMAN NAPOLI 01 COORD A 135X113X48 CM",
     "short_name": "Shelby Ottoman",
-    "group_id": "shelby_ottoman",
-    "group_title": "Shelby Ottoman",
-    "variant_label": "Napoli 01",
     "variant": "Napoli 01",
     "category": "Salas",
     "glb": "SHELBY OTTOMAN.glb",
+    "folder": "SALAS/Salas/Shelby/Ottoman",
     "sku": "ARMSHEOTTNA01",
     "proveedor": "ARMONY",
-    "dim_m": [
-      1.35,
-      1.13,
-      0.48
-    ],
     "dim_cm": [
       135,
       113,
       48
+    ],
+    "dim_m": [
+      1.35,
+      1.13,
+      0.48
     ],
     "stock": {
       "cedis": 0,
@@ -1800,37 +1581,27 @@ window.CATALOGO_PRODUCTOS = [
       "playa": 0,
       "colosio": 0,
       "ptc": 0
-    },
-    "photo": "fotos/shelby_ottoman/foto_1.jpg",
-    "thumb": "fotos/shelby_ottoman/foto_1.jpg",
-    "gallery": [
-      "fotos/shelby_ottoman/foto_1.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    }
   },
   {
     "id": "sillon_aarmin",
     "name": "AARMIN SILLON OCASIONAL ROSA MORADA TONO NATURAL VISTA NORDIC GREY INTERIOR POINT IVORY 77X87X90 CM",
     "short_name": "Sillón Ocasional Aarmin",
-    "group_id": "sillon_aarmin",
-    "group_title": "Sillón Ocasional Aarmin",
-    "variant_label": "Rosa Morada / Nordic Grey & Point Ivory",
     "variant": "Rosa Morada / Nordic Grey & Point Ivory",
     "category": "Salas",
     "glb": "SILLON AARMIN.glb",
+    "folder": "SALAS/Sillones/Aarmin/Nordic Grey",
     "sku": "YO1PAARNOGRRM",
     "proveedor": "YOI",
-    "dim_m": [
-      0.77,
-      0.87,
-      0.9
-    ],
     "dim_cm": [
       77,
       87,
       90
+    ],
+    "dim_m": [
+      0.77,
+      0.87,
+      0.9
     ],
     "stock": {
       "cedis": 2,
@@ -1845,78 +1616,66 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sillon_aarmin/foto_1.jpg",
-    "thumb": "fotos/sillon_aarmin/foto_1.jpg",
+    "photo": "fotos/sillon_aarmin/foto_5.jpg",
     "gallery": [
-      "fotos/sillon_aarmin/foto_1.jpg",
+      "fotos/sillon_aarmin/foto_5.jpg",
       "fotos/sillon_aarmin/foto_2.jpg",
+      "fotos/sillon_aarmin/foto_1.jpg",
       "fotos/sillon_aarmin/foto_3.jpg",
-      "fotos/sillon_aarmin/foto_4.jpg",
-      "fotos/sillon_aarmin/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#7a7d80",
-    "color_hex": "#7a7d80"
+      "fotos/sillon_aarmin/foto_4.jpg"
+    ]
   },
   {
     "id": "mesa_centro_bicolor",
     "name": "BICOLOR MESA DE CENTRO MADERA MACIZA 49X49X61 CM",
     "short_name": "Mesa de Centro Bicolor",
-    "group_id": "mesa_centro_bicolor",
-    "group_title": "Mesa de Centro Bicolor",
-    "variant_label": "Madera Natural / Nogal Bicolor",
     "variant": "Madera Natural / Nogal Bicolor",
     "category": "Salas",
     "glb": "MESA DE CENTRO BICOLOR.glb",
+    "folder": "SALAS/Mesas de centro/Bicolor",
     "sku": "MESACENTROBICOLOR",
     "proveedor": "CASA CREATA",
-    "dim_m": [
-      0.49,
-      0.49,
-      0.61
-    ],
     "dim_cm": [
       49.0,
       49.0,
       61.0
     ],
-    "stock": {},
-    "ventas": {},
-    "photo": "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 2_46PM.jpg",
-    "thumb": "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 2_46PM.jpg",
-    "gallery": [
-      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 2_46PM.jpg",
-      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 10_10AM.jpg",
-      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 12_11PM (1).jpg",
-      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 12_11PM.jpg",
-      "fotos/mesa_centro_bicolor/foto_1.jpg"
+    "dim_m": [
+      0.49,
+      0.49,
+      0.61
     ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    "photo": "fotos/mesa_centro_bicolor/foto_1.jpg",
+    "gallery": [
+      "fotos/mesa_centro_bicolor/foto_1.jpg",
+      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 10_10AM.jpg",
+      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 12_11PM.jpg",
+      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 12_11PM (1).jpg",
+      "fotos/mesa_centro_bicolor/Generated Image October 28, 2026 - 2_46PM.jpg"
+    ]
   },
   {
     "id": "cama_san_jose_ks",
     "name": "SAN JOSE BASE DE CAMA KS BERKELEY NATURAL 295X230X120 CM",
     "short_name": "Base de Cama San José KS",
-    "group_id": "cama_san_jose_ks",
-    "group_title": "Base de Cama San José KS",
-    "variant_label": "Berkeley Natural",
     "variant": "Berkeley Natural",
     "category": "Recámaras",
     "glb": "BASE DE CAMA SAN JOSE.glb",
+    "folder": "RECAMARAS/Camas/San Jose/KING",
     "sku": "PAYCAMSAJKS",
+    "sheet_name": "SAN JOSE BASE DE CAMA KS BERKELEY NATURAL 295X230X120 CM",
     "proveedor": "PAYMA",
-    "dim_m": [
-      2.95,
-      2.3,
-      1.2
-    ],
     "dim_cm": [
       295,
       230,
       120
     ],
+    "dim_m": [
+      2.95,
+      2.3,
+      1.2
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -1930,43 +1689,39 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/cama_san_jose_ks/foto_1.jpg",
-    "thumb": "fotos/cama_san_jose_ks/foto_1.jpg",
+    "photo": "fotos/cama_san_jose_ks/foto_2.jpg",
     "gallery": [
-      "fotos/cama_san_jose_ks/foto_1.jpg",
       "fotos/cama_san_jose_ks/foto_2.jpg",
+      "fotos/cama_san_jose_ks/foto_7.jpg",
+      "fotos/cama_san_jose_ks/foto_6.jpg",
+      "fotos/cama_san_jose_ks/foto_5.jpg",
       "fotos/cama_san_jose_ks/foto_3.jpg",
       "fotos/cama_san_jose_ks/foto_4.jpg",
-      "fotos/cama_san_jose_ks/foto_5.jpg",
-      "fotos/cama_san_jose_ks/foto_6.jpg",
-      "fotos/cama_san_jose_ks/foto_7.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/cama_san_jose_ks/foto_1.jpg"
+    ]
   },
   {
     "id": "cama_saloni_ks",
     "name": "SALONI CAMA KING SIZE HADY IVORY 230X234X90 CM",
     "short_name": "Cama Saloni KS",
-    "group_id": "cama_saloni_ks",
-    "group_title": "Cama Saloni KS",
-    "variant_label": "Hady Ivory",
     "variant": "Hady Ivory",
     "category": "Recámaras",
     "glb": "SALONI BASE DE CAMA.glb",
+    "folder": "RECAMARAS/Camas/Saloni/King size",
     "sku": "PAYCAMSALKSRI",
+    "sheet_name": "CAMA SALONI KING SIZE HADY IVORY 230X234X90 CM",
     "proveedor": "PAYMA",
-    "dim_m": [
-      2.3,
-      2.34,
-      0.9
-    ],
     "dim_cm": [
       230,
       234,
       90
     ],
+    "dim_m": [
+      2.3,
+      2.34,
+      0.9
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -1980,40 +1735,35 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/cama_saloni_ks/foto_1.jpg",
-    "thumb": "fotos/cama_saloni_ks/foto_1.jpg",
+    "photo": "fotos/cama_saloni_ks/foto_4.jpg",
     "gallery": [
+      "fotos/cama_saloni_ks/foto_4.jpg",
       "fotos/cama_saloni_ks/foto_1.jpg",
       "fotos/cama_saloni_ks/foto_2.jpg",
-      "fotos/cama_saloni_ks/foto_3.jpg",
-      "fotos/cama_saloni_ks/foto_4.jpg",
-      "fotos/cama_saloni_ks/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/cama_saloni_ks/foto_5.jpg",
+      "fotos/cama_saloni_ks/foto_3.jpg"
+    ]
   },
   {
     "id": "cajonera_bejuco",
     "name": "BEJUCO CAJONERA SOLIDA PANEL ROSA MORADA 220X40X85 CM",
     "short_name": "Cajonera Bejuco",
-    "group_id": "cajonera_bejuco",
-    "group_title": "Cajonera Bejuco",
-    "variant_label": "Rosa Morada Sólida Panel",
     "variant": "Rosa Morada Sólida Panel",
     "category": "Recámaras",
     "glb": "CAJONERA BEJUCO.glb",
+    "folder": "RECAMARAS/Cajoneras/Bejuco",
     "sku": "MOBCOMBEJROMO",
+    "sheet_name": "BEJUCO BUFETERA SOLIDA PANEL ROSA MORADA 220X40X85 CM",
     "proveedor": "MOBEL INN",
-    "dim_m": [
-      2.2,
-      0.4,
-      0.85
-    ],
     "dim_cm": [
       220,
       40,
       85
+    ],
+    "dim_m": [
+      2.2,
+      0.4,
+      0.85
     ],
     "stock": {
       "cedis": 2,
@@ -2028,42 +1778,37 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 1
     },
-    "photo": "fotos/cajonera_bejuco/foto_1.jpg",
-    "thumb": "fotos/cajonera_bejuco/foto_1.jpg",
+    "photo": "fotos/cajonera_bejuco/foto_2.jpg",
     "gallery": [
-      "fotos/cajonera_bejuco/foto_1.jpg",
       "fotos/cajonera_bejuco/foto_2.jpg",
-      "fotos/cajonera_bejuco/foto_3.jpg",
-      "fotos/cajonera_bejuco/foto_4.jpg",
+      "fotos/cajonera_bejuco/foto_6.jpg",
       "fotos/cajonera_bejuco/foto_5.jpg",
-      "fotos/cajonera_bejuco/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/cajonera_bejuco/foto_4.jpg",
+      "fotos/cajonera_bejuco/foto_1.jpg",
+      "fotos/cajonera_bejuco/foto_3.jpg"
+    ]
   },
   {
     "id": "sala_mawi",
     "name": "MAWI SALA DE HADI LIMEN 263X185X70 CM",
     "short_name": "Sala Modular Mawi",
-    "group_id": "sala_mawi",
-    "group_title": "Sala Modular Mawi",
-    "variant_label": "Hadi Linen",
     "variant": "Hadi Linen",
     "category": "Salas",
     "glb": "SALA MAWI.glb",
+    "folder": "SALAS/Salas/Mawi",
     "sku": "KUDSALMAWHALI",
+    "sheet_name": "MAWI SALA DE HADI LIMEN 263X185X70 CM",
     "proveedor": "KUDU",
-    "dim_m": [
-      2.63,
-      1.85,
-      0.7
-    ],
     "dim_cm": [
       263,
       185,
       70
     ],
+    "dim_m": [
+      2.63,
+      1.85,
+      0.7
+    ],
     "stock": {
       "cedis": 3,
       "playa": 0,
@@ -2077,41 +1822,37 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_mawi/foto_1.jpg",
-    "thumb": "fotos/sala_mawi/foto_1.jpg",
+    "photo": "fotos/sala_mawi/foto_4.jpg",
     "gallery": [
-      "fotos/sala_mawi/foto_1.jpg",
-      "fotos/sala_mawi/foto_2.jpg",
-      "fotos/sala_mawi/foto_3.jpg",
       "fotos/sala_mawi/foto_4.jpg",
+      "fotos/sala_mawi/foto_2.jpg",
+      "fotos/sala_mawi/foto_1.jpg",
+      "fotos/sala_mawi/foto_3.jpg",
       "fotos/sala_mawi/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#e8e1d5",
-    "color_hex": "#e8e1d5"
+    ]
   },
   {
     "id": "sofa_cama_asha_oat",
     "name": "ASHA SOFA CAMA BRAZTON OAT 263X185X76 CM",
     "short_name": "Sofá Cama Asha",
-    "group_id": "familia_sofa_cama_asha",
-    "group_title": "Sofá Cama Asha",
-    "variant_label": "Braxton Oat",
     "variant": "Braxton Oat",
     "category": "Salas",
     "glb": "SOFÁ CAMA ASHA.glb",
+    "folder": "SALAS/Sofa camas y futones/Asha/Braxton Oat",
     "sku": "KUDSCAASHBROA",
+    "sheet_name": "ASHA SOFA CAMA BRAZTON OAT 163X115X76 CM",
     "proveedor": "KUDU",
-    "dim_m": [
-      2.63,
-      1.85,
-      0.76
-    ],
     "dim_cm": [
       263,
       185,
       76
     ],
+    "dim_m": [
+      2.63,
+      1.85,
+      0.76
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 3,
       "playa": 0,
@@ -2125,42 +1866,38 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sofa_cama_asha_oat/foto_1.jpg",
-    "thumb": "fotos/sofa_cama_asha_oat/foto_1.jpg",
+    "photo": "fotos/sofa_cama_asha_oat/foto_4.jpg",
     "gallery": [
-      "fotos/sofa_cama_asha_oat/foto_1.jpg",
-      "fotos/sofa_cama_asha_oat/foto_2.jpg",
-      "fotos/sofa_cama_asha_oat/foto_3.jpg",
       "fotos/sofa_cama_asha_oat/foto_4.jpg",
+      "fotos/sofa_cama_asha_oat/foto_6.jpg",
+      "fotos/sofa_cama_asha_oat/foto_2.jpg",
       "fotos/sofa_cama_asha_oat/foto_5.jpg",
-      "fotos/sofa_cama_asha_oat/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c8b9a6",
-    "color_hex": "#c8b9a6"
+      "fotos/sofa_cama_asha_oat/foto_3.jpg",
+      "fotos/sofa_cama_asha_oat/foto_1.jpg"
+    ]
   },
   {
     "id": "sofa_cama_asha_snow",
     "name": "ASHA SOFA CAMA BRAZTON SNOW 263X185X76 CM",
     "short_name": "Sofá Cama Asha",
-    "group_id": "familia_sofa_cama_asha",
-    "group_title": "Sofá Cama Asha",
-    "variant_label": "Braxton Snow",
     "variant": "Braxton Snow",
     "category": "Salas",
     "glb": "SOFÁ CAMA ASHA.glb",
+    "folder": "SALAS/Sofa camas y futones/Asha/Braxton Snow",
     "sku": "KUDSCAASHBRSN",
+    "sheet_name": "ASHA SOFA CAMA BRAZTON SNOW 163X115X76 CM",
     "proveedor": "KUDU",
-    "dim_m": [
-      2.63,
-      1.85,
-      0.76
-    ],
     "dim_cm": [
       263,
       185,
       76
     ],
+    "dim_m": [
+      2.63,
+      1.85,
+      0.76
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 2,
       "playa": 0,
@@ -2174,40 +1911,35 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sofa_cama_asha_snow/foto_1.jpg",
-    "thumb": "fotos/sofa_cama_asha_snow/foto_1.jpg",
+    "photo": "fotos/sofa_cama_asha_snow/foto_3.jpg",
     "gallery": [
-      "fotos/sofa_cama_asha_snow/foto_1.jpg",
-      "fotos/sofa_cama_asha_snow/foto_2.jpg",
       "fotos/sofa_cama_asha_snow/foto_3.jpg",
       "fotos/sofa_cama_asha_snow/foto_4.jpg",
-      "fotos/sofa_cama_asha_snow/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#e8e6e1",
-    "color_hex": "#e8e6e1"
+      "fotos/sofa_cama_asha_snow/foto_5.jpg",
+      "fotos/sofa_cama_asha_snow/foto_1.jpg",
+      "fotos/sofa_cama_asha_snow/foto_2.jpg"
+    ]
   },
   {
     "id": "sofa_cama_uganda_oat",
     "name": "UGANDA SOFA CAMA BRAXTON OAT 153X106X74 CM",
     "short_name": "Sofá Cama Uganda",
-    "group_id": "familia_sofa_cama_uganda",
-    "group_title": "Sofá Cama Uganda",
-    "variant_label": "Braxton Oat",
     "variant": "Braxton Oat",
     "category": "Salas",
     "glb": "SOFÁ CAMA UGANDA.glb",
+    "folder": "SALAS/Sofa camas y futones/Uganda/Braxton Oat",
     "sku": "KUDSCAUGABROA",
+    "sheet_name": "UGANDA SOFA CAMA BRAXTON OAT 153X106X74 CM",
     "proveedor": "KUDU",
-    "dim_m": [
-      1.53,
-      1.06,
-      0.74
-    ],
     "dim_cm": [
       153,
       106,
       74
+    ],
+    "dim_m": [
+      1.53,
+      1.06,
+      0.74
     ],
     "stock": {
       "cedis": 2,
@@ -2222,41 +1954,36 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sofa_cama_uganda_oat/foto_1.jpg",
-    "thumb": "fotos/sofa_cama_uganda_oat/foto_1.jpg",
+    "photo": "fotos/sofa_cama_uganda_oat/foto_2.jpg",
     "gallery": [
-      "fotos/sofa_cama_uganda_oat/foto_1.jpg",
       "fotos/sofa_cama_uganda_oat/foto_2.jpg",
-      "fotos/sofa_cama_uganda_oat/foto_3.jpg",
-      "fotos/sofa_cama_uganda_oat/foto_4.jpg",
+      "fotos/sofa_cama_uganda_oat/foto_6.jpg",
       "fotos/sofa_cama_uganda_oat/foto_5.jpg",
-      "fotos/sofa_cama_uganda_oat/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c8b9a6",
-    "color_hex": "#c8b9a6"
+      "fotos/sofa_cama_uganda_oat/foto_4.jpg",
+      "fotos/sofa_cama_uganda_oat/foto_1.jpg",
+      "fotos/sofa_cama_uganda_oat/foto_3.jpg"
+    ]
   },
   {
     "id": "sofa_cama_uganda_snow",
     "name": "UGANDA SOFA CAMA BRAXTON SNOW 153X106X74 CM",
     "short_name": "Sofá Cama Uganda",
-    "group_id": "familia_sofa_cama_uganda",
-    "group_title": "Sofá Cama Uganda",
-    "variant_label": "Braxton Snow",
     "variant": "Braxton Snow",
     "category": "Salas",
     "glb": "SOFÁ CAMA UGANDA.glb",
+    "folder": "SALAS/Sofa camas y futones/Uganda/Braxton Snow",
     "sku": "KUDSCAUGABRSN",
+    "sheet_name": "UGANDA SOFA CAMA BRAXTON OAT 153X106X74 CM",
     "proveedor": "KUDU",
-    "dim_m": [
-      1.53,
-      1.06,
-      0.74
-    ],
     "dim_cm": [
       153,
       106,
       74
+    ],
+    "dim_m": [
+      1.53,
+      1.06,
+      0.74
     ],
     "stock": {
       "cedis": 1,
@@ -2272,38 +1999,33 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 0
     },
     "photo": "fotos/sofa_cama_uganda_snow/foto_1.jpg",
-    "thumb": "fotos/sofa_cama_uganda_snow/foto_1.jpg",
     "gallery": [
       "fotos/sofa_cama_uganda_snow/foto_1.jpg",
-      "fotos/sofa_cama_uganda_snow/foto_2.jpg",
+      "fotos/sofa_cama_uganda_snow/foto_4.jpg",
       "fotos/sofa_cama_uganda_snow/foto_3.jpg",
-      "fotos/sofa_cama_uganda_snow/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#e8e6e1",
-    "color_hex": "#e8e6e1"
+      "fotos/sofa_cama_uganda_snow/foto_2.jpg"
+    ]
   },
   {
     "id": "mesa_comedor_kamko",
     "name": "KAMKO MESA DE COMEDOR ROSA MORADA 240X120X78 CM",
     "short_name": "Mesa de Comedor Kamko",
-    "group_id": "mesa_comedor_kamko",
-    "group_title": "Mesa de Comedor Kamko",
-    "variant_label": "Rosa Morada",
     "variant": "Rosa Morada",
     "category": "Comedores",
     "glb": "MESA DE COMEDOR KAMKO.glb",
+    "folder": "COMEDORES/Mesas de comedor/Kamko",
     "sku": "MOBMESKAMRM",
+    "sheet_name": "KAMKO MESA DE COMEDOR ROSA MORADA 240X120X83 CM",
     "proveedor": "MOBEL INN",
-    "dim_m": [
-      2.4,
-      1.2,
-      0.78
-    ],
     "dim_cm": [
       240,
       120,
       78
+    ],
+    "dim_m": [
+      2.4,
+      1.2,
+      0.78
     ],
     "stock": {
       "cedis": 1,
@@ -2318,40 +2040,35 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/mesa_comedor_kamko/foto_1.jpg",
-    "thumb": "fotos/mesa_comedor_kamko/foto_1.jpg",
+    "photo": "fotos/mesa_comedor_kamko/foto_5.jpg",
     "gallery": [
-      "fotos/mesa_comedor_kamko/foto_1.jpg",
+      "fotos/mesa_comedor_kamko/foto_5.jpg",
       "fotos/mesa_comedor_kamko/foto_2.jpg",
-      "fotos/mesa_comedor_kamko/foto_3.jpg",
       "fotos/mesa_comedor_kamko/foto_4.jpg",
-      "fotos/mesa_comedor_kamko/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/mesa_comedor_kamko/foto_1.jpg",
+      "fotos/mesa_comedor_kamko/foto_3.jpg"
+    ]
   },
   {
     "id": "mesa_comedor_barril_8p",
     "name": "BARRIL MESA DE COMEDOR 8P ROSA MORADA SOLIDA 180X120X78 CM",
     "short_name": "Mesa de Comedor Barril 8P",
-    "group_id": "mesa_comedor_barril_8p",
-    "group_title": "Mesa de Comedor Barril 8P",
-    "variant_label": "Rosa Morada Sólida / Nuez",
     "variant": "Rosa Morada Sólida / Nuez",
     "category": "Comedores",
     "glb": "MESA DE COMEDOR BARRIL 8P.glb",
+    "folder": "COMEDORES/Mesas de comedor/Barril 8P/Nuez",
     "sku": "MOBMESBAR8PRM",
+    "sheet_name": "BARRIL MESA DE COMEDOR 8P ROSA MORADA SOLIDA 180X120X83 CM",
     "proveedor": "MOBEL INN",
-    "dim_m": [
-      1.8,
-      1.2,
-      0.78
-    ],
     "dim_cm": [
       180,
       120,
       78
+    ],
+    "dim_m": [
+      1.8,
+      1.2,
+      0.78
     ],
     "stock": {
       "cedis": 2,
@@ -2366,30 +2083,25 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/mesa_comedor_barril_8p/foto_1.jpg",
-    "thumb": "fotos/mesa_comedor_barril_8p/foto_1.jpg",
+    "photo": "fotos/mesa_comedor_barril_8p/foto_2.jpg",
     "gallery": [
-      "fotos/mesa_comedor_barril_8p/foto_1.jpg",
       "fotos/mesa_comedor_barril_8p/foto_2.jpg",
-      "fotos/mesa_comedor_barril_8p/foto_3.jpg",
       "fotos/mesa_comedor_barril_8p/foto_4.jpg",
-      "fotos/mesa_comedor_barril_8p/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#6e4f3a",
-    "color_hex": "#6e4f3a"
+      "fotos/mesa_comedor_barril_8p/foto_5.jpg",
+      "fotos/mesa_comedor_barril_8p/foto_3.jpg",
+      "fotos/mesa_comedor_barril_8p/foto_1.jpg"
+    ]
   },
   {
     "id": "credenza_adana",
     "name": "ADANA CREDENZA PAROTA 220X40X80 CM",
     "short_name": "Credenza Adana",
-    "group_id": "credenza_adana",
-    "group_title": "Credenza Adana",
-    "variant_label": "Parota",
     "variant": "Parota",
     "category": "Auxiliares",
     "glb": "CREDENZA ADANA.glb",
+    "folder": "AUXILIARES/Credenzas/Credenza Adana",
     "sku": "MOBCREADA220",
+    "sheet_name": "ADANA CREDENZA PAROTA 220X40X80 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       2.2,
@@ -2414,31 +2126,26 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/credenza_adana/foto_1.jpg",
-    "thumb": "fotos/credenza_adana/foto_1.jpg",
+    "photo": "fotos/credenza_adana/foto_3.jpg",
     "gallery": [
-      "fotos/credenza_adana/foto_1.jpg",
-      "fotos/credenza_adana/foto_2.jpg",
       "fotos/credenza_adana/foto_3.jpg",
+      "fotos/credenza_adana/foto_6.jpg",
+      "fotos/credenza_adana/foto_2.jpg",
       "fotos/credenza_adana/foto_4.jpg",
       "fotos/credenza_adana/foto_5.jpg",
-      "fotos/credenza_adana/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/credenza_adana/foto_1.jpg"
+    ]
   },
   {
     "id": "consola_baraman",
     "name": "CONSOLA BARAMAN KN248614 CONSOLE TABLE BT006 TRAVERTINE 214X50X78 CM",
     "short_name": "Consola Baraman",
-    "group_id": "consola_baraman",
-    "group_title": "Consola Baraman",
-    "variant_label": "Travertine",
     "variant": "Travertine",
     "category": "Auxiliares",
     "glb": "CONSOLA BARAMAN.glb",
+    "folder": "AUXILIARES/Varios/Consola Baraman",
     "sku": "GMMMTV7300",
+    "sheet_name": "CONSOLA BARAMAN KN248614 CONSOLE TABLE BT006 TRAVERTINE 214X50X78 CM",
     "proveedor": "KEU",
     "dim_m": [
       2.14,
@@ -2463,30 +2170,25 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/consola_baraman/foto_1.jpg",
-    "thumb": "fotos/consola_baraman/foto_1.jpg",
+    "photo": "fotos/consola_baraman/foto_2.jpg",
     "gallery": [
-      "fotos/consola_baraman/foto_1.jpg",
       "fotos/consola_baraman/foto_2.jpg",
-      "fotos/consola_baraman/foto_3.jpg",
       "fotos/consola_baraman/foto_4.jpg",
-      "fotos/consola_baraman/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/consola_baraman/foto_3.jpg",
+      "fotos/consola_baraman/foto_5.jpg",
+      "fotos/consola_baraman/foto_1.jpg"
+    ]
   },
   {
     "id": "comoda_36",
     "name": "MOD. 36 CAJONERA ROSA MORADA CLARA 220X40X80 CM",
     "short_name": "Cómoda Mod. 36",
-    "group_id": "comoda_36",
-    "group_title": "Cómoda Mod. 36",
-    "variant_label": "Rosa Morada Clara",
     "variant": "Rosa Morada Clara",
     "category": "Recámaras",
     "glb": "COMODA 36 ROSA MORADA CLARA.glb",
+    "folder": "RECAMARAS/Cajoneras/COMODA 36",
     "sku": "LPCOMD36RMCL",
+    "sheet_name": "MOD. 36 CAJONERA ROSA MORADA CLARA 220X40X80 CM",
     "proveedor": "LUIS PEDRO MUEBLES",
     "dim_m": [
       2.2,
@@ -2511,31 +2213,26 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/comoda_36/foto_1.jpg",
-    "thumb": "fotos/comoda_36/foto_1.jpg",
+    "photo": "fotos/comoda_36/foto_3.jpg",
     "gallery": [
-      "fotos/comoda_36/foto_1.jpg",
-      "fotos/comoda_36/foto_2.jpg",
       "fotos/comoda_36/foto_3.jpg",
-      "fotos/comoda_36/foto_4.jpg",
       "fotos/comoda_36/foto_5.jpg",
-      "fotos/comoda_36/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/comoda_36/foto_6.jpg",
+      "fotos/comoda_36/foto_1.jpg",
+      "fotos/comoda_36/foto_4.jpg",
+      "fotos/comoda_36/foto_2.jpg"
+    ]
   },
   {
     "id": "buro_mod_61",
     "name": "MOD. 61 BURO ROSA MORADA CLARA 70X40X50 CM",
     "short_name": "Buró Mod. 61",
-    "group_id": "buro_mod_61",
-    "group_title": "Buró Mod. 61",
-    "variant_label": "Rosa Morada Clara",
     "variant": "Rosa Morada Clara",
     "category": "Burós",
     "glb": "BURO MOD 61.glb",
+    "folder": "RECAMARAS/Buros/Buro Mod. 61",
     "sku": "LPBUR61RMCL",
+    "sheet_name": "MOD. 61 BURO ROSA MORADA CLARA 70X40X50 CM",
     "proveedor": "LUIS PEDRO MUEBLES",
     "dim_m": [
       0.7,
@@ -2561,30 +2258,25 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 0
     },
     "photo": "fotos/buro_mod_61/foto_1.jpg",
-    "thumb": "fotos/buro_mod_61/foto_1.jpg",
     "gallery": [
       "fotos/buro_mod_61/foto_1.jpg",
-      "fotos/buro_mod_61/foto_2.jpg",
-      "fotos/buro_mod_61/foto_3.jpg",
-      "fotos/buro_mod_61/foto_4.jpg",
       "fotos/buro_mod_61/foto_5.jpg",
-      "fotos/buro_mod_61/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/buro_mod_61/foto_6.jpg",
+      "fotos/buro_mod_61/foto_4.jpg",
+      "fotos/buro_mod_61/foto_3.jpg",
+      "fotos/buro_mod_61/foto_2.jpg"
+    ]
   },
   {
     "id": "silla_nairovi",
     "name": "NAIROVI SILLA ROSA MORADA SOLIDA RHONA IVORY 57X55X80 CM",
     "short_name": "Silla Nairovi",
-    "group_id": "silla_nairovi",
-    "group_title": "Silla Nairovi",
-    "variant_label": "Rosa Morada Sólida Rhona Ivory",
     "variant": "Rosa Morada Sólida Rhona Ivory",
     "category": "Comedores",
     "glb": "SILLA NAIROVI.glb",
+    "folder": "COMEDORES/Sillas/Silla Nairovi",
     "sku": "MOBSILNAISOL",
+    "sheet_name": "NAIROVI SILLA ROSA MORADA SOLIDA RHONA IVORY 57X55X80 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       0.57,
@@ -2609,31 +2301,26 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/silla_nairovi/foto_1.jpg",
-    "thumb": "fotos/silla_nairovi/foto_1.jpg",
+    "photo": "fotos/silla_nairovi/foto_3.jpg",
     "gallery": [
+      "fotos/silla_nairovi/foto_3.jpg",
+      "fotos/silla_nairovi/foto_5.jpg",
+      "fotos/silla_nairovi/foto_4.jpg",
       "fotos/silla_nairovi/foto_1.jpg",
       "fotos/silla_nairovi/foto_2.jpg",
-      "fotos/silla_nairovi/foto_3.jpg",
-      "fotos/silla_nairovi/foto_4.jpg",
-      "fotos/silla_nairovi/foto_5.jpg",
       "fotos/silla_nairovi/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+    ]
   },
   {
     "id": "silla_canadad",
     "name": "CANADAD SILLA ROSA MORADA SOLIDA RUSTY NATURAL 66X50X80 CM",
     "short_name": "Silla Canadad",
-    "group_id": "silla_canadad",
-    "group_title": "Silla Canadad",
-    "variant_label": "Rosa Morada Sólida Rusty Natural",
     "variant": "Rosa Morada Sólida Rusty Natural",
     "category": "Comedores",
     "glb": "SILLA CANADAD.glb",
+    "folder": "COMEDORES/Sillas/Silla Canadad",
     "sku": "MOBSILCANROMO",
+    "sheet_name": "CANADAD SILLA ROSA MORADA SOLIDA RUSTY NATURAL 66X50X80 CM",
     "proveedor": "MOBEL INN",
     "dim_m": [
       0.66,
@@ -2658,42 +2345,38 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/silla_canadad/foto_1.jpg",
-    "thumb": "fotos/silla_canadad/foto_1.jpg",
+    "photo": "fotos/silla_canadad/foto_5.jpg",
     "gallery": [
-      "fotos/silla_canadad/foto_1.jpg",
-      "fotos/silla_canadad/foto_2.jpg",
+      "fotos/silla_canadad/foto_5.jpg",
       "fotos/silla_canadad/foto_3.jpg",
       "fotos/silla_canadad/foto_4.jpg",
-      "fotos/silla_canadad/foto_5.jpg",
-      "fotos/silla_canadad/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/silla_canadad/foto_2.jpg",
+      "fotos/silla_canadad/foto_6.jpg",
+      "fotos/silla_canadad/foto_1.jpg"
+    ]
   },
   {
     "id": "sala_piero_der_curry",
     "name": "PIERO SALA DER FOREVER CURRY 290X188X65 CM",
     "short_name": "Sala Piero Derecha",
-    "group_id": "familia_sala_piero_der",
-    "group_title": "Sala Piero Derecha",
-    "variant_label": "Forever Curry",
     "variant": "Forever Curry",
     "category": "Salas",
     "glb": "SALA PIERO DERECHA CURRY.glb",
+    "folder": "SALAS/Salas/Piero/FOREVER CURRY/SALA DERECHA",
     "sku": "CVVSALPIEFPBU",
+    "sheet_name": "PIERO SALA DER FOREVER PLUS BUTTERMILK 290X188X65 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      2.9,
-      1.88,
-      0.65
-    ],
     "dim_cm": [
       290,
       188,
       65
     ],
+    "dim_m": [
+      2.9,
+      1.88,
+      0.65
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -2707,41 +2390,37 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_piero_der_curry/foto_1.jpg",
-    "thumb": "fotos/sala_piero_der_curry/foto_1.jpg",
+    "photo": "fotos/sala_piero_der_curry/foto_5.jpg",
     "gallery": [
+      "fotos/sala_piero_der_curry/foto_5.jpg",
       "fotos/sala_piero_der_curry/foto_1.jpg",
-      "fotos/sala_piero_der_curry/foto_2.jpg",
-      "fotos/sala_piero_der_curry/foto_3.jpg",
       "fotos/sala_piero_der_curry/foto_4.jpg",
-      "fotos/sala_piero_der_curry/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c77d28",
-    "color_hex": "#c77d28"
+      "fotos/sala_piero_der_curry/foto_3.jpg",
+      "fotos/sala_piero_der_curry/foto_2.jpg"
+    ]
   },
   {
     "id": "sala_piero_izq_curry",
     "name": "PIERO SALA IZQ FOREVER CURRY 290X188X65 CM",
     "short_name": "Sala Piero Izquierda",
-    "group_id": "familia_sala_piero_izq",
-    "group_title": "Sala Piero Izquierda",
-    "variant_label": "Forever Curry",
     "variant": "Forever Curry",
     "category": "Salas",
     "glb": "SALA PIERO IZQUIERDA CURRY.glb",
+    "folder": "SALAS/Salas/Piero/FOREVER CURRY/SALA IZQUIERDA",
     "sku": "CVVSALPIEFBIZ",
+    "sheet_name": "PIERO SALA IZQ FOREVER PLUS BUTTERMILK 290X188X65 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      2.9,
-      1.88,
-      0.65
-    ],
     "dim_cm": [
       290,
       188,
       65
     ],
+    "dim_m": [
+      2.9,
+      1.88,
+      0.65
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -2755,41 +2434,37 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_piero_izq_curry/foto_1.jpg",
-    "thumb": "fotos/sala_piero_izq_curry/foto_1.jpg",
+    "photo": "fotos/sala_piero_izq_curry/foto_5.jpg",
     "gallery": [
-      "fotos/sala_piero_izq_curry/foto_1.jpg",
-      "fotos/sala_piero_izq_curry/foto_2.jpg",
+      "fotos/sala_piero_izq_curry/foto_5.jpg",
       "fotos/sala_piero_izq_curry/foto_3.jpg",
       "fotos/sala_piero_izq_curry/foto_4.jpg",
-      "fotos/sala_piero_izq_curry/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c77d28",
-    "color_hex": "#c77d28"
+      "fotos/sala_piero_izq_curry/foto_1.jpg",
+      "fotos/sala_piero_izq_curry/foto_2.jpg"
+    ]
   },
   {
     "id": "sala_piero_der_buttermilk",
     "name": "PIERO SALA DER FOREVER BUTTERMILK 290X188X65 CM",
     "short_name": "Sala Piero Derecha",
-    "group_id": "familia_sala_piero_der",
-    "group_title": "Sala Piero Derecha",
-    "variant_label": "Forever Buttermilk",
     "variant": "Forever Buttermilk",
     "category": "Salas",
     "glb": "SALA PIERO DERECHA BUTERMIK.glb",
+    "folder": "SALAS/Salas/Piero/FOREVER BUTERMIK/SALA DERECHA",
     "sku": "CVVSALPIEFPBU",
+    "sheet_name": "PIERO SALA DER FOREVER PLISS MOSS 190X187X65 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      2.9,
-      1.88,
-      0.65
-    ],
     "dim_cm": [
       290,
       188,
       65
     ],
+    "dim_m": [
+      2.9,
+      1.88,
+      0.65
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -2803,40 +2478,36 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_piero_der_buttermilk/foto_1.jpg",
-    "thumb": "fotos/sala_piero_der_buttermilk/foto_1.jpg",
+    "photo": "fotos/sala_piero_der_buttermilk/foto_4.jpg",
     "gallery": [
+      "fotos/sala_piero_der_buttermilk/foto_4.jpg",
       "fotos/sala_piero_der_buttermilk/foto_1.jpg",
       "fotos/sala_piero_der_buttermilk/foto_2.jpg",
-      "fotos/sala_piero_der_buttermilk/foto_3.jpg",
-      "fotos/sala_piero_der_buttermilk/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#e9dbc5",
-    "color_hex": "#e9dbc5"
+      "fotos/sala_piero_der_buttermilk/foto_3.jpg"
+    ]
   },
   {
     "id": "sala_piero_izq_buttermilk",
     "name": "PIERO SALA IZQ FOREVER BUTTERMILK 290X188X65 CM",
     "short_name": "Sala Piero Izquierda",
-    "group_id": "familia_sala_piero_izq",
-    "group_title": "Sala Piero Izquierda",
-    "variant_label": "Forever Buttermilk",
     "variant": "Forever Buttermilk",
     "category": "Salas",
     "glb": "SALA PIERO IZQUIERDA BUTERMIK.glb",
+    "folder": "SALAS/Salas/Piero/FOREVER BUTERMIK/SALA IZQUIERDA",
     "sku": "CVVSALPIEFBIZ",
+    "sheet_name": "PIERO SALA IZQ FOREVER PLUS MOSS 190X187X65 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      2.9,
-      1.88,
-      0.65
-    ],
     "dim_cm": [
       290,
       188,
       65
     ],
+    "dim_m": [
+      2.9,
+      1.88,
+      0.65
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -2850,40 +2521,36 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_piero_izq_buttermilk/foto_1.jpg",
-    "thumb": "fotos/sala_piero_izq_buttermilk/foto_1.jpg",
+    "photo": "fotos/sala_piero_izq_buttermilk/foto_2.jpg",
     "gallery": [
-      "fotos/sala_piero_izq_buttermilk/foto_1.jpg",
       "fotos/sala_piero_izq_buttermilk/foto_2.jpg",
-      "fotos/sala_piero_izq_buttermilk/foto_3.jpg",
-      "fotos/sala_piero_izq_buttermilk/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#e9dbc5",
-    "color_hex": "#e9dbc5"
+      "fotos/sala_piero_izq_buttermilk/foto_1.jpg",
+      "fotos/sala_piero_izq_buttermilk/foto_4.jpg",
+      "fotos/sala_piero_izq_buttermilk/foto_3.jpg"
+    ]
   },
   {
     "id": "sala_aria_osi_flax",
     "name": "ARIA SALA MODULAR OSI FLAX 280X280X70 CM",
     "short_name": "Sala Modular Aria",
-    "group_id": "familia_sala_aria",
-    "group_title": "Sala Modular Aria",
-    "variant_label": "OSI Flax",
     "variant": "OSI Flax",
     "category": "Salas",
     "glb": "SALA ARIA OSI FLAX.glb",
+    "folder": "SALAS/Salas/Aria/OSI FLAX",
     "sku": "CVVSALAARIOF",
+    "sheet_name": "ARIASALA MODULAR OSI FLAX 280X280X70 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      2.8,
-      2.8,
-      0.7
-    ],
     "dim_cm": [
       280,
       280,
       70
     ],
+    "dim_m": [
+      2.8,
+      2.8,
+      0.7
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -2898,40 +2565,36 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 0
     },
     "photo": "fotos/sala_aria_osi_flax/foto_1.jpg",
-    "thumb": "fotos/sala_aria_osi_flax/foto_1.jpg",
     "gallery": [
       "fotos/sala_aria_osi_flax/foto_1.jpg",
       "fotos/sala_aria_osi_flax/foto_2.jpg",
       "fotos/sala_aria_osi_flax/foto_3.jpg",
       "fotos/sala_aria_osi_flax/foto_4.jpg",
       "fotos/sala_aria_osi_flax/foto_5.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c8b9a6",
-    "color_hex": "#c8b9a6"
+    ]
   },
   {
     "id": "sala_aria_osi_ivory",
     "name": "ARIA SALA MODULAR OSI IVORY 280X280X70 CM",
     "short_name": "Sala Modular Aria",
-    "group_id": "familia_sala_aria",
-    "group_title": "Sala Modular Aria",
-    "variant_label": "OSI Ivory",
     "variant": "OSI Ivory",
     "category": "Salas",
     "glb": "SALA ARIA OSI IVORY.glb",
+    "folder": "SALAS/Salas/Aria/OSI IVORY",
     "sku": "CVVSALAARIOI",
+    "sheet_name": "ARIASALA MODULAR OSI IVORY 280X280X70 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      2.8,
-      2.8,
-      0.7
-    ],
     "dim_cm": [
       280,
       280,
       70
     ],
+    "dim_m": [
+      2.8,
+      2.8,
+      0.7
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 2,
       "playa": 0,
@@ -2946,39 +2609,35 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 0
     },
     "photo": "fotos/sala_aria_osi_ivory/foto_1.jpg",
-    "thumb": "fotos/sala_aria_osi_ivory/foto_1.jpg",
     "gallery": [
       "fotos/sala_aria_osi_ivory/foto_1.jpg",
-      "fotos/sala_aria_osi_ivory/foto_2.jpg",
       "fotos/sala_aria_osi_ivory/foto_3.jpg",
-      "fotos/sala_aria_osi_ivory/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#ece6da",
-    "color_hex": "#ece6da"
+      "fotos/sala_aria_osi_ivory/foto_4.jpg",
+      "fotos/sala_aria_osi_ivory/foto_2.jpg"
+    ]
   },
   {
     "id": "sala_lumno_baker_linen",
     "name": "LUMNO SALA BAKER LINEN 392X110X70 CM",
     "short_name": "Sala Modular Lumno",
-    "group_id": "familia_sala_lumno",
-    "group_title": "Sala Modular Lumno",
-    "variant_label": "Baker Linen",
     "variant": "Baker Linen",
     "category": "Salas",
     "glb": "SALA LUMNO LIMEN.glb",
+    "folder": "SALAS/Salas/Lunno/BAKER LINEN",
     "sku": "CVVSALLUNBALI",
+    "sheet_name": "LUMNO SALA BAKER LINEN 392X110X70 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      3.92,
-      1.74,
-      0.7
-    ],
     "dim_cm": [
       392,
       174,
       70
     ],
+    "dim_m": [
+      3.92,
+      1.74,
+      0.7
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 1,
       "playa": 0,
@@ -2993,39 +2652,35 @@ window.CATALOGO_PRODUCTOS = [
       "ptc": 0
     },
     "photo": "fotos/sala_lumno_baker_linen/foto_1.jpg",
-    "thumb": "fotos/sala_lumno_baker_linen/foto_1.jpg",
     "gallery": [
       "fotos/sala_lumno_baker_linen/foto_1.jpg",
-      "fotos/sala_lumno_baker_linen/foto_2.jpg",
       "fotos/sala_lumno_baker_linen/foto_3.jpg",
-      "fotos/sala_lumno_baker_linen/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#dfd5c6",
-    "color_hex": "#dfd5c6"
+      "fotos/sala_lumno_baker_linen/foto_4.jpg",
+      "fotos/sala_lumno_baker_linen/foto_2.jpg"
+    ]
   },
   {
     "id": "sala_lumno_baker_mushroom",
     "name": "LUMNO SALA BAKER MUSHROOM 392X110X70 CM",
     "short_name": "Sala Modular Lumno",
-    "group_id": "familia_sala_lumno",
-    "group_title": "Sala Modular Lumno",
-    "variant_label": "Baker Mushroom",
     "variant": "Baker Mushroom",
     "category": "Salas",
     "glb": "SALA LUMNO MUSHROOM.glb",
+    "folder": "SALAS/Salas/Lunno/BAKER MUSHROOM",
     "sku": "CVVSALLUNBAMU",
+    "sheet_name": "LUMNO SALA BAKER MUSHROOM 392X110X70 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      3.92,
-      1.74,
-      0.7
-    ],
     "dim_cm": [
       392,
       174,
       70
     ],
+    "dim_m": [
+      3.92,
+      1.74,
+      0.7
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -3039,40 +2694,36 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_lumno_baker_mushroom/foto_1.jpg",
-    "thumb": "fotos/sala_lumno_baker_mushroom/foto_1.jpg",
+    "photo": "fotos/sala_lumno_baker_mushroom/foto_2.jpg",
     "gallery": [
-      "fotos/sala_lumno_baker_mushroom/foto_1.jpg",
       "fotos/sala_lumno_baker_mushroom/foto_2.jpg",
+      "fotos/sala_lumno_baker_mushroom/foto_4.jpg",
       "fotos/sala_lumno_baker_mushroom/foto_3.jpg",
-      "fotos/sala_lumno_baker_mushroom/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#8c7e75",
-    "color_hex": "#8c7e75"
+      "fotos/sala_lumno_baker_mushroom/foto_1.jpg"
+    ]
   },
   {
     "id": "sala_lexy_izq_prisma_olive",
     "name": "LEXY SALA IZQ PRISMA OLIVE 279X140X63 CM",
     "short_name": "Sala Lexy Izquierda",
-    "group_id": "familia_sala_lexy_izq",
-    "group_title": "Sala Lexy Izquierda",
-    "variant_label": "Prisma Olive",
     "variant": "Prisma Olive",
     "category": "Salas",
     "glb": "SALA LEXY IZQUIERDA.glb",
+    "folder": "SALAS/Salas/Lexy/PRISMA OLIVE",
     "sku": "CVVSALLEXPROL",
+    "sheet_name": "LEXY SALA IZQ PRISMA OLIVE 279X140X63 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      2.79,
-      1.4,
-      0.63
-    ],
     "dim_cm": [
       279,
       140,
       63
     ],
+    "dim_m": [
+      2.79,
+      1.4,
+      0.63
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 1,
       "playa": 0,
@@ -3086,40 +2737,36 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_lexy_izq_prisma_olive/foto_1.jpg",
-    "thumb": "fotos/sala_lexy_izq_prisma_olive/foto_1.jpg",
+    "photo": "fotos/sala_lexy_izq_prisma_olive/foto_4.jpg",
     "gallery": [
-      "fotos/sala_lexy_izq_prisma_olive/foto_1.jpg",
-      "fotos/sala_lexy_izq_prisma_olive/foto_2.jpg",
+      "fotos/sala_lexy_izq_prisma_olive/foto_4.jpg",
       "fotos/sala_lexy_izq_prisma_olive/foto_3.jpg",
-      "fotos/sala_lexy_izq_prisma_olive/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#5c6b54",
-    "color_hex": "#5c6b54"
+      "fotos/sala_lexy_izq_prisma_olive/foto_2.jpg",
+      "fotos/sala_lexy_izq_prisma_olive/foto_1.jpg"
+    ]
   },
   {
     "id": "sala_piero_der_moss",
     "name": "PIERO SALA DER FOREVER PLUS MOSS 290X188X65 CM",
     "short_name": "Sala Piero Derecha",
-    "group_id": "familia_sala_piero_der",
-    "group_title": "Sala Piero Derecha",
-    "variant_label": "Forever Plus Moss",
     "variant": "Forever Plus Moss",
     "category": "Salas",
     "glb": "SALA PIERO DERECHA MOSS.glb",
+    "folder": "SALAS/Salas/Piero/FOREVER MOOS/SALA DERECHA",
     "sku": "CVVSALPIEFPMO",
+    "sheet_name": "PIERO SALA DER FOREVER PLISS MOSS 190X187X65 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      2.9,
-      1.88,
-      0.65
-    ],
     "dim_cm": [
       290,
       188,
       65
     ],
+    "dim_m": [
+      2.9,
+      1.88,
+      0.65
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -3133,40 +2780,36 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_piero_der_moss/foto_1.jpg",
-    "thumb": "fotos/sala_piero_der_moss/foto_1.jpg",
+    "photo": "fotos/sala_piero_der_moss/foto_3.jpg",
     "gallery": [
-      "fotos/sala_piero_der_moss/foto_1.jpg",
-      "fotos/sala_piero_der_moss/foto_2.jpg",
       "fotos/sala_piero_der_moss/foto_3.jpg",
-      "fotos/sala_piero_der_moss/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#5c6b54",
-    "color_hex": "#5c6b54"
+      "fotos/sala_piero_der_moss/foto_4.jpg",
+      "fotos/sala_piero_der_moss/foto_2.jpg",
+      "fotos/sala_piero_der_moss/foto_1.jpg"
+    ]
   },
   {
     "id": "sala_piero_izq_moss",
     "name": "PIERO SALA IZQ FOREVER PLUS MOSS 290X188X65 CM",
     "short_name": "Sala Piero Izquierda",
-    "group_id": "familia_sala_piero_izq",
-    "group_title": "Sala Piero Izquierda",
-    "variant_label": "Forever Plus Moss",
     "variant": "Forever Plus Moss",
     "category": "Salas",
     "glb": "SALA PIERO IZQUIERDA MOSS.glb",
+    "folder": "SALAS/Salas/Piero/FOREVER MOOS/SALA IZQUIERDA",
     "sku": "CVVSALPIEFMIZ",
+    "sheet_name": "PIERO SALA IZQ FOREVER PLUS MOSS 190X187X65 CM",
     "proveedor": "CASA V&V",
-    "dim_m": [
-      2.9,
-      1.88,
-      0.65
-    ],
     "dim_cm": [
       290,
       188,
       65
     ],
+    "dim_m": [
+      2.9,
+      1.88,
+      0.65
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 1,
       "playa": 0,
@@ -3180,40 +2823,36 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sala_piero_izq_moss/foto_1.jpg",
-    "thumb": "fotos/sala_piero_izq_moss/foto_1.jpg",
+    "photo": "fotos/sala_piero_izq_moss/foto_3.jpg",
     "gallery": [
-      "fotos/sala_piero_izq_moss/foto_1.jpg",
-      "fotos/sala_piero_izq_moss/foto_2.jpg",
       "fotos/sala_piero_izq_moss/foto_3.jpg",
-      "fotos/sala_piero_izq_moss/foto_4.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#5c6b54",
-    "color_hex": "#5c6b54"
+      "fotos/sala_piero_izq_moss/foto_2.jpg",
+      "fotos/sala_piero_izq_moss/foto_4.jpg",
+      "fotos/sala_piero_izq_moss/foto_1.jpg"
+    ]
   },
   {
     "id": "librero_mazati_bellota",
     "name": "MAZATI LIBRERO ENCINO LACA BELLOTA 115X47X230 CM",
     "short_name": "Librero Mazati",
-    "group_id": "librero_mazati_bellota",
-    "group_title": "Librero Mazati",
-    "variant_label": "Encino Laca Bellota",
     "variant": "Encino Laca Bellota",
     "category": "Auxiliares",
     "glb": "LIBRERO MAZATI BELLOTA.glb",
+    "folder": "AUXILIARES/Varios/Librero Mazati",
     "sku": "ATXLIBMAZENCA",
+    "sheet_name": "MAZATI LIBRERO ENCINO LACA BELLOTA 115X47X230 CM",
     "proveedor": "ARTEX",
-    "dim_m": [
-      1.15,
-      0.47,
-      2.3
-    ],
     "dim_cm": [
       115,
       47,
       230
     ],
+    "dim_m": [
+      1.15,
+      0.47,
+      2.3
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -3227,42 +2866,38 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/librero_mazati_bellota/foto_1.jpg",
-    "thumb": "fotos/librero_mazati_bellota/foto_1.jpg",
+    "photo": "fotos/librero_mazati_bellota/foto_3.jpg",
     "gallery": [
-      "fotos/librero_mazati_bellota/foto_1.jpg",
-      "fotos/librero_mazati_bellota/foto_2.jpg",
       "fotos/librero_mazati_bellota/foto_3.jpg",
-      "fotos/librero_mazati_bellota/foto_4.jpg",
       "fotos/librero_mazati_bellota/foto_5.jpg",
-      "fotos/librero_mazati_bellota/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/librero_mazati_bellota/foto_6.jpg",
+      "fotos/librero_mazati_bellota/foto_2.jpg",
+      "fotos/librero_mazati_bellota/foto_4.jpg",
+      "fotos/librero_mazati_bellota/foto_1.jpg"
+    ]
   },
   {
     "id": "sillon_unipata",
     "name": "UNIPATA SILLON ROSA MORADA PAROTA CLARO VISTA BRENTWOOD BONE INT LUXOR IVORY 87X79X87 CM",
     "short_name": "Sillón Unipata",
-    "group_id": "sillon_unipata",
-    "group_title": "Sillón Unipata",
-    "variant_label": "Brentwood Bone / Luxor Ivory",
     "variant": "Brentwood Bone / Luxor Ivory",
     "category": "Salas",
     "glb": "SILLON UNIPATA.glb",
+    "folder": "SALAS/Sillones/Sillón ocasional NIna",
     "sku": "YO1PUNIBRBOPC",
+    "sheet_name": "UNIPATA SILLON ROSA MORADA PAROTA CLARO VISTA BRENTWOOD BONE INT LUXOR IVORY 87X79X87 CM",
     "proveedor": "YOI",
-    "dim_m": [
-      0.79,
-      0.87,
-      0.87
-    ],
     "dim_cm": [
       79,
       87,
       87
     ],
+    "dim_m": [
+      0.79,
+      0.87,
+      0.87
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 4,
       "playa": 0,
@@ -3276,42 +2911,38 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sillon_unipata/foto_1.jpg",
-    "thumb": "fotos/sillon_unipata/foto_1.jpg",
+    "photo": "fotos/sillon_unipata/foto_2.jpg",
     "gallery": [
-      "fotos/sillon_unipata/foto_1.jpg",
       "fotos/sillon_unipata/foto_2.jpg",
       "fotos/sillon_unipata/foto_3.jpg",
       "fotos/sillon_unipata/foto_4.jpg",
+      "fotos/sillon_unipata/foto_6.jpg",
       "fotos/sillon_unipata/foto_5.jpg",
-      "fotos/sillon_unipata/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/sillon_unipata/foto_1.jpg"
+    ]
   },
   {
     "id": "sillon_kate",
     "name": "KATE SILLON OCASIONAL BEIGE CUERDA COFFEE 73X76X78 CM",
     "short_name": "Sillón Kate",
-    "group_id": "sillon_kate",
-    "group_title": "Sillón Kate",
-    "variant_label": "Beige / Cuerda Coffee",
     "variant": "Beige / Cuerda Coffee",
     "category": "Salas",
     "glb": "SILLON KATE.glb",
+    "folder": "SALAS/Sillones/Sillon Kate",
     "sku": "GMM1PKATBEIWO",
+    "sheet_name": "KATE SILLON OCASIONAL BEIGE CUERDA COFFEE 73X76X78 CM",
     "proveedor": "KEU",
-    "dim_m": [
-      0.73,
-      0.76,
-      0.78
-    ],
     "dim_cm": [
       73,
       76,
       78
     ],
+    "dim_m": [
+      0.73,
+      0.76,
+      0.78
+    ],
+    "lock_dim": true,
     "stock": {
       "cedis": 0,
       "playa": 0,
@@ -3325,18 +2956,14 @@ window.CATALOGO_PRODUCTOS = [
       "colosio": 0,
       "ptc": 0
     },
-    "photo": "fotos/sillon_kate/foto_1.jpg",
-    "thumb": "fotos/sillon_kate/foto_1.jpg",
+    "photo": "fotos/sillon_kate/foto_6.jpg",
     "gallery": [
-      "fotos/sillon_kate/foto_1.jpg",
+      "fotos/sillon_kate/foto_6.jpg",
       "fotos/sillon_kate/foto_2.jpg",
+      "fotos/sillon_kate/foto_5.jpg",
       "fotos/sillon_kate/foto_3.jpg",
       "fotos/sillon_kate/foto_4.jpg",
-      "fotos/sillon_kate/foto_5.jpg",
-      "fotos/sillon_kate/foto_6.jpg"
-    ],
-    "flip": false,
-    "swatch_color": "#c2a382",
-    "color_hex": "#c2a382"
+      "fotos/sillon_kate/foto_1.jpg"
+    ]
   }
 ];
