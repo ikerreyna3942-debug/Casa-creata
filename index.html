@@ -778,7 +778,6 @@
   <span class="pill-sep"></span>
   <button class="pill-btn" id="btnSelectStore" title="Elegir tienda para ver ventas">🏪 Tienda: <b id="lblActiveStore">COLOSIO</b> ▾</button>
   <button class="pill-btn" id="btnAutoRot">🔄 Girar Vista</button>
-  <button class="pill-btn" id="btnView2D" title="Alternar entre Perspectiva 3D y Vista Cenital 2D (Plano Recto)">📐 Plano 2D</button>
   <button class="pill-btn" id="btnResetView">🎯 Centrar</button>
 
 </div>
@@ -988,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793823171"></script>
+<script src="modelos_glb_data.js?v=1793825938"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1299,65 +1298,13 @@ function decomposeOrthoPoly(pts){
 }
 
 
-// Pre-procesador arquitectónico: Enrasa castillos/columnas estructurales al paño liso de los muros
-function getEnrasadoCols(lvl){
-  const d = DATA[lvl]; if(!d) return [];
-  const cols = d.cols || [];
-  const walls = d.walls || [];
-  return cols.map(c => {
-    const cx0 = Math.min(...c.p.map(p => p[0])), cx1 = Math.max(...c.p.map(p => p[0]));
-    const cy0 = Math.min(...c.p.map(p => p[1])), cy1 = Math.max(...c.p.map(p => p[1]));
-    const touching = walls.filter(w => {
-      const wx0 = Math.min(...w.p.map(p => p[0])), wx1 = Math.max(...w.p.map(p => p[0]));
-      const wy0 = Math.min(...w.p.map(p => p[1])), wy1 = Math.max(...w.p.map(p => p[1]));
-      return !(cx1 < wx0 - 0.05 || cx0 > wx1 + 0.05 || cy1 < wy0 - 0.05 || cy0 > wy1 + 0.05);
-    });
-    if(touching.length === 0){
-      return { id: c.id, p: c.p, isTouching: false };
-    }
-    let minWx0 = Infinity, maxWx1 = -Infinity, minWy0 = Infinity, maxWy1 = -Infinity;
-    touching.forEach(w => {
-      const wx0 = Math.min(...w.p.map(p => p[0])), wx1 = Math.max(...w.p.map(p => p[0]));
-      const wy0 = Math.min(...w.p.map(p => p[1])), wy1 = Math.max(...w.p.map(p => p[1]));
-      if(wx0 < minWx0) minWx0 = wx0;
-      if(wx1 > maxWx1) maxWx1 = wx1;
-      if(wy0 < minWy0) minWy0 = wy0;
-      if(wy1 > maxWy1) maxWy1 = wy1;
-    });
-
-    let newX0 = cx0, newX1 = cx1, newY0 = cy0, newY1 = cy1;
-    const touchesVertical = touching.some(w => {
-      const wx0 = Math.min(...w.p.map(p => p[0])), wx1 = Math.max(...w.p.map(p => p[0]));
-      return (wx1 - wx0) <= 0.25;
-    });
-    const touchesHorizontal = touching.some(w => {
-      const wy0 = Math.min(...w.p.map(p => p[1])), wy1 = Math.max(...w.p.map(p => p[1]));
-      return (wy1 - wy0) <= 0.25;
-    });
-
-    if(touchesVertical && !touchesHorizontal){
-      newX0 = minWx0; newX1 = maxWx1;
-    } else if(touchesHorizontal && !touchesVertical){
-      newY0 = minWy0; newY1 = maxWy1;
-    } else {
-      newX0 = Math.max(cx0, minWx0); newX1 = Math.min(cx1, maxWx1);
-      newY0 = Math.max(cy0, minWy0); newY1 = Math.min(cy1, maxWy1);
-    }
-    return {
-      id: c.id,
-      p: [[newX0, newY0], [newX1, newY0], [newX1, newY1], [newX0, newY1]],
-      isTouching: true
-    };
-  });
-}
-
 const LEVEL_OBSTACLES = { PB:[], N1:[], N2:[] };
 ['PB','N1','N2'].forEach(lvl => {
   const d = DATA[lvl]; if(!d) return;
   (d.walls || []).forEach(w => {
     decomposeOrthoPoly(w.p).forEach(r => LEVEL_OBSTACLES[lvl].push(r));
   });
-  getEnrasadoCols(lvl).forEach(c => {
+  (d.cols || []).forEach(c => {
     decomposeOrthoPoly(c.p).forEach(r => LEVEL_OBSTACLES[lvl].push(r));
   });
   (d.low || []).forEach(lw => {
@@ -1414,15 +1361,9 @@ function buildBuilding(){
       prism(w.p, LOSA, L.muro, mat, grp, [], true, true);
     });
 
-    // Columnas Enrasadas al Paño de Muros (Acabado Continuo y Limpio)
-    getEnrasadoCols(L.id).forEach(c => {
-      if(c.isTouching){
-        // Enrasada al paño liso de pared: material continuo M.wallInt sin aristas negras intermedias
-        prism(c.p, LOSA, L.muro, M.wallInt, grp, [], false, true);
-      } else {
-        // Columna exenta / pilar estructural en medio del salón
-        prism(c.p, LOSA, L.muro, M.col, grp, [], true, true);
-      }
+    // Columnas
+    (d.cols||[]).forEach(c => {
+      prism(c.p, LOSA, L.muro, M.col, grp, [], true, true);
     });
 
     // Vidrios y ventanales
@@ -1677,62 +1618,6 @@ function animateCameraTo(destCamPos, destTargetPos, duration = 450){
 
 // Botón CENTRAR: vuelo suave e interpolado al producto seleccionado o a la vista general
 
-// =====================================================================
-// CONTROLADOR DE VISTA CENITAL 2D (PLANO TÉCNICO RECTO SIN DISTORSIÓN)
-// =====================================================================
-let is2DViewMode = false;
-let saved3DCamState = null;
-
-const btnView2D = document.getElementById('btnView2D');
-if(btnView2D){
-  btnView2D.addEventListener('click', () => {
-    is2DViewMode = !is2DViewMode;
-    btnView2D.classList.toggle('active', is2DViewMode);
-
-    const activeLvl = (currentFloorMode === 'exploded') ? 'PB' : currentFloorMode;
-    const baseY = (levelGroups[activeLvl] ? levelGroups[activeLvl].position.y : 0) + LOSA;
-
-    if(is2DViewMode){
-      // Guardar posición orbital 3D previa
-      saved3DCamState = {
-        camPos: camera.position.clone(),
-        target: controls.target.clone(),
-        maxPolar: controls.maxPolarAngle,
-        minPolar: controls.minPolarAngle
-      };
-      btnView2D.innerHTML = '🧊 Vista 3D';
-      btnView2D.title = 'Regresar a Perspectiva 3D Orbital';
-
-      // Posicionar cámara exactamente perpendicular cenital mirando al piso
-      const targetY = baseY + 0.5;
-      const camY = baseY + 36.0;
-      const destTarget = new THREE.Vector3(CENTER.x, targetY, CENTER.z);
-      const destCam = new THREE.Vector3(CENTER.x, camY, CENTER.z + 0.001); // 0.001 evita gimbal lock
-
-      // Bloquear ángulo polar a 90° exactos (vista planta 2D sin rotación de perspectiva)
-      controls.minPolarAngle = 0.001;
-      controls.maxPolarAngle = 0.001;
-      animateCameraTo(destCam, destTarget, 500);
-      showSaveToast('Vista Plano 2D Cenital (Muros 100% paralelos y rectos)', '📐');
-    } else {
-      // Restaurar perspectiva 3D libre
-      btnView2D.innerHTML = '📐 Plano 2D';
-      btnView2D.title = 'Alternar a Vista Cenital 2D (Plano Recto)';
-      controls.minPolarAngle = 0;
-      controls.maxPolarAngle = Math.PI * 0.43;
-
-      if(saved3DCamState){
-        animateCameraTo(saved3DCamState.camPos, saved3DCamState.target, 500);
-      } else {
-        const destTarget = new THREE.Vector3(CENTER.x, baseY + 1.2, CENTER.z);
-        const destCam = new THREE.Vector3(CENTER.x + 24, baseY + 20, CENTER.z + 28);
-        animateCameraTo(destCam, destTarget, 500);
-      }
-      showSaveToast('Perspectiva 3D restaurada', '🧊');
-    }
-  });
-}
-
 document.getElementById('btnResetView').addEventListener('click', () => {
   if(selectedFurniture && selectedFurniture.parent){
     const wp = new THREE.Vector3();
@@ -1773,7 +1658,7 @@ let selectedFurniture = null;
 
 function loadGLB(glbName, cb){
   const encoded = encodeURIComponent(glbName);
-  const cacheBuster = '?v=' + '20261104_1530';
+  const cacheBuster = '?v=' + '20261104_1600';
   gltfLoader.load('glb/' + encoded + cacheBuster, cb, undefined, (err) => {
     gltfLoader.load('../PRODUCTOS/TIPO GLB/' + encoded + cacheBuster, cb, undefined, (err2) => {
       console.error('Error cargando modelo GLB:', glbName, err2);
