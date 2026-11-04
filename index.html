@@ -762,7 +762,7 @@
 
 <!-- 1. Cápsula Superior Izquierda: CASA CREATA + [💾 Distribuciones] + [🛋️ + Catálogo] -->
 <div id="topBarLeft">
-  <span class="brand-title">CASA CREATA</span><span id="versionBadge" style="background:rgba(168,85,247,0.25); color:#d8b4fe; border:1px solid rgba(168,85,247,0.5); padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700; margin-left:6px; letter-spacing:0.04em;" title="Versión 2.8: Siluetas y acabados calibrados">v2.9 (Geometría Unificada)</span>
+  <span class="brand-title">CASA CREATA</span><span id="versionBadge" style="background:rgba(16,185,129,0.25); color:#6ee7b7; border:1px solid rgba(16,185,129,0.5); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:700; margin-left:6px; letter-spacing:0.04em;" title="Versión 3.0: Geometría Unificada Piero y Movimiento con Flechas 100% Calibrado">v3.0 (Estable)</span>
   <button class="btn-top-action btn-save-action" id="btnSaveProcess" title="Guardar proceso del plano y diseño en curso (Ctrl+S)">💾 Guardar</button>
   <button class="btn-top-action" id="btnOpenDistrib" title="Ver y cargar distribuciones guardadas">📁 Distribuciones</button>
 </div>
@@ -987,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793807739"></script>
+<script src="modelos_glb_data.js?v=1793809670"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1776,50 +1776,116 @@ function getFurnitureFootprintPolygon(item){
     ];
   }
 
-  // 2. Sala Piero Derecha (Chaise en ángulo a la derecha, librero/estante a la izquierda)
+  // 1.5. Sala Modular Aria
+  if(idLow.includes('aria')){
+    return [
+      { minX: -dx * 0.50, maxX: dx * 0.50, minZ: -dz * 0.50, maxZ: -dz * 0.12, part: 'aria_back' },
+      { minX: dx * 0.12,  maxX: dx * 0.50, minZ: -dz * 0.12, maxZ: dz * 0.50,  part: 'aria_chaise' }
+    ];
+  }
+  // 2. Sala Piero Derecha (Vértices 3D reales: Chaise der, Estante izq)
   if(idLow.includes('piero_der')){
     return [
-      [-0.48 * dx, -0.46 * dz],
-      [-0.30 * dx, -0.48 * dz],
-      [ 0.00 * dx, -0.50 * dz],
-      [ 0.20 * dx, -0.48 * dz],
-      [ 0.48 * dx, -0.42 * dz],
-      [ 0.48 * dx,  0.10 * dz],
-      [ 0.43 * dx,  0.50 * dz],
-      [ 0.17 * dx,  0.50 * dz],
-      [ 0.13 * dx,  0.00 * dz],
-      [ 0.03 * dx, -0.04 * dz],
-      [-0.13 * dx,  0.01 * dz],
-      [-0.22 * dx,  0.06 * dz],
-      [-0.32 * dx,  0.11 * dz],
-      [-0.42 * dx,  0.14 * dz],
-      [-0.48 * dx, -0.07 * dz],
-      [-0.48 * dx, -0.46 * dz]
+      [-0.475 * dx, -0.461 * dz],
+      [-0.425 * dx, -0.470 * dz],
+      [-0.375 * dx, -0.471 * dz],
+      [-0.325 * dx, -0.477 * dz],
+      [-0.275 * dx, -0.484 * dz],
+      [-0.225 * dx, -0.491 * dz],
+      [-0.175 * dx, -0.497 * dz],
+      [-0.125 * dx, -0.499 * dz],
+      [-0.075 * dx, -0.500 * dz],
+      [-0.025 * dx, -0.500 * dz],
+      [ 0.025 * dx, -0.498 * dz],
+      [ 0.075 * dx, -0.496 * dz],
+      [ 0.125 * dx, -0.489 * dz],
+      [ 0.175 * dx, -0.481 * dz],
+      [ 0.225 * dx, -0.473 * dz],
+      [ 0.275 * dx, -0.464 * dz],
+      [ 0.325 * dx, -0.458 * dz],
+      [ 0.375 * dx, -0.447 * dz],
+      [ 0.425 * dx, -0.437 * dz],
+      [ 0.475 * dx, -0.415 * dz],
+      [ 0.475 * dx,  0.104 * dz],
+      [ 0.425 * dx,  0.498 * dz],
+      [ 0.375 * dx,  0.497 * dz],
+      [ 0.325 * dx,  0.498 * dz],
+      [ 0.275 * dx,  0.490 * dz],
+      [ 0.225 * dx,  0.498 * dz],
+      [ 0.175 * dx,  0.500 * dz],
+      [ 0.125 * dx,  0.001 * dz],
+      [ 0.075 * dx, -0.015 * dz],
+      [ 0.025 * dx, -0.033 * dz],
+      [-0.025 * dx, -0.036 * dz],
+      [-0.075 * dx, -0.010 * dz],
+      [-0.125 * dx,  0.013 * dz],
+      [-0.175 * dx,  0.036 * dz],
+      [-0.225 * dx,  0.061 * dz],
+      [-0.275 * dx,  0.080 * dz],
+      [-0.325 * dx,  0.109 * dz],
+      [-0.375 * dx,  0.132 * dz],
+      [-0.425 * dx,  0.135 * dz],
+      [-0.475 * dx, -0.074 * dz]
     ];
   }
 
-  // 3. Sala Piero Izquierda (Chaise en ángulo a la izquierda, librero/estante a la derecha)
+  // 3. Sala Piero Izquierda (Vértices 3D reales: Chaise izq, Asiento en ángulo der)
   if(idLow.includes('piero_izq')){
     return [
-      [ 0.48 * dx, -0.46 * dz],
-      [ 0.30 * dx, -0.48 * dz],
-      [ 0.00 * dx, -0.50 * dz],
-      [-0.20 * dx, -0.48 * dz],
-      [-0.48 * dx, -0.42 * dz],
-      [-0.48 * dx,  0.10 * dz],
-      [-0.43 * dx,  0.50 * dz],
-      [-0.17 * dx,  0.50 * dz],
-      [-0.13 * dx,  0.00 * dz],
-      [-0.03 * dx, -0.04 * dz],
-      [ 0.13 * dx,  0.01 * dz],
-      [ 0.22 * dx,  0.06 * dz],
-      [ 0.32 * dx,  0.11 * dz],
-      [ 0.42 * dx,  0.14 * dz],
-      [ 0.48 * dx, -0.07 * dz],
-      [ 0.48 * dx, -0.46 * dz]
+      [-0.475 * dx, -0.471 * dz],
+      [-0.425 * dx, -0.499 * dz],
+      [-0.375 * dx, -0.499 * dz],
+      [-0.325 * dx, -0.499 * dz],
+      [-0.275 * dx, -0.498 * dz],
+      [-0.225 * dx, -0.498 * dz],
+      [-0.175 * dx, -0.499 * dz],
+      [-0.125 * dx, -0.499 * dz],
+      [-0.075 * dx, -0.499 * dz],
+      [-0.025 * dx, -0.500 * dz],
+      [ 0.025 * dx, -0.500 * dz],
+      [ 0.075 * dx, -0.499 * dz],
+      [ 0.125 * dx, -0.498 * dz],
+      [ 0.175 * dx, -0.497 * dz],
+      [ 0.225 * dx, -0.496 * dz],
+      [ 0.275 * dx, -0.493 * dz],
+      [ 0.325 * dx, -0.490 * dz],
+      [ 0.375 * dx, -0.489 * dz],
+      [ 0.425 * dx, -0.471 * dz],
+      [ 0.475 * dx, -0.471 * dz],
+      [ 0.475 * dx, -0.040 * dz],
+      [ 0.425 * dx,  0.183 * dz],
+      [ 0.375 * dx,  0.182 * dz],
+      [ 0.325 * dx,  0.149 * dz],
+      [ 0.275 * dx,  0.121 * dz],
+      [ 0.225 * dx,  0.082 * dz],
+      [ 0.175 * dx,  0.048 * dz],
+      [ 0.125 * dx,  0.020 * dz],
+      [ 0.075 * dx, -0.015 * dz],
+      [ 0.025 * dx, -0.045 * dz],
+      [-0.025 * dx, -0.041 * dz],
+      [-0.075 * dx, -0.034 * dz],
+      [-0.125 * dx, -0.027 * dz],
+      [-0.175 * dx,  0.500 * dz],
+      [-0.225 * dx,  0.500 * dz],
+      [-0.275 * dx,  0.499 * dz],
+      [-0.325 * dx,  0.500 * dz],
+      [-0.375 * dx,  0.500 * dz],
+      [-0.425 * dx,  0.499 * dz],
+      [-0.475 * dx,  0.454 * dz]
     ];
   }
 
+  // 3.5. Sala Modular Aria
+  if(idLow.includes('aria')){
+    return [
+      [-dx * 0.50, -dz * 0.50],
+      [ dx * 0.50, -dz * 0.50],
+      [ dx * 0.50,  dz * 0.50],
+      [ dx * 0.12,  dz * 0.50],
+      [ dx * 0.12, -dz * 0.12],
+      [-dx * 0.50, -dz * 0.12]
+    ];
+  }
   // 4. Sala Lexy Izquierda (Chaise a la izquierda, respaldo y asiento corrido a la derecha)
   if(idLow.includes('lexy_izq')){
     return [
@@ -3296,124 +3362,102 @@ function nudgeSelectedList(dx, dz){
 }
 
 function nudgeSingleFurniture(furn, dx, dz){
+  if(!furn || !furn.parent) return;
   const item = furn.userData.item;
   const level = furn.userData.level;
   const rotY = furn.rotation.y;
 
-  const dimX = item.dim_m[0], dimZ = item.dim_m[1];
-  const halfX = (Math.abs(dimX/2 * Math.cos(rotY)) + Math.abs(dimZ/2 * Math.sin(rotY)));
-  const halfZ = (Math.abs(dimX/2 * Math.sin(rotY)) + Math.abs(dimZ/2 * Math.cos(rotY)));
-  const GAP = 0.01;
+  // 1. Probar desplazamiento completo directo (dx, dz)
+  const targetX = furn.position.x + dx;
+  const targetZ = furn.position.z + dz;
 
-  let curX = furn.position.x;
-  let curZ = furn.position.z;
-  if(checkWallCollision(curX, curZ, rotY, item, level).collides){
-    const unstuck = clampPositionToWalls(curX, curZ, rotY, item, level, furn, false);
-    curX = unstuck.x;
-    curZ = unstuck.z;
+  if(!checkCollision(targetX, targetZ, rotY, item, level, furn).collides){
+    furn.position.x = targetX;
+    furn.position.z = targetZ;
+    furn.position.y = (level === 'PA' ? FLOOR_Y_PA : FLOOR_Y_PB);
+    renderSelectionHighlight();
+    saveStateToUrl();
+    return;
   }
 
-  const obsList = [];
-  const wallObs = LEVEL_OBSTACLES[level] || [];
-  for(let i = 0; i < wallObs.length; i++){
-    obsList.push({ minX: wallObs[i].minX, maxX: wallObs[i].maxX, minZ: wallObs[i].minZ, maxZ: wallObs[i].maxZ, gap: GAP, refItem: null });
-  }
-
-  for(let i = 0; i < placedFurniture.length; i++){
-    const f = placedFurniture[i];
-    if(f === furn || f.userData.level !== level) continue;
-    const it = f.userData.item;
-    const isBedBuroPair = isBedroomAssemblyPair(item, it);
-    const fGap = isBedBuroPair ? 0.001 : GAP;
-    const fBoxes = getFurnitureWorldBoxes(it, f.position.x, f.position.z, f.rotation.y, item);
-    for(let j = 0; j < fBoxes.length; j++){
-      obsList.push(Object.assign({}, fBoxes[j], { gap: fGap, refItem: it, furnRef: f }));
+  // 2. Si el paso completo colisiona (ej. está a 2cm de una pared y el paso es 5cm),
+  // realizamos búsqueda binaria (bisección de 7 pasos) para acercarlo hasta el milímetro exacto de contacto
+  let bestT = 0;
+  let low = 0, high = 1;
+  for(let i = 0; i < 7; i++){
+    const mid = (low + high) * 0.5;
+    if(!checkCollision(furn.position.x + mid * dx, furn.position.z + mid * dz, rotY, item, level, furn).collides){
+      bestT = mid;
+      low = mid;
+    } else {
+      high = mid;
     }
   }
 
-  // Desplazamiento en X
-  if(dx !== 0){
-    let lowerBound = PERIMETER_BOUNDS.minX + GAP + halfX;
-    let upperBound = PERIMETER_BOUNDS.maxX - GAP - halfX;
+  if(bestT > 0.04){
+    furn.position.x += bestT * dx;
+    furn.position.z += bestT * dz;
+    furn.position.y = (level === 'PA' ? FLOOR_Y_PA : FLOOR_Y_PB);
+    renderSelectionHighlight();
+    saveStateToUrl();
+    return;
+  }
 
-    for(let i = 0; i < obsList.length; i++){
-      const b = obsList[i];
-      const g = b.gap;
-      const myBoxes = getFurnitureWorldBoxes(item, curX, curZ, rotY, b.refItem);
-      for(let j = 0; j < myBoxes.length; j++){
-        const mb = myBoxes[j];
-        if((curZ + mb.ozMax > b.minZ - g + 1e-4) && (curZ + mb.ozMin < b.maxZ + g - 1e-4)){
-          if(isBuroItem(item) && b.refItem && isBedItem(b.refItem) && b.part === 'headboard'){
-            const bProf = getBedVolumetricProfile(b.refItem);
-            const fRef = b.furnRef;
-            if(fRef){
-              const c = Math.cos(fRef.rotation.y), s = Math.sin(fRef.rotation.y);
-              const localZ = (curX - fRef.position.x) * s + (curZ - fRef.position.z) * c;
-              const buroHalfD = ((item.dim_m && item.dim_m[1]) || 0.40) * 0.5;
-              if(localZ - buroHalfD >= -bProf.halfZ + bProf.headboardDepth - 0.02){
-                continue;
-              }
-            }
-          }
-          const stopLeft  = (b.minX - g) - mb.oxMax;
-          const stopRight = (b.maxX + g) - mb.oxMin;
-          const boxCenterX = (b.minX + b.maxX) * 0.5;
-          const mySubCenterX = curX + (mb.oxMin + mb.oxMax) * 0.5;
-
-          if(dx > 0 && (curX <= stopLeft + 0.005 || mySubCenterX < boxCenterX)){
-            upperBound = Math.min(upperBound, stopLeft);
-          } else if(dx < 0 && (curX >= stopRight - 0.005 || mySubCenterX > boxCenterX)){
-            lowerBound = Math.max(lowerBound, stopRight);
-          }
-        }
+  // 3. Si la trayectoria diagonal conjunta topa, permitir deslizamiento axial suave:
+  // A) Deslizar sólo en X
+  if(Math.abs(dx) > 1e-4){
+    let bestX = 0;
+    let lowX = 0, highX = 1;
+    for(let i = 0; i < 7; i++){
+      const mid = (lowX + highX) * 0.5;
+      if(!checkCollision(furn.position.x + mid * dx, furn.position.z, rotY, item, level, furn).collides){
+        bestX = mid;
+        lowX = mid;
+      } else {
+        highX = mid;
       }
     }
-
-    const targetX = curX + dx;
-    if(dx > 0){
-      curX = (curX > upperBound) ? curX : Math.min(targetX, upperBound);
-    } else {
-      curX = (curX < lowerBound) ? curX : Math.max(targetX, lowerBound);
+    if(bestX > 0.04){
+      furn.position.x += bestX * dx;
+      furn.position.y = (level === 'PA' ? FLOOR_Y_PA : FLOOR_Y_PB);
+      renderSelectionHighlight();
+      saveStateToUrl();
+      return;
     }
   }
 
-  // Desplazamiento en Z
-  if(dz !== 0){
-    let lowerBound = PERIMETER_BOUNDS.minZ + GAP + halfZ;
-    let upperBound = PERIMETER_BOUNDS.maxZ - GAP - halfZ;
-    for(let i = 0; i < obsList.length; i++){
-      const b = obsList[i];
-      const g = b.gap;
-      const myBoxesZ = getFurnitureWorldBoxes(item, curX, curZ, rotY, b.refItem);
-      for(let j = 0; j < myBoxesZ.length; j++){
-        const mb = myBoxesZ[j];
-        if((curX + mb.oxMax > b.minX - g + 1e-4) && (curX + mb.oxMin < b.maxX + g - 1e-4)){
-          const stopBack  = (b.minZ - g) - mb.ozMax;
-          const stopFront = (b.maxZ + g) - mb.ozMin;
-          const boxCenterZ = (b.minZ + b.maxZ) * 0.5;
-          const mySubCenterZ = curZ + (mb.ozMin + mb.ozMax) * 0.5;
-
-          if(dz > 0 && (curZ <= stopBack + 0.005 || mySubCenterZ < boxCenterZ)){
-            upperBound = Math.min(upperBound, stopBack);
-          } else if(dz < 0 && (curZ >= stopFront - 0.005 || mySubCenterZ > boxCenterZ)){
-            lowerBound = Math.max(lowerBound, stopFront);
-          }
-        }
+  // B) Deslizar sólo en Z
+  if(Math.abs(dz) > 1e-4){
+    let bestZ = 0;
+    let lowZ = 0, highZ = 1;
+    for(let i = 0; i < 7; i++){
+      const mid = (lowZ + highZ) * 0.5;
+      if(!checkCollision(furn.position.x, furn.position.z + mid * dz, rotY, item, level, furn).collides){
+        bestZ = mid;
+        lowZ = mid;
+      } else {
+        highZ = mid;
       }
     }
-
-    const targetZ = curZ + dz;
-    if(dz > 0){
-      curZ = (curZ > upperBound) ? curZ : Math.min(targetZ, upperBound);
-    } else {
-      curZ = (curZ < lowerBound) ? curZ : Math.max(targetZ, lowerBound);
+    if(bestZ > 0.04){
+      furn.position.z += bestZ * dz;
+      furn.position.y = (level === 'PA' ? FLOOR_Y_PA : FLOOR_Y_PB);
+      renderSelectionHighlight();
+      saveStateToUrl();
+      return;
     }
   }
 
-  furn.position.x = curX;
-  furn.position.z = curZ;
-  renderSelectionHighlight();
-  saveStateToUrl();
+  // 4. Si el objeto ya estaba penetrando o atrapado en un obstáculo, desatascarlo al ras exterior:
+  if(checkWallCollision(furn.position.x, furn.position.z, rotY, item, level).collides){
+    const unstuck = clampPositionToWalls(furn.position.x, furn.position.z, rotY, item, level, furn, false);
+    if(unstuck.x !== furn.position.x || unstuck.z !== furn.position.z){
+      furn.position.x = unstuck.x;
+      furn.position.z = unstuck.z;
+      renderSelectionHighlight();
+      saveStateToUrl();
+    }
+  }
 }
 
 function nudgeSelected(dx, dz){
