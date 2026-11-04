@@ -986,7 +986,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793830522"></script>
+<script src="modelos_glb_data.js?v=1793832105"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1689,7 +1689,7 @@ let selectedFurniture = null;
 
 function loadGLB(glbName, cb){
   const encoded = encodeURIComponent(glbName);
-  const cacheBuster = '?v=' + '20261104_1630';
+  const cacheBuster = '?v=' + (window.APP_BUILD_VERSION || Date.now());
   gltfLoader.load('glb/' + encoded + cacheBuster, cb, undefined, (err) => {
     gltfLoader.load('../PRODUCTOS/TIPO GLB/' + encoded + cacheBuster, cb, undefined, (err2) => {
       console.error('Error cargando modelo GLB:', glbName, err2);
@@ -2587,7 +2587,7 @@ function clampPositionToWalls(posX, posZ, rotY, item, level, ignoreFurniture=nul
     }
   }
 
-  const MAX_PUSH = 1.25; // Empuje máximo hacia el ras de la pared, colchón o base de mesa
+  const MAX_PUSH = 3.50; // Empuje suficiente para despejar incluso el centro de salas modulares o camas
   for(let pass = 0; pass < 6; pass++){
     let moved = false;
     for(let i = 0; i < obsList.length; i++){
@@ -2896,6 +2896,17 @@ function stopHoldingQ(){
   isHoldingQ = false;
   controls.enabled = true;
   canvas.style.cursor = 'default';
+  if(qMoveOffsets && qMoveOffsets.length > 0){
+    qMoveOffsets.forEach(entry => {
+      const f = entry.furn;
+      const col = checkCollision(f.position.x, f.position.z, f.rotation.y, f.userData.item, f.userData.level, f);
+      if(col.collides){
+        const unstuck = clampPositionToWalls(f.position.x, f.position.z, f.rotation.y, f.userData.item, f.userData.level, f, true);
+        f.position.x = unstuck.x;
+        f.position.z = unstuck.z;
+      }
+    });
+  }
   qMoveOffsets = [];
   recordHistory('move_q');
   saveStateToUrl();
@@ -2921,7 +2932,7 @@ canvas.addEventListener('pointermove', e => {
         const targetX = centerTarget.x + entry.dx;
         const targetZ = centerTarget.z + entry.dz;
         const grp = levelGroups[entry.furn.userData.level] || levelGroups.PB;
-        const clamped = clampPositionToWalls(targetX, targetZ, entry.furn.rotation.y, entry.furn.userData.item, entry.furn.userData.level, entry.furn, false);
+        const clamped = clampPositionToWalls(targetX, targetZ, entry.furn.rotation.y, entry.furn.userData.item, entry.furn.userData.level, entry.furn, true);
         entry.furn.position.set(clamped.x, grp.position.y + LOSA, clamped.z);
       });
       renderSelectionHighlight();
@@ -2973,6 +2984,16 @@ canvas.addEventListener('pointerup', e => {
       const col = checkCollision(clamped.x, clamped.z, ghostRot, placingItem, hit.level, movingFurniture);
       if(col.collides){
         showSaveToast(`Espacio insuficiente: colisión con ${col.reason}`, '⚠️');
+        if(movingFurniture){
+          movingFurniture.position.copy(movingOrig.pos);
+          movingFurniture.rotation.y = movingOrig.rot;
+          movingFurniture.visible = true;
+          if(movingFurnitureList){
+            movingFurnitureList.forEach(m => { m.furn.visible = true; });
+          }
+          selectFurniture(movingFurniture);
+          cancelPlacing();
+        }
         return;
       }
 
@@ -3261,7 +3282,7 @@ document.getElementById('rotRange').addEventListener('input', e => {
   const clamped = clampPositionToWalls(
     selectedFurniture.position.x, selectedFurniture.position.z,
     selectedFurniture.rotation.y, selectedFurniture.userData.item,
-    selectedFurniture.userData.level, selectedFurniture, false
+    selectedFurniture.userData.level, selectedFurniture, true
   );
   selectedFurniture.position.x = clamped.x;
   selectedFurniture.position.z = clamped.z;
@@ -3295,7 +3316,7 @@ function updateEditValues(){
   const clamped = clampPositionToWalls(
     selectedFurniture.position.x, selectedFurniture.position.z,
     selectedFurniture.rotation.y, selectedFurniture.userData.item,
-    selectedFurniture.userData.level, selectedFurniture, false
+    selectedFurniture.userData.level, selectedFurniture, true
   );
   selectedFurniture.position.x = clamped.x;
   selectedFurniture.position.z = clamped.z;
@@ -3482,7 +3503,7 @@ function nudgeSingleFurniture(furn, dx, dz){
 
   // 4. Si el objeto ya estaba penetrando o atrapado en un obstáculo, desatascarlo al ras exterior:
   if(checkWallCollision(furn.position.x, furn.position.z, rotY, item, level).collides){
-    const unstuck = clampPositionToWalls(furn.position.x, furn.position.z, rotY, item, level, furn, false);
+    const unstuck = clampPositionToWalls(furn.position.x, furn.position.z, rotY, item, level, furn, true);
     if(unstuck.x !== furn.position.x || unstuck.z !== furn.position.z){
       furn.position.x = unstuck.x;
       furn.position.z = unstuck.z;

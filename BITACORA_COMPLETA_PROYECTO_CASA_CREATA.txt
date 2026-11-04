@@ -234,3 +234,18 @@ RESOLUCIÓN INTEGRAL: CRISTAL ESBELTO, CASTILLOS ENRASADOS, LUMNO 1:1, CATEGORÍ
    - Sala Piero Moss (Derecha e Izquierda) reempaquetada en GLB eliminando los 13,900 píxeles residuales en tela, garantizando 100% terciopelo verde olivo uniforme y estante de nogal natural impecable.
    - Límite perimetral maxZ ajustado de -0.25 a -1.20 m (paño interior del cancel de cristal de fachada), imposibilitando cualquier traslape o penetración de mobiliario a través de los ventanales hacia el exterior.
    - Sincronización oficial de cotas métricas desde Excel maestro de exhibición (Piero: 2.90x1.65x0.65m, Lumno: 3.92x1.55x0.70m, Baraman: 2.00x0.50x0.78m, Mazati: 1.15x0.47x2.20m).
+
+8. CORRECCIÓN DEFINITIVA DE CACHÉ GLOBAL, TEXTURAS DE SALA PIERO, SIMETRÍA DE LUMNO Y BLOQUEO DE COLISIÓN ENTRE MUEBLES:
+   - Forzado de Caché Dinámico: Se vinculó loadGLB a window.APP_BUILD_VERSION enlazado con el publicador de GitHub Pages, forzando la descarga inmediata y fresca de todos los archivos .glb y evitando retención de archivos viejos en la caché local del navegador.
+   - Sala Piero Moss y Buttermilk 100% Limpias: Se aisló mediante la máscara UV 3D la repisa lateral y patas de madera de nogal natural, eliminando la exclusión errónea de cojines y erradicando los 10,058 píxeles color curry en tela. El tapiz es 100% verde olivo homogéneo y la repisa es nogal natural completa en ambas orientaciones (Derecha e Izquierda).
+   - Sala Lumno 100% Simétrica: Malla horneada simétrica a 0.0004m y polígono de huella ceñido al arco circular horizontal 1:1, visible inmediatamente con el nuevo cache-buster.
+   - Colisión Estricta entre Muebles:
+     * En Tecla Q (movimiento con ratón), se activó includeFurniture = true en clampPositionToWalls, imposibilitando atravesar o encimar muebles sobre otros.
+     * En clampPositionToWalls, se amplió MAX_PUSH a 3.50m para garantizar el empuje exterior incluso al arrastrar hacia el centro de muebles voluminosos.
+     * En pointerup (soltar mueble), si existe colisión con otro mueble, se cancela la acción y se restaura el mueble a su posición legal previa.
+     * En rotación (slider y botones), se activó el chequeo de colisión con los muebles adyacentes.
+   - Homogeneización de Fotografías a 3/4 hacia la Derecha:
+     * Se auditaron los 71 productos clasificando orientación y fondo.
+     * Se seleccionó prioritariamente la toma 3/4 mirando a la derecha sobre fondo blanco de estudio.
+     * En modelos cuya toma 3/4 miraba a la izquierda, se activó la propiedad 'flip: true' para reflejarla a la derecha mediante CSS ('flipped').
+     * En productos simétricos sin 3/4, se fijó la toma frontal de catálogo en fondo blanco puro. Cero fotos de ambiente.
