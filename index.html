@@ -11,7 +11,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>CASA CREATA · Showroom 3D Interactivo</title>
-<script>window.APP_BUILD_VERSION = '1793832521';</script>
+<script>window.APP_BUILD_VERSION = '1793861890';</script>
 <style>
   :root {
     --bg: #0e0f12;
@@ -24,9 +24,9 @@
     --acc: #d8c3a8;
     --panel-dark: #202024;
     --border: rgba(255, 255, 255, 0.14);
-    --store-color: #10b981;
-    --store-tint: rgba(16, 185, 129, 0.14);
-    --store-border: rgba(16, 185, 129, 0.38);
+    --store-color: #a855f7;
+    --store-tint: rgba(168, 85, 247, 0.14);
+    --store-border: rgba(168, 85, 247, 0.38);
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;background:var(--bg);overflow:hidden;font-family:"Inter","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -777,7 +777,7 @@
   <button class="pill-btn" data-mode="N1">📍 Piso 2</button>
   <button class="pill-btn" data-mode="N2">📍 Piso 3</button>
   <span class="pill-sep"></span>
-  <button class="pill-btn" id="btnSelectStore" title="Elegir tienda para ver ventas">🏪 Tienda: <b id="lblActiveStore">COLOSIO</b> ▾</button>
+  <button class="pill-btn" id="btnSelectStore" title="Elegir tienda para ver ventas">🏪 Tienda: <b id="lblActiveStore">CASA CREATA</b> ▾</button>
   <button class="pill-btn" id="btnAutoRot">🔄 Girar Vista</button>
   <button class="pill-btn" id="btnResetView">🎯 Centrar</button>
 
@@ -799,7 +799,7 @@
 <!-- Menú Flotante Desplegable para [🏪 Elegir Tienda] -->
 <div id="storeDropdownMenu" class="store-dropdown-popover">
   <div class="store-menu-header">SELECCIONAR TIENDA</div>
-  <div class="store-menu-item active" data-store="colosio">
+  <div class="store-menu-item" data-store="colosio">
     <span class="store-dot" style="background:#10b981; color:#10b981"></span>
     <div class="store-menu-text">
       <b>Colosio</b>
@@ -820,7 +820,7 @@
       <span class="store-menu-sub">Ver ventas y semáforo PTC</span>
     </div>
   </div>
-  <div class="store-menu-item" data-store="casa_creata">
+  <div class="store-menu-item active" data-store="casa_creata">
     <span class="store-dot" style="background:#a855f7; color:#a855f7"></span>
     <div class="store-menu-text">
       <b>Casa Creata</b>
@@ -987,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793832521"></script>
+<script src="modelos_glb_data.js?v=1793861890"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1305,7 +1305,15 @@ const LEVEL_OBSTACLES = { PB:[], N1:[], N2:[] };
     decomposeOrthoPoly(w.p).forEach(r => LEVEL_OBSTACLES[lvl].push(r));
   });
   (d.cols || []).forEach(c => {
-    decomposeOrthoPoly(c.p).forEach(r => LEVEL_OBSTACLES[lvl].push(r));
+    let pts = c.p.map(pt => [pt[0], pt[1]]);
+    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+    let minX = Math.min(...xs), maxX = Math.max(...xs);
+    let minY = Math.min(...ys), maxY = Math.max(...ys);
+    if(maxX >= 20.20 && minX < 20.00) minX = 20.01;
+    if(minX <= 0.01 && maxX > 0.20) maxX = 0.20;
+    if(maxY >= 20.45 && minY < 20.25) minY = 20.27;
+    const flushPts = [[minX, minY], [maxX, minY], [maxX, maxY], [minX, maxY]];
+    decomposeOrthoPoly(flushPts).forEach(r => LEVEL_OBSTACLES[lvl].push(r));
   });
   (d.low || []).forEach(lw => {
     if((lw.h || 0) >= 0.8){
@@ -1505,7 +1513,7 @@ const STORE_CONFIG = {
   ptc: { name: 'PTC', color: '#f59e0b', colorNum: 0xf59e0b, tint: 'rgba(245, 158, 11, 0.12)', border: 'rgba(245, 158, 11, 0.35)' },
   casa_creata: { name: 'Casa Creata', color: '#a855f7', colorNum: 0xa855f7, tint: 'rgba(168, 85, 247, 0.12)', border: 'rgba(168, 85, 247, 0.35)' }
 };
-let currentStore = 'colosio';
+let currentStore = 'casa_creata';
 
 let liveSheetsDb = window.FULL_SHEETS_DB || {};
 
@@ -1806,13 +1814,6 @@ function getFurnitureFootprintPolygon(item){
     ];
   }
 
-  // 1.5. Sala Modular Aria
-  if(idLow.includes('aria')){
-    return [
-      { minX: -dx * 0.50, maxX: dx * 0.50, minZ: -dz * 0.50, maxZ: -dz * 0.12, part: 'aria_back' },
-      { minX: dx * 0.12,  maxX: dx * 0.50, minZ: -dz * 0.12, maxZ: dz * 0.50,  part: 'aria_chaise' }
-    ];
-  }
   // 2. Sala Piero Derecha (Silueta ceñida al ras del cojín y estante)
   if(idLow.includes('piero_der')){
     return [
@@ -2346,6 +2347,13 @@ function getFurnitureLocalBoxes(item, interactingWithItem=null){
       { minX: -dx * 0.48, maxX: -dx * 0.15, minZ: -dz * 0.48, maxZ: dz * 0.50, part: 'piero_chaise' },
       { minX: -dx * 0.15, maxX: dx * 0.30,  minZ: -dz * 0.50, maxZ: dz * 0.02, part: 'piero_seat' },
       { minX: dx * 0.30,  maxX: dx * 0.48,  minZ: -dz * 0.48, maxZ: dz * 0.14, part: 'piero_shelf' }
+    ];
+  }
+  // 3.5. Sala Modular Aria
+  if(idLow.includes('aria')){
+    return [
+      { minX: -dx * 0.50, maxX: dx * 0.50, minZ: -dz * 0.50, maxZ: -dz * 0.12, part: 'aria_back' },
+      { minX: dx * 0.12,  maxX: dx * 0.50, minZ: -dz * 0.12, maxZ: dz * 0.50,  part: 'aria_chaise' }
     ];
   }
   // 4. Sala Lexy Izquierda
@@ -3428,7 +3436,7 @@ function nudgeSingleFurniture(furn, dx, dz){
   if(!checkCollision(targetX, targetZ, rotY, item, level, furn).collides){
     furn.position.x = targetX;
     furn.position.z = targetZ;
-    furn.position.y = (level === 'PA' ? FLOOR_Y_PA : FLOOR_Y_PB);
+    furn.position.y = LOSA;
     renderSelectionHighlight();
     saveStateToUrl();
     return;
@@ -3451,7 +3459,7 @@ function nudgeSingleFurniture(furn, dx, dz){
   if(bestT > 0.04){
     furn.position.x += bestT * dx;
     furn.position.z += bestT * dz;
-    furn.position.y = (level === 'PA' ? FLOOR_Y_PA : FLOOR_Y_PB);
+    furn.position.y = LOSA;
     renderSelectionHighlight();
     saveStateToUrl();
     return;
@@ -3473,7 +3481,7 @@ function nudgeSingleFurniture(furn, dx, dz){
     }
     if(bestX > 0.04){
       furn.position.x += bestX * dx;
-      furn.position.y = (level === 'PA' ? FLOOR_Y_PA : FLOOR_Y_PB);
+      furn.position.y = LOSA;
       renderSelectionHighlight();
       saveStateToUrl();
       return;
@@ -3495,7 +3503,7 @@ function nudgeSingleFurniture(furn, dx, dz){
     }
     if(bestZ > 0.04){
       furn.position.z += bestZ * dz;
-      furn.position.y = (level === 'PA' ? FLOOR_Y_PA : FLOOR_Y_PB);
+      furn.position.y = LOSA;
       renderSelectionHighlight();
       saveStateToUrl();
       return;
@@ -3777,17 +3785,17 @@ window.MASTER_DEFAULT_LAYOUT = {
   "v": 2,
   "store": "casa_creata",
   "floor": "PB",
-  "muros": 20,
+  "muros": 34,
   "cam": {
     "pos": [
-      17.51,
-      18.9,
-      14.55
+      2.74,
+      22.12,
+      -16.49
     ],
     "target": [
-      16.07,
-      -0.68,
-      -6.22
+      6.86,
+      1.41,
+      -13.02
     ]
   },
   "furniture": [
@@ -3822,8 +3830,8 @@ window.MASTER_DEFAULT_LAYOUT = {
     {
       "id": "sofa_zama_ivory",
       "lvl": "PB",
-      "x": 15.301,
-      "z": -9.162,
+      "x": 15.681,
+      "z": -9.442,
       "r": 1.571
     },
     {
@@ -3850,7 +3858,7 @@ window.MASTER_DEFAULT_LAYOUT = {
     {
       "id": "silla_parme",
       "lvl": "PB",
-      "x": 11.219,
+      "x": 11.218,
       "z": -10.121,
       "r": 7.854
     },
@@ -4109,8 +4117,8 @@ window.MASTER_DEFAULT_LAYOUT = {
     {
       "id": "sofa_cama_uganda_oat",
       "lvl": "PB",
-      "x": 5.119,
-      "z": -9.107,
+      "x": 5.49,
+      "z": -9.438,
       "r": 1.571
     },
     {
@@ -4198,10 +4206,31 @@ window.MASTER_DEFAULT_LAYOUT = {
       "r": 20.42
     },
     {
+      "id": "sala_lumno_baker_linen",
+      "lvl": "PB",
+      "x": 2.134,
+      "z": -8.885,
+      "r": 14.94
+    },
+    {
+      "id": "sala_piero_der_moss",
+      "lvl": "PB",
+      "x": 11.752,
+      "z": -13.02,
+      "r": 3.142
+    },
+    {
+      "id": "bufetera_madrid",
+      "lvl": "PB",
+      "x": 15.558,
+      "z": -18.728,
+      "r": 7.854
+    },
+    {
       "id": "librero_mazati_bellota",
       "lvl": "PB",
       "x": 14.6,
-      "z": -6.0,
+      "z": -6,
       "r": 0
     },
     {
@@ -4214,8 +4243,15 @@ window.MASTER_DEFAULT_LAYOUT = {
     {
       "id": "sillon_kate",
       "lvl": "PB",
-      "x": 4.0,
-      "z": -11.2,
+      "x": 4,
+      "z": -11.26,
+      "r": 0
+    },
+    {
+      "id": "sofa_rennes_grey",
+      "lvl": "PB",
+      "x": 7.904,
+      "z": -15.44,
       "r": 0
     }
   ]
@@ -4421,7 +4457,7 @@ function serializeSetup(){
 
   return {
     v: 2,
-    store: (typeof currentStore !== 'undefined') ? currentStore : 'colosio',
+    store: (typeof currentStore !== 'undefined') ? currentStore : 'casa_creata',
     floor: (typeof currentFloorMode !== 'undefined') ? currentFloorMode : 'exploded',
     muros: isNaN(mVal) ? 100 : mVal,
     cam: (typeof camera !== 'undefined' && typeof controls !== 'undefined' && camera && controls) ? {
@@ -4727,7 +4763,7 @@ function saveCurrentPlanProcess(showFeedback = true){
       timestamp: now.toISOString(),
       furnitureCount: furnCount,
       activeFile: activeWorkingDistribName || null,
-      currentStore: (typeof currentStore !== 'undefined') ? currentStore : 'colosio',
+      currentStore: (typeof currentStore !== 'undefined') ? currentStore : 'casa_creata',
       activeFloor: (typeof currentFloorMode !== 'undefined') ? currentFloorMode : 'exploded'
     };
     localStorage.setItem('casa_creata_plan_meta', JSON.stringify(meta));

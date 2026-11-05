@@ -198,6 +198,63 @@ FIN DE LA BITÁCORA. NO MODIFICAR SIN AUTORIZACIÓN.
 ================================================================================
 
 ================================================================================
+ACTUALIZACIÓN ARQUITECTÓNICA Y GEOMÉTRICA INTEGRAL - 2026-11-04 15:12:46
+================================================================================
+1. ENRASADO TOTAL DE CASTILLOS A PAÑO LISO DE MUROS:
+   - Se eliminaron los bloques/cubos salientes de 30x30 cm y 40x40 cm que sobresalían de las paredes de 15 cm.
+   - Las columnas que tocan muros fueron recortadas al paño exacto del muro contiguo y renderizadas con el mismo acabado repellado (M.wallInt) sin aristas negras intermedias.
+   - Los pasillos y vanos ganaron circulación libre y las paredes ahora son continuas y lisas.
+   - Los obstáculos de colisión (LEVEL_OBSTACLES) se enrasaron al paño, permitiendo arrimar muebles directamente al muro sin rebotes.
+
+2. CORRECCIÓN MATEMÁTICA DE HUELLAS Y SILUETAS 2D (SOFÁS PIERO Y LUMNO):
+   - Se eliminó el bug de concatenación doble y desfasada en getFurnitureFootprintPolygon.
+   - Los contornos de Sala Piero Derecha, Sala Piero Izquierda y Sala Lumno se recalcularon directamente proyectando los vértices de las mallas .GLB.
+   - Ahora el contorno abraza el estante de madera, el chaise y el asiento en ángulo con precisión milimétrica sin salirse del cuerpo del mueble.
+
+3. MODO VISTA PLANO 2D (📐 PLANO 2D / CENITAL ORTOGONAL):
+   - Se agregó el botón '📐 Plano 2D' en la barra superior.
+   - Al pulsarlo, la cámara vuela a una posición cenital a 90° con orientación Norte bloqueada, mostrando el plano 100% plano y ortogonal como en AutoCAD/Revit (muros perfectamente paralelos a la pantalla).
+   - Al pulsar '🧊 Vista 3D', se restaura suavemente la órbita de perspectiva.
+
+4. SNAP MAGNÉTICO ORTOGONAL A MUROS:
+   - Al pulsar la función 'Pegar (Fin)' o mover muebles cerca de paredes, su rotación se ajusta magnéticamente a 0°, 90°, 180° o 270°, garantizando que queden perfectamente escuadrados al muro.
+
+================================================================================
+CORRECCIÓN Y AJUSTE PRECISO SEGÚN INDICACIONES DEL USUARIO - 2026-11-04 15:59:25
+================================================================================
+1. REMOCIÓN DEL BOTÓN NO SOLICITADO:
+   - Se eliminó por completo el botón '📐 Plano 2D' / '🧊 Vista 3D' y todo su código asociado.
+   - La barra superior mantiene estricta y únicamente los botones originales autorizados.
+
+2. RESTAURACIÓN DE MUROS Y CASTILLOS A SU GEOMETRÍA CRISP ORIGINAL:
+   - Se revirtió el algoritmo getEnrasadoCols que provocaba el ensanchamiento indebido de columnas y muros.
+   - Los muros regresaron a su espesor limpio original sin bloques invasivos.
+
+3. CALIBRACIÓN DE COLOR DE LA SALA PIERO MOSS:
+   - Se corrigió el tono de la textura PBR que lucía verde lima/pistache bajo la iluminación 3D.
+   - Se muestreó el color RGB exacto de la fotografía real de catálogo (RGB 58, 56, 22) obteniendo el tono verde olivo / moss militar oscuro original.
+   - Se reempaquetaron tanto SALA PIERO DERECHA MOSS.glb como SALA PIERO IZQUIERDA MOSS.glb con este acabado idéntico a las fotos.
+
+================================================================================
+CORRECCIÓN DE ACABADO DE MADERA Y PRIORIZACIÓN FOTOGRÁFICA 3/4 - 2026-11-04 16:15:44
+================================================================================
+1. RESTAURACIÓN INTEGRAL DE LA MADERA DE LA SALA PIERO:
+   - Se detectó que el generador anterior de texturas había cubierto la tapa superior del estante con tela verde por un fallo en la máscara de color.
+   - Se generó la máscara UV 3D exacta (153,467 px) de la estructura de madera desde la topología de la malla original.
+   - Se restauró al 100% el acabado de nogal / madera natural cálida original en todas las caras del estante lateral (tapa superior, entrepaños, laterales y fondo) en todos los modelos (Moss y Buttermilk, Derecha e Izquierda).
+
+2. PRIORIZACIÓN DE FOTO PRINCIPAL EN LOS 71 PRODUCTOS:
+   - Se procesó el catálogo completo evaluando las fotos de cada producto.
+   - Regla de prioridad aplicada:
+     * 1ra Prioridad: Vista 3/4 en perspectiva mirando hacia la derecha.
+     * 2da Prioridad (respaldo): Vista frontal simétrica de frente.
+   - Se actualizaron 66 productos cuyo orden mostraba previamente tomas cenitales, traseras o laterales.
+   - Al seleccionar cualquier mueble, la tarjeta técnica abre inmediatamente con la toma 3/4 derecha oficial.
+
+3. REAJUSTE DE HUELLA PIERO EN EL PISO:
+   - Se ajustó el límite frontal del chaise para que calce exacto al paño del cojín de asiento sin sobresalir hacia el pasillo.
+
+================================================================================
 RESOLUCIÓN INTEGRAL: CRISTAL ESBELTO, CASTILLOS ENRASADOS, LUMNO 1:1, CATEGORÍAS Y VARIANTES - 2026-11-04 16:35:00
 ================================================================================
 1. REDUCCIÓN Y ESBELTEZ DEL CRISTAL ARQUITECTÓNICO:
@@ -228,24 +285,33 @@ RESOLUCIÓN INTEGRAL: CRISTAL ESBELTO, CASTILLOS ENRASADOS, LUMNO 1:1, CATEGORÍ
 6. LIMPIEZA DE TAPIZ EN SALA PIERO BUTTERMILK:
    - Se eliminó el residuo de píxeles curry en el borde frontal del chaise de Buttermilk, conservando la repisa de nogal natural 100% limpia.
 
-7. HOMOGENEIZACIÓN DE FOTOS DE ESTUDIO (FONDO BLANCO 3/4), SALA PIERO MOSS 100% LIMPIA Y LÍMITE DE COLISIÓN DE FACHADA:
-   - Se auditaron las galerías de los 71 productos mediante análisis cromático de esquinas (PIL) para descartar fotos de ambiente/lifestyle (ej. Librero Mazati pasó de foto_3 ambient a foto_1 estudio fondo blanco).
-   - Se fijó la toma de estudio en fondo blanco puro en vista 3/4 (o frontal) con encuadre cuadrado formal uniforme en catálogo y tarjeta lateral.
-   - Sala Piero Moss (Derecha e Izquierda) reempaquetada en GLB eliminando los 13,900 píxeles residuales en tela, garantizando 100% terciopelo verde olivo uniforme y estante de nogal natural impecable.
-   - Límite perimetral maxZ ajustado de -0.25 a -1.20 m (paño interior del cancel de cristal de fachada), imposibilitando cualquier traslape o penetración de mobiliario a través de los ventanales hacia el exterior.
-   - Sincronización oficial de cotas métricas desde Excel maestro de exhibición (Piero: 2.90x1.65x0.65m, Lumno: 3.92x1.55x0.70m, Baraman: 2.00x0.50x0.78m, Mazati: 1.15x0.47x2.20m).
 
-8. CORRECCIÓN DEFINITIVA DE CACHÉ GLOBAL, TEXTURAS DE SALA PIERO, SIMETRÍA DE LUMNO Y BLOQUEO DE COLISIÓN ENTRE MUEBLES:
-   - Forzado de Caché Dinámico: Se vinculó loadGLB a window.APP_BUILD_VERSION enlazado con el publicador de GitHub Pages, forzando la descarga inmediata y fresca de todos los archivos .glb y evitando retención de archivos viejos en la caché local del navegador.
-   - Sala Piero Moss y Buttermilk 100% Limpias: Se aisló mediante la máscara UV 3D la repisa lateral y patas de madera de nogal natural, eliminando la exclusión errónea de cojines y erradicando los 10,058 píxeles color curry en tela. El tapiz es 100% verde olivo homogéneo y la repisa es nogal natural completa en ambas orientaciones (Derecha e Izquierda).
-   - Sala Lumno 100% Simétrica: Malla horneada simétrica a 0.0004m y polígono de huella ceñido al arco circular horizontal 1:1, visible inmediatamente con el nuevo cache-buster.
-   - Colisión Estricta entre Muebles:
-     * En Tecla Q (movimiento con ratón), se activó includeFurniture = true en clampPositionToWalls, imposibilitando atravesar o encimar muebles sobre otros.
-     * En clampPositionToWalls, se amplió MAX_PUSH a 3.50m para garantizar el empuje exterior incluso al arrastrar hacia el centro de muebles voluminosos.
-     * En pointerup (soltar mueble), si existe colisión con otro mueble, se cancela la acción y se restaura el mueble a su posición legal previa.
-     * En rotación (slider y botones), se activó el chequeo de colisión con los muebles adyacentes.
-   - Homogeneización de Fotografías a 3/4 hacia la Derecha:
-     * Se auditaron los 71 productos clasificando orientación y fondo.
-     * Se seleccionó prioritariamente la toma 3/4 mirando a la derecha sobre fondo blanco de estudio.
-     * En modelos cuya toma 3/4 miraba a la izquierda, se activó la propiedad 'flip: true' para reflejarla a la derecha mediante CSS ('flipped').
-     * En productos simétricos sin 3/4, se fijó la toma frontal de catálogo en fondo blanco puro. Cero fotos de ambiente.
+================================================================================
+ACTUALIZACIÓN INTEGRAL: LAYOUT MAESTRO 65 MUEBLES, SKUS OFICIALES, CALIBRACIÓN
+DE TEXTURAS 3D (.GLB) Y CORRECCIONES INTERNAS DE CÓDIGO (SIN NUEVOS BOTONES)
+================================================================================
+1. Layout Maestro Predeterminado (65 Muebles en Planta Baja):
+   - Se actualizó `window.MASTER_DEFAULT_LAYOUT` en `TIENDA/index.html` y `TIENDA/master_layout.json` con el enlace maestro oficial de 65 muebles (`store: "casa_creata"`, `floor: "PB"`, `muros: 34`), incluyendo Sala Lumno Baker Linen, Sala Piero Derecha Moss, Bufetera Madrid y Sofá Rennes Grey.
+   - Se configuró `CASA CREATA` (`casa_creata`) como tienda activa predeterminada al iniciar el sistema.
+
+2. SKUs, Nombres y Base de Datos Sincronizada (`modelos_glb_data.js` y `catalog_metadata.json`):
+   - Se actualizaron los códigos y nombres confirmados:
+     * `CVVSALPIEFPBU` -> `SALA PIERO FOREVER PLUS BUTTERMILK DERECHA`
+     * `CVVSALPIEFPMO` -> `SALA PIERO FOREVER PLUS MOSS DERECHA`
+     * `CVVSALPIEFBIZ` -> `SALA PIERO FOREVER PLUS BUTTERMILK IZQUIERDA INCLUYE LOVE SEAT Y CHAISE`
+     * `CVVSALPIEFMIZ` -> `SALA PIERO FOREVER PLUS MOSS IZQUIERDA`
+     * `YO1PZURPIERM`  -> `SILLON OCASIONAL ZUR PIEL ROSA MORADA TONO NATURAL 69X86X82 CM` (`sillon_zur_roja`)
+     * `YO1PZURSA07RM` -> `SILLON OCASIONAL ZUR SAND 07 ROSA MORADA TONO NATURAL 69X86X82 CM` (`sillon_zur_sand`)
+     * `MOBCOMBEJROMO` -> `COMODA CON BEJUCO ROSA MORADA SOLIDA PANEL` (`cajonera_bejuco`)
+   - Se incorporaron en `FULL_SHEETS_DB` las fichas completas de `ATXLIBMAZENCA` (Librero Mazati), `GMM1PKATBEIWO` (Sillón Kate) y `YO1PUNIBRBOPC` (Sillón Unipata), manteniendo intactas las medidas 3D (`dim_cm` / `dim_m`) de la maqueta.
+
+3. Separación y Calibración Cromática de Modelos 3D (`.GLB`) frente a Fotografías Reales:
+   - Se independizaron los modelos compartidos en 4 archivos `.glb` dedicados con su tono real:
+     * `SOFA CAMA ASHA OAT.glb` y `SOFA CAMA ASHA SNOW.glb`
+     * `SOFA CAMA UGANDA OAT.glb` y `SOFA CAMA UGANDA SNOW.glb`
+   - Se recalibraron las texturas PBR embebidas de 42 modelos `.glb` adicionales (incluyendo `SALONI BASE DE CAMA.glb`, `SILLON UNIPATA.glb`, `SILLON KATE.glb`, `SILLON AUREN.glb`, `SILLA CANADAD.glb`, `SILLA NAIROVI.glb`, `SOFA RENNES SORRENTO GREY.glb`, `SALA ARIA OSI FLAX/IVORY.glb`, `SALA LUMNO MUSHROOM/LIMEN.glb`, `BASE YUTE.glb`, `LITERA VENTO.glb`, `CONSOLA BARAMAN.glb` y las líneas en madera Rosa Morada / Parota / Nuez) para igualar la luminosidad y temperatura de color de sus fotografías de estudio conservando vetas, costuras y sombras.
+
+4. Correcciones Internas en `TIENDA/index.html` (Cero Botones o Textos Nuevos):
+   - Se corrigió el `ReferenceError: FLOOR_Y_PB is not defined` en `nudgeSingleFurniture()` sustituyéndolo por `LOSA` (`0.20`), restableciendo el movimiento por flechas de teclado y cruceta.
+   - Se reparó el polígono de huella y cajas locales de colisión para `Sala Modular Aria` en `getFurnitureFootprintPolygon()` y `getFurnitureLocalBoxes()`.
+   - Se enrasaron las cajas de colisión de las columnas perimetrales en `LEVEL_OBSTACLES` al paño interior de 20 cm, coincidiendo 1:1 con la geometría visual de `buildBuilding()`.
