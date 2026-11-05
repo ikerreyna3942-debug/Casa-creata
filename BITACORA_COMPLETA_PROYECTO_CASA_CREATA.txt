@@ -334,3 +334,23 @@ CALIBRACIÓN ESPECTRAL Y CROMÁTICA 1:1 DE SALA PIERO MOSS - 2026-11-05 10:35:00
      * `TIENDA/glb/SALA PIERO IZQUIERDA MOSS.glb` y `PRODUCTOS/TIPO GLB/SALA PIERO IZQUIERDA MOSS.glb` (386,676 bytes).
    - Se actualizó `window.APP_BUILD_VERSION` a `1793892998` en `TIENDA/index.html` para invalidar cachés locales y asegurar la descarga inmediata del nuevo modelo en el navegador.
 ================================================================================
+
+================================================================================
+CORRECCIÓN GEOMÉTRICA DE MÁSCARA UV: ELIMINACIÓN DE MANCHAS CURRY EN SALA PIERO MOSS
+Fecha: 2026-11-05 11:15:00
+================================================================================
+1. Causa Raíz de las Manchas Mostaza/Curry en la Tela:
+   - El algoritmo anterior clasificaba cualquier triángulo con `X > 0.405` como madera sin filtrar la coordenada Z ni la Y.
+   - Dado que el extremo frontal del chaise alcanza `X = 0.438` en `Z = 0.330` y el respaldo llega a `X = 0.500` en `Z = -0.335`, más de 1,697 triángulos de tela estaban siendo interpretados como madera y recibían el color curry/nogal.
+
+2. Delimitación Volumétrica Exacta del Estante de Madera:
+   - Se acotaron las coordenadas geométricas reales del estante tanto para el modelo Derecho como para el Izquierdo:
+     * `X`: [0.412, 0.501]
+     * `Y`: [-0.160, 0.060]
+     * `Z`: [-0.285, 0.075]
+   - Se aplicó la regla de prioridad absoluta de tela (`is_wood = shelf_mask == 255 AND fabric_mask == 0`), garantizando que ni un solo píxel de la tela del chaise o respaldo reciba textura de madera.
+
+3. Re-empaquetado y Despliegue:
+   - Texturas re-horneadas en `SALA PIERO DERECHA MOSS.glb` y `SALA PIERO IZQUIERDA MOSS.glb` (en `TIENDA/glb/` y `PRODUCTOS/TIPO GLB/`).
+   - El sofá luce ahora 100% continuo en su tapiz terciopelo verde musgo oscuro sin parches amarillentos/curry, conservando únicamente la repisa en nogal natural cálido.
+================================================================================
