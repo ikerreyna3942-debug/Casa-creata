@@ -315,3 +315,22 @@ DE TEXTURAS 3D (.GLB) Y CORRECCIONES INTERNAS DE CÓDIGO (SIN NUEVOS BOTONES)
    - Se corrigió el `ReferenceError: FLOOR_Y_PB is not defined` en `nudgeSingleFurniture()` sustituyéndolo por `LOSA` (`0.20`), restableciendo el movimiento por flechas de teclado y cruceta.
    - Se reparó el polígono de huella y cajas locales de colisión para `Sala Modular Aria` en `getFurnitureFootprintPolygon()` y `getFurnitureLocalBoxes()`.
    - Se enrasaron las cajas de colisión de las columnas perimetrales en `LEVEL_OBSTACLES` al paño interior de 20 cm, coincidiendo 1:1 con la geometría visual de `buildBuilding()`.
+
+================================================================================
+CALIBRACIÓN ESPECTRAL Y CROMÁTICA 1:1 DE SALA PIERO MOSS - 2026-11-05 10:35:00
+================================================================================
+1. Calibración Espectral del Terciopelo Forever Plus Moss frente a Fotografía Real:
+   - Se muestreó el perfil espectral RGB/HSV exacto de los cojines y cuerpo de la fotografía oficial de estudio (foto_1.jpg / Hex #514921, Hue 49.9°, Val 32.0%).
+   - Se eliminó el tono verde lima/chartreuse desfasado (Hue 71.9°, Val 39.1%) que bajo la iluminación 3D de Three.js (Ambient + Hemisphere + 4 Directional lights, factor de ganancia 1.53x) se proyectaba como verde pistache/fluorescente en pantalla.
+   - Se compensó la textura PBR del terciopelo con Hue = 50.4° y luminosidad ajustada (Val ~20.6%), de modo que al recibir la iluminación de la escena en Three.js, el color resultante en el render coincide exactamente (RGB 80.4, 72.0, 27.7 / Hex #50471b) con la fotografía de catálogo de la ficha técnica.
+
+2. Calibración y Restauración de Madera Natural (Nogal / Encino Cálido):
+   - Con la máscara topológica UV (3,310 triángulos en Derecha y 2,329 en Izquierda), se protegió la repisa y los apoyos de madera.
+   - Se corrigió el tinte rojizo/deslavado, calibrando el tono a nogal/encino ámbar natural (Hue ~34°, saturación controlada) para que bajo la luz del showroom conserve su veta de madera cálida sin manchas.
+
+3. Re-empaquetado e Inyección GLB:
+   - Se generaron y re-empaquetaron los modelos limpios con textura JPEG 95% 4:4:4:
+     * `TIENDA/glb/SALA PIERO DERECHA MOSS.glb` y `PRODUCTOS/TIPO GLB/SALA PIERO DERECHA MOSS.glb` (491,564 bytes).
+     * `TIENDA/glb/SALA PIERO IZQUIERDA MOSS.glb` y `PRODUCTOS/TIPO GLB/SALA PIERO IZQUIERDA MOSS.glb` (386,676 bytes).
+   - Se actualizó `window.APP_BUILD_VERSION` a `1793892998` en `TIENDA/index.html` para invalidar cachés locales y asegurar la descarga inmediata del nuevo modelo en el navegador.
+================================================================================
