@@ -11,7 +11,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>CASA CREATA · Showroom 3D Interactivo</title>
-<script>window.APP_BUILD_VERSION = '1793895642';</script>
+<script>window.APP_BUILD_VERSION = '1793904003';</script>
 <style>
   :root {
     --bg: #0e0f12;
@@ -987,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793895642"></script>
+<script src="modelos_glb_data.js?v=1793904003"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1336,6 +1336,81 @@ const LEVEL_OBSTACLES = { PB:[], N1:[], N2:[] };
   });
 });
 
+/* =====================================================================
+   PORTALES Y ARCOS ARQUITECTÓNICOS DE MEDIO PUNTO (CASA CREATA SHOWROOM)
+   ===================================================================== */
+const ARCHES = {
+  PB: [
+    // 1. Acceso Oeste Set Central (Set 6 Comedor / Sala Piero hacia Recámara Principal)
+    { x0: 7.06, y0: 8.47, x1: 7.06, y1: 10.27, th: 0.20, spring: 2.05, label: "Arco Central Oeste" },
+    // 2. Acceso Este Set Central (Comedor Central hacia Sala Shelby)
+    { x0: 13.66, y0: 8.62, x1: 13.66, y1: 10.42, th: 0.20, spring: 2.05, label: "Arco Central Este" },
+    // 3. Portal Suite Posterior Norte (Recámara King Posterior)
+    { x0: 16.68, y0: 20.37, x1: 18.48, y1: 20.37, th: 0.20, spring: 2.05, label: "Arco Suite Norte" }
+  ],
+  N1: [
+    // 1. Portal Muro Divisorio Tablaroca Norte
+    { x0: 3.56, y0: 20.37, x1: 5.34, y1: 20.37, th: 0.15, spring: 1.80, label: "Arco PA Norte" },
+    // 2. Vano Acceso Suite Poniente
+    { x0: 5.24, y0: 13.21, x1: 5.24, y1: 15.02, th: 0.15, spring: 1.80, label: "Arco PA Poniente" },
+    // 3. Portal Tablaroca Central
+    { x0: 3.14, y0: 12.37, x1: 5.34, y1: 12.37, th: 0.15, spring: 1.70, label: "Arco PA Central" },
+    // 4. Portal Divisorio Oriente
+    { x0: 15.04, y0: 14.86, x1: 15.04, y1: 17.18, th: 0.15, spring: 1.65, label: "Arco PA Oriente" },
+    // 5. Portal Acceso Set Comedor PA
+    { x0: 15.45, y0: 12.17, x1: 17.25, y1: 12.17, th: 0.15, spring: 1.80, label: "Arco PA Comedor" },
+    // 6. Pasaje Divisorio Sur PA
+    { x0: 10.25, y0: 8.27, x1: 10.25, y1: 10.07, th: 0.15, spring: 1.80, label: "Arco PA Sur" }
+  ]
+};
+
+function createArchLintel(arch, baseElevation, wallHeight, mat, group){
+  const dx = arch.x1 - arch.x0;
+  const dy = arch.y1 - arch.y0;
+  const span = Math.hypot(dx, dy);
+  if(span < 0.1) return;
+
+  const R = span / 2;
+  const th = arch.th || 0.20;
+  const spring = arch.spring || Math.min(2.05, wallHeight - R - 0.20);
+
+  // Forma 2D del tímpano/dintel con vano recortado en arco de medio punto
+  const shape = new THREE.Shape();
+  shape.moveTo(-span/2, wallHeight);
+  shape.lineTo(span/2, wallHeight);
+  shape.lineTo(span/2, spring);
+  // Arco semicircular de derecha (0) a izquierda (PI)
+  shape.absarc(0, spring, R, 0, Math.PI, false);
+  shape.lineTo(-span/2, wallHeight);
+
+  const geom = new THREE.ExtrudeGeometry(shape, { depth: th, bevelEnabled: false, curveSegments: 32 });
+  geom.translate(0, 0, -th/2);
+
+  const mesh = new THREE.Mesh(geom, mat);
+  const midX = (arch.x0 + arch.x1) / 2;
+  const midY = (arch.y0 + arch.y1) / 2;
+  mesh.position.set(midX, baseElevation, -midY);
+
+  const angle = Math.atan2(dy, dx);
+  mesh.rotation.y = angle;
+
+  mesh.userData.isWall = true;
+  mesh.userData.isArch = true;
+  mesh.userData.baseElevation = baseElevation;
+  allWallMeshes.push(mesh);
+  group.add(mesh);
+
+  // Líneas y bordes arquitectónicos nítidos
+  const edgeGeom = new THREE.EdgesGeometry(geom, 25);
+  const edgeLine = new THREE.LineSegments(edgeGeom, M.edge);
+  edgeLine.position.copy(mesh.position);
+  edgeLine.rotation.copy(mesh.rotation);
+  edgeLine.userData.isWallEdge = true;
+  edgeLine.userData.isArch = true;
+  allWallEdges.push(edgeLine);
+  group.add(edgeLine);
+}
+
 function buildBuilding(){
   // Terreno, banqueta y estacionamiento
   const siteGrp = new THREE.Group(); scene.add(siteGrp);
@@ -1367,6 +1442,12 @@ function buildBuilding(){
     (d.walls||[]).forEach(w => {
       const mat = (w.t==='tablaroca') ? M.wallInt : M.wallInt;
       prism(w.p, LOSA, L.muro, mat, grp, [], true, true);
+    });
+
+    // Portales y Arcos Arquitectónicos de Medio Punto (Tablaroca Showroom)
+    const levelArches = ARCHES[L.id] || [];
+    levelArches.forEach(arch => {
+      createArchLintel(arch, LOSA, L.muro, M.wallInt, grp);
     });
 
     // Columnas enrasadas al paño interior de los muros perimetrales
@@ -1452,12 +1533,22 @@ function setMurosHeight(val){
   if(murosValTxt) murosValTxt.textContent = clamped + '%';
   const scaleY = clamped / 100;
   allWallMeshes.forEach(m => {
-    m.scale.y = Math.max(scaleY, 0.0001);
-    m.visible = scaleY > 0.01;
+    if(m.userData.isArch){
+      m.visible = scaleY > 0.45;
+      m.scale.y = Math.max(scaleY, 0.0001);
+    } else {
+      m.scale.y = Math.max(scaleY, 0.0001);
+      m.visible = scaleY > 0.01;
+    }
   });
   allWallEdges.forEach(ed => {
-    ed.scale.y = Math.max(scaleY, 0.0001);
-    ed.visible = scaleY > 0.01;
+    if(ed.userData.isArch){
+      ed.visible = scaleY > 0.45;
+      ed.scale.y = Math.max(scaleY, 0.0001);
+    } else {
+      ed.scale.y = Math.max(scaleY, 0.0001);
+      ed.visible = scaleY > 0.01;
+    }
   });
 }
 
