@@ -11,7 +11,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>CASA CREATA · Showroom 3D Interactivo</title>
-<script>window.APP_BUILD_VERSION = '1793941235';</script>
+<script>window.APP_BUILD_VERSION = '1793941572';</script>
 <style>
   :root {
     --bg: #0e0f12;
@@ -987,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793941235"></script>
+<script src="modelos_glb_data.js?v=1793941572"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -2147,6 +2147,7 @@ function createFurnitureInstance(item, callback){
     let sz = targetZ / (size1.z || 1);
 
     // Corrección proporcional para Sala Lumno (escala uniforme 1:1, curvatura circular perfecta):
+    const idLow = ((item && item.id) || '').toLowerCase();
     if(idLow.includes('lumno')){
       const naturalAspectZ = size1.z / (size1.x || 1);
       const naturalAspectY = size1.y / (size1.x || 1);
