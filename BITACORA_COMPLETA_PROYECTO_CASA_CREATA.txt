@@ -354,3 +354,61 @@ Fecha: 2026-11-05 11:15:00
    - Texturas re-horneadas en `SALA PIERO DERECHA MOSS.glb` y `SALA PIERO IZQUIERDA MOSS.glb` (en `TIENDA/glb/` y `PRODUCTOS/TIPO GLB/`).
    - El sofá luce ahora 100% continuo en su tapiz terciopelo verde musgo oscuro sin parches amarillentos/curry, conservando únicamente la repisa en nogal natural cálido.
 ================================================================================
+
+================================================================================
+VERIFICACIÓN MÉTRICA DE MUROS E IMPLEMENTACIÓN DE ARCOS DE MEDIO PUNTO
+Fecha: 2026-11-05 13:40:00
+================================================================================
+1. Verificación Métrica Rigurosa contra Planos CAD Oficiales (1..pdf, 1.pdf, DWG):
+   - Ancho Total de Fachada (Ejes A a E): 20.21 m (Suma de cotas: 5.15m + 5.00m + 5.00m + 5.06m = 20.21m exactos al milímetro).
+   - Fondo Total Planta Baja (Ejes 1 a 8): 24.02 m (2.27m + 5.00m + 5.00m + 5.00m + 3.00m + 2.53m + 1.22m = 24.02m).
+   - Fondo Total con Cantilever/Volado Posterior (Planta Alta): 28.52 m a paño de losa / 29.30 m a eje estructural.
+   - Espesores de Muro:
+     * Perimetrales y estructurales de concreto: 0.20 m (20 cm) y columnas de 0.40 x 0.40 m.
+     * Muros interiores divisorios de tablaroca: 0.15 m (15 cm) y 0.20 m (20 cm) en áreas con instalaciones.
+   - Alturas Libres de Nivel:
+     * Planta Baja (Piso 1): Altura entrepiso de 3.78 m (21 escalones x 0.18 m) menos losa de 0.20 m = 3.58 m libres.
+     * Planta Alta (Piso 2): Altura entrepiso de 2.88 m (16 escalones x 0.18 m) menos losa de 0.20 m = 2.68 m libres.
+
+2. Implementación de Arcos de Medio Punto en Portales y Vanos de Showroom:
+   - Se construyó el generador paramétrico `createArchLintel()` en Three.js con geometría extruida (`THREE.ExtrudeGeometry` sobre `THREE.Shape` con `absarc`).
+   - Dimensiones de vanos en arco:
+     * Vano libre de paso: 1.80 m de claro.
+     * Altura de arranque de arco (jambas rectas): 2.05 m desde nivel de piso terminado.
+     * Radio del arco: 0.90 m (R = span / 2).
+     * Altura máxima en la clave del arco: 2.95 m.
+     * Dintel superior / Cajillo para difusores de aire acondicionado: 0.63 m hasta el plafón (3.58 m).
+   - Portales incorporados en Planta Baja:
+     * Arco Central Poniente: Acceso entre Set 6 (Comedor/Sala Piero) y Recámara Central.
+     * Arco Central Oriente: Acceso entre Set Central y Sala Shelby.
+     * Arco Suite Norte: Vano de la suite posterior norte.
+   - Portales incorporados en Planta Alta:
+     * 6 arcos de paso en muros de tablaroca (vano norte, poniente, central, oriente, comedor y sur).
+
+3. Compatibilidad con el Control Desplegable [🧱 Muros] (0% a 100%):
+   - Al estar los muros al 100%, los arcos se muestran completos con acabados de yeso beige cálido (#cfbeaa) y aristas arquitectónicas.
+   - Al reducir la altura por debajo del 45% (modo plano para visualización y acomodo de muebles), los dinteles en arco se ocultan automáticamente para brindar una vista superior limpia.
+================================================================================
+
+
+================================================================================
+CALIBRACIÓN GEOMÉTRICA Y COLISIÓN 1:1 DE SALA MODULAR LUMNO
+Fecha: 2026-11-05 23:58:00
+================================================================================
+1. Corrección de Escala Proporcional Universal (Eliminación de Distorsión):
+   - Se corrigió la deformación por escala anisotrópica donde los ejes X (3.92m), Z (1.55m) e Y (0.70m) se estiraban de manera independiente aplastando la curvatura.
+   - Se bloqueó la escala a proporción nativa 1:1 calculada a partir del ancho real de 3.92 m:
+     * Frente (X): 3.92 m
+     * Fondo natural (Z): 1.74 m (relación geométrica 0.443x)
+     * Altura natural (Y): 0.86 m (relación geométrica 0.219x)
+   - Los 4 módulos (otomana izquierda + 3 cuerpos de asiento curvo) conservan su curvatura circular idéntica a las fotos reales de catálogo.
+
+2. Re-ingeniería de Colisión y Silueta de Piso al Ras de Muro (Cero Huecos Fantasma):
+   - Se reemplazó el antiguo polígono simétrico que sobresalía 35-40 cm en la espalda del mueble.
+   - Se calibró el polígono de 35 vértices y las 12 cajas OBB de colisión perimetral siguiendo milimétricamente las coordenadas de la malla 3D real.
+   - Ahora el respaldo curvo de la Sala Lumno puede empujarse al ras exacto de la pared sin atascos ni espacios vacíos indeseados.
+
+3. Despliegue:
+   - Archivos actualizados: `TIENDA/index.html` y `TIENDA/modelos_glb_data.js`.
+   - Publicado exitosamente en GitHub Pages (Build version 1793945000).
+================================================================================
