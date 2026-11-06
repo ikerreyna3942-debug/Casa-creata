@@ -3131,13 +3131,13 @@ window.CATALOGO_PRODUCTOS = [
     "proveedor": "CASA V&V",
     "dim_cm": [
       392,
-      155,
-      70
+      174,
+      86
     ],
     "dim_m": [
       3.92,
-      1.55,
-      0.7
+      1.74,
+      0.86
     ],
     "lock_dim": true,
     "stock": {
@@ -3181,13 +3181,13 @@ window.CATALOGO_PRODUCTOS = [
     "proveedor": "CASA V&V",
     "dim_cm": [
       392,
-      155,
-      70
+      174,
+      86
     ],
     "dim_m": [
       3.92,
-      1.55,
-      0.7
+      1.74,
+      0.86
     ],
     "lock_dim": true,
     "stock": {

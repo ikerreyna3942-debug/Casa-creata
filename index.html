@@ -11,7 +11,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>CASA CREATA · Showroom 3D Interactivo</title>
-<script>window.APP_BUILD_VERSION = '1793904179';</script>
+<script>window.APP_BUILD_VERSION = '1793941182';</script>
 <style>
   :root {
     --bg: #0e0f12;
@@ -987,7 +987,7 @@
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1793904179"></script>
+<script src="modelos_glb_data.js?v=1793941182"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -1865,43 +1865,45 @@ function getFurnitureFootprintPolygon(item){
   const dz = (item && item.dim_m && item.dim_m[1]) ? item.dim_m[1] : 1.0;
   const idLow = ((item && item.id) || '').toLowerCase();
 
-  // 1. Sala Lumno (Curva simétrica calibrada al arco del sofá 1:1)
+  // 1. Sala Lumno (Curva continua calibrada a los vértices reales del modelo 3D 1:1)
   if(idLow.includes('lumno')){
+    const realDz = (dz < 1.70) ? (dx * 0.443) : dz;
     return [
-      [-0.48 * dx, -0.181 * dz],
-      [-0.42 * dx, -0.273 * dz],
-      [-0.36 * dx, -0.360 * dz],
-      [-0.30 * dx, -0.407 * dz],
-      [-0.24 * dx, -0.441 * dz],
-      [-0.18 * dx, -0.467 * dz],
-      [-0.12 * dx, -0.482 * dz],
-      [-0.06 * dx, -0.492 * dz],
-      [ 0.00 * dx, -0.496 * dz],
-      [ 0.06 * dx, -0.492 * dz],
-      [ 0.12 * dx, -0.482 * dz],
-      [ 0.18 * dx, -0.467 * dz],
-      [ 0.24 * dx, -0.441 * dz],
-      [ 0.30 * dx, -0.407 * dz],
-      [ 0.36 * dx, -0.360 * dz],
-      [ 0.42 * dx, -0.273 * dz],
-      [ 0.48 * dx, -0.181 * dz],
-      [ 0.48 * dx,  0.192 * dz],
-      [ 0.42 * dx,  0.416 * dz],
-      [ 0.36 * dx,  0.416 * dz],
-      [ 0.30 * dx,  0.326 * dz],
-      [ 0.24 * dx,  0.232 * dz],
-      [ 0.18 * dx,  0.153 * dz],
-      [ 0.12 * dx,  0.105 * dz],
-      [ 0.06 * dx,  0.077 * dz],
-      [ 0.00 * dx,  0.076 * dz],
-      [-0.06 * dx,  0.077 * dz],
-      [-0.12 * dx,  0.105 * dz],
-      [-0.18 * dx,  0.153 * dz],
-      [-0.24 * dx,  0.232 * dz],
-      [-0.30 * dx,  0.326 * dz],
-      [-0.36 * dx,  0.416 * dz],
-      [-0.42 * dx,  0.416 * dz],
-      [-0.48 * dx,  0.192 * dz]
+      [-0.500 * dx,  0.313 * realDz],
+      [-0.469 * dx, -0.050 * realDz],
+      [-0.406 * dx, -0.208 * realDz],
+      [-0.344 * dx, -0.316 * realDz],
+      [-0.281 * dx, -0.380 * realDz],
+      [-0.219 * dx, -0.427 * realDz],
+      [-0.156 * dx, -0.468 * realDz],
+      [-0.094 * dx, -0.491 * realDz],
+      [-0.031 * dx, -0.497 * realDz],
+      [ 0.031 * dx, -0.500 * realDz],
+      [ 0.094 * dx, -0.499 * realDz],
+      [ 0.156 * dx, -0.497 * realDz],
+      [ 0.219 * dx, -0.488 * realDz],
+      [ 0.281 * dx, -0.462 * realDz],
+      [ 0.344 * dx, -0.415 * realDz],
+      [ 0.406 * dx, -0.373 * realDz],
+      [ 0.469 * dx, -0.318 * realDz],
+      [ 0.500 * dx, -0.318 * realDz],
+      [ 0.500 * dx,  0.246 * realDz],
+      [ 0.469 * dx,  0.246 * realDz],
+      [ 0.406 * dx,  0.430 * realDz],
+      [ 0.344 * dx,  0.365 * realDz],
+      [ 0.281 * dx,  0.285 * realDz],
+      [ 0.219 * dx,  0.195 * realDz],
+      [ 0.156 * dx,  0.130 * realDz],
+      [ 0.094 * dx,  0.106 * realDz],
+      [ 0.031 * dx,  0.096 * realDz],
+      [-0.031 * dx,  0.089 * realDz],
+      [-0.094 * dx,  0.125 * realDz],
+      [-0.156 * dx,  0.162 * realDz],
+      [-0.219 * dx,  0.236 * realDz],
+      [-0.281 * dx,  0.375 * realDz],
+      [-0.344 * dx,  0.500 * realDz],
+      [-0.406 * dx,  0.495 * realDz],
+      [-0.469 * dx,  0.313 * realDz]
     ];
   }
 
@@ -2143,6 +2145,17 @@ function createFurnitureInstance(item, callback){
     let sx = targetX / (size1.x || 1);
     let sy = targetY / (size1.y || 1);
     let sz = targetZ / (size1.z || 1);
+
+    // Corrección proporcional para Sala Lumno (escala uniforme 1:1, curvatura circular perfecta):
+    if(idLow.includes('lumno')){
+      const naturalAspectZ = size1.z / (size1.x || 1);
+      const naturalAspectY = size1.y / (size1.x || 1);
+      targetZ = +(targetX * naturalAspectZ).toFixed(3);
+      targetY = +(targetX * naturalAspectY).toFixed(3);
+      sx = targetX / (size1.x || 1);
+      sy = sx;
+      sz = sx;
+    }
 
     // Analizador geométrico universal para TODAS las Camas y Bases (actuales y futuras):
     // 1) Si el modelo .glb tiene edredón colgante a los lados/pie (ej. Base Yute), escala y centra sobre el marco de madera real.
@@ -2411,17 +2424,22 @@ function getFurnitureLocalBoxes(item, interactingWithItem=null){
     ];
   }
   const idLow = ((item && item.id) || '').toLowerCase();
-  // 1. Sala Lumno: 8 bloques curvos simétricos calibrados al arco del sofá
+  // 1. Sala Lumno: 12 cajas OBB ajustadas al perímetro exacto de la curvatura y otomana
   if(idLow.includes('lumno')){
+    const realDz = (dz < 1.70) ? (dx * 0.443) : dz;
     return [
-      { minX: -dx * 0.48, maxX: -dx * 0.36, minZ: -dz * 0.32, maxZ: dz * 0.42, part: 'lumno_0' },
-      { minX: -dx * 0.36, maxX: -dx * 0.24, minZ: -dz * 0.44, maxZ: dz * 0.33, part: 'lumno_1' },
-      { minX: -dx * 0.24, maxX: -dx * 0.12, minZ: -dz * 0.48, maxZ: dz * 0.20, part: 'lumno_2' },
-      { minX: -dx * 0.12, maxX: 0,          minZ: -dz * 0.50, maxZ: dz * 0.10, part: 'lumno_3' },
-      { minX: 0,          maxX: dx * 0.12,  minZ: -dz * 0.50, maxZ: dz * 0.10, part: 'lumno_4' },
-      { minX: dx * 0.12,  maxX: dx * 0.24,  minZ: -dz * 0.48, maxZ: dz * 0.20, part: 'lumno_5' },
-      { minX: dx * 0.24,  maxX: dx * 0.36,  minZ: -dz * 0.44, maxZ: dz * 0.33, part: 'lumno_6' },
-      { minX: dx * 0.36,  maxX: dx * 0.48,  minZ: -dz * 0.32, maxZ: dz * 0.42, part: 'lumno_7' }
+      { minX: dx * -0.500, maxX: dx * -0.417, minZ: realDz * -0.107, maxZ: realDz *  0.381, part: 'lumno_0' },
+      { minX: dx * -0.417, maxX: dx * -0.333, minZ: realDz * -0.280, maxZ: realDz *  0.500, part: 'lumno_1' },
+      { minX: dx * -0.333, maxX: dx * -0.250, minZ: realDz * -0.380, maxZ: realDz *  0.415, part: 'lumno_2' },
+      { minX: dx * -0.250, maxX: dx * -0.167, minZ: realDz * -0.444, maxZ: realDz *  0.236, part: 'lumno_3' },
+      { minX: dx * -0.167, maxX: dx * -0.083, minZ: realDz * -0.486, maxZ: realDz *  0.154, part: 'lumno_4' },
+      { minX: dx * -0.083, maxX: dx *  0.000, minZ: realDz * -0.497, maxZ: realDz *  0.091, part: 'lumno_5' },
+      { minX: dx *  0.000, maxX: dx *  0.083, minZ: realDz * -0.500, maxZ: realDz *  0.100, part: 'lumno_6' },
+      { minX: dx *  0.083, maxX: dx *  0.167, minZ: realDz * -0.497, maxZ: realDz *  0.127, part: 'lumno_7' },
+      { minX: dx *  0.167, maxX: dx *  0.250, minZ: realDz * -0.492, maxZ: realDz *  0.195, part: 'lumno_8' },
+      { minX: dx *  0.250, maxX: dx *  0.333, minZ: realDz * -0.462, maxZ: realDz *  0.309, part: 'lumno_9' },
+      { minX: dx *  0.333, maxX: dx *  0.417, minZ: realDz * -0.407, maxZ: realDz *  0.430, part: 'lumno_10' },
+      { minX: dx *  0.417, maxX: dx *  0.500, minZ: realDz * -0.338, maxZ: realDz *  0.430, part: 'lumno_11' }
     ];
   }
   // 2. Sala Piero Derecha (Librero izq, Asiento medio, Chaise der)
