@@ -197,25 +197,26 @@
       // 4. SEMÁFOROS Y REGLA DE INVENTARIO DE TU TIENDA
       {
         type: "strategy",
-        id: "04. SEMÁFOROS DE STOCK",
-        module: "¿Cómo calcula el sistema las piezas disponibles y qué significan los colores?",
-        title: "Existencias de tu Tienda y Semáforos de Urgencia",
+        id: "04. INVENTARIO Y PIEZAS",
+        module: "¿Cómo calcula el sistema las Piezas Solicitadas vs. el Stock Disponible?",
+        title: "Piezas de la Cotización e Inventario en Vivo de tu Tienda",
         badge: "INVENTARIO INTELIGENTE",
-        leftTitle: "📦 ¿Qué inventario suma según tu Sucursal?",
+        leftTitle: "📦 Piezas Solicitadas y Existencias por Sucursal",
         leftItems: [
-          "Playa del Carmen: Suma existencias de CEDIS + Tienda CREATA LIVING PLAYA (bodega y piso).",
-          "Colosio: Suma existencias de CEDIS + Tienda CREATA LIVING COLOSIO.",
-          "Puerto Cancún (PTC): Suma existencias de CEDIS + Tienda CREATA PUERTO CANCUN.",
-          "Casa Creata (Bonampak) y Proyectos: Toman únicamente las existencias disponibles en CEDIS."
+          "Piezas Solicitadas en Cotización: Es la cantidad exacta de muebles cotizados por el cliente (ej. 1 recámara, 2 burós o 6 sillas).",
+          "Inventario Total Calculado: Suma en tiempo real existencias de CEDIS Central + Bodega de Tienda + Piso de Exhibición.",
+          "Regla por Sucursal: Playa, Colosio y Puerto Cancún (PTC) suman CEDIS + su tienda física. Casa Creata y Proyectos toman únicamente CEDIS.",
+          "Actualización en Vivo: El sistema compara automáticamente [Piezas Pedidas] vs [Stock Actual] cada 2 minutos con el ERP."
         ],
-        rightTitle: "🚦 ¿Qué debes hacer según el Semáforo de tu Cotización?",
+        rightTitle: "🚦 Semáforos según las Piezas Solicitadas vs Stock",
         rightItems: [
-          "🔴 CRÍTICO: Faltan piezas para completar lo pedido, quedan menos de 5 en total o el stock cayó más de 30%. ¡Contacta al cliente HOY mismo!",
-          "🏛️ SOLO EN PISO DE EXHIBICIÓN: En CEDIS ya hay 0 piezas y solo queda la pieza muestra en tienda. ¡Usa el argumento de 'Última pieza entrega inmediata'!",
-          "📉 BAJÓ STOCK: Otras tiendas están vendiendo este mueble; avisa a tu cliente antes de que se termine.",
-          "📅 SEGUIMIENTO (3+ DÍAS) y 🟢 DISPONIBLE / ESTABLE: Da seguimiento consultivo para cerrar el proyecto."
+          "🟢 DISPONIBLE: El inventario cubre con holgura lo solicitado (más de lo pedido y más de 3 piezas en almacén).",
+          "🟡 AJUSTADO: Quedan justo las piezas pedidas o 3 o menos piezas en total (¡peligro de quedarse sin stock hoy!).",
+          "🔴 INSUFICIENTE / CRÍTICO: El stock disponible es menor a lo que pidió el cliente (ej. cotizó 2 y solo queda 1) o quedan menos de 5 con caída mayor al 30%.",
+          "🏛️ SOLO EN PISO: En CEDIS y Bodega hay 0 piezas; solo queda la pieza de exhibición en showroom (¡argumento: entrega inmediata!).",
+          "⚫ AGOTADO: 0 piezas disponibles en toda la red de sucursales y CEDIS."
         ],
-        footerNote: "Si una cotización tiene varios muebles, el semáforo de la fila siempre te mostrará el estado del mueble más urgente."
+        footerNote: "En cada cotización, el semáforo principal de la fila siempre te alertará sobre la pieza con mayor urgencia de inventario."
       },
 
       // 5. PASO 1: INGRESO Y CAMBIO DE CONTRASEÑA TEMPORAL
@@ -282,35 +283,58 @@
       // 7. PASO 3: LECTURA DE LA TABLA Y REGISTRO DE CELULAR
       {
         id: "PASO 3 • TABLA DE COTIZACIONES",
-        module: "Listado Principal de Cotizaciones Agrupadas por Folio",
-        title: "Cómo revisar tus muebles cotizados y guardar el celular del cliente",
+        module: "Listado Principal: Piezas Solicitadas vs. Inventario en Almacén",
+        title: "Cómo revisar las Piezas Solicitadas y el Inventario Disponible",
         category: "Revisión de Existencias y Datos del Cliente",
         location: "Cuerpo central de la pantalla",
         role: "Asesores de Ventas y Gerentes de Tienda",
         imgUrl: "https://brewpage.app/public/rRXhMREt3J",
-        fileName: "Fila de Cotización + Botón ✏️ Celular",
+        fileName: "Fila de Cotización + Muebles (Piezas Pedidas vs Stock)",
         replicaHtml: `
-          <div class="bg-white text-slate-800 p-3 rounded-xl border border-slate-300 w-full text-[11px] space-y-1.5 shadow">
-            <div class="flex justify-between border-b pb-1">
-              <span><b>Folio:</b> PTC32024 (hace 3 días)</span>
-              <span class="text-amber-700 font-bold">📱 9981388139 ✏️</span>
+          <div class="bg-white text-slate-800 p-3 rounded-xl border border-slate-200 w-full text-[11px] space-y-2 shadow-sm">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-1.5">
+              <div>
+                <span class="font-mono font-black text-slate-900 text-xs">Folio: PTC32024</span>
+                <span class="text-slate-400 text-[10px] ml-1">(hace 3 días)</span>
+              </div>
+              <span class="text-amber-800 font-bold bg-amber-50 border border-amber-200 px-2 py-0.5 rounded text-[10px]">📱 9981388139 ✏️</span>
             </div>
-            <div class="flex justify-between items-center">
-              <span><b>Muebles:</b> 2 producto(s) ▾</span>
-              <span class="bg-red-100 text-red-700 px-2 py-0.5 rounded font-bold">🔴 CRÍTICO / SOLO PISO</span>
+            <div class="space-y-1.5 bg-slate-50 p-2 rounded-lg border border-slate-100">
+              <div class="text-[10px] font-bold text-slate-600 uppercase tracking-wider flex justify-between">
+                <span>Muebles Cotizados (Piezas Solicitadas):</span>
+                <span class="text-slate-500 font-semibold">2 productos</span>
+              </div>
+              <div class="bg-white p-1.5 rounded border border-slate-200 flex items-center justify-between gap-1.5">
+                <div class="min-w-0">
+                  <div class="font-bold text-slate-800 truncate">PORTOFINO CAMA KS ROSA MORADA...</div>
+                  <div class="text-[10px] text-slate-500">Solicitado: <b>1 pza</b> • Stock: 5 en CEDIS</div>
+                </div>
+                <span class="shrink-0 bg-amber-50 text-amber-800 border border-amber-200 px-1.5 py-0.5 rounded font-bold text-[10px]">Ajustado (5 pzas)</span>
+              </div>
+              <div class="bg-white p-1.5 rounded border border-slate-200 flex items-center justify-between gap-1.5">
+                <div class="min-w-0">
+                  <div class="font-bold text-slate-800 truncate">PORTOFINO BAUL MAT LISO...</div>
+                  <div class="text-[10px] text-slate-500">Solicitado: <b>1 pza</b> • Stock: 0 CEDIS / 1 Piso PTC</div>
+                </div>
+                <span class="shrink-0 bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 rounded font-bold text-[10px]">🏛️ Solo Piso (1 pza)</span>
+              </div>
             </div>
-            <div class="text-[10px] text-slate-500">Último Aviso WhatsApp: Ver fecha para no saturar al cliente</div>
+            <div class="flex items-center justify-between pt-0.5 text-[10px]">
+              <span class="text-slate-500">Semáforo Global:</span>
+              <span class="bg-red-50 text-red-700 border border-red-200 px-2 py-0.5 rounded font-bold">🔴 CRÍTICO / SOLO PISO</span>
+            </div>
           </div>
         `,
-        visualDesc: "Cada fila agrupa un Folio completo con: Fecha, Asesor, Cliente (con botón '+ Celular / ✏️'), lista desplegable de Muebles Cotizados, Estado Global y fecha del último Aviso WhatsApp.",
-        purpose: "Darte de un vistazo toda la situación de la cotización antes de escribirle al cliente.",
-        impact: "Permite agregar el teléfono del cliente si no se capturó en el ERP y evitar mandarle mensaje dos veces el mismo día.",
+        visualDesc: "Cada renglón desglosa el Folio con: Cliente y Teléfono, la lista de Muebles Cotizados con las Piezas Solicitadas (ej. 1 pza pedida), las existencias disponibles en almacén (CEDIS + Bodega Tienda + Piso de Exhibición) y la insignia de disponibilidad.",
+        purpose: "Comprobar de inmediato si cuentas con inventario completo para surtir lo que el cliente pidió o si debes ofrecer alternativas de stock antes de contactarlo.",
+        impact: "Evita prometer muebles sin stock o perder ventas porque otra tienda vendió las piezas restantes.",
         steps: [
-          "Si ves que a tu cliente le falta teléfono o cambió de número, haz clic en '+ Celular' o en el lápiz '✏️', escríbelo y quedará guardado.",
-          "Haz clic en 'Muebles Cotizados' para desplegar las piezas del folio y ver cuántas unidades hay hoy (Disponible, Ajustado, Insuficiente o Agotado).",
-          "Revisa la columna 'Aviso WhatsApp' para confirmar cuándo fue la última vez que se le envió seguimiento."
+          "1. Identifica las Piezas Solicitadas: En la columna 'Muebles Cotizados', revisa cuántas unidades pidió tu cliente de cada producto (ej. 1 pza, 2 pzas o 6 piezas).",
+          "2. Revisa la Insignia de Inventario en Vivo: Observa el semáforo a la derecha de cada mueble: 'Disponible' (stock suficiente), 'Ajustado' (pocas piezas), 'Insuficiente' (faltan piezas para completar lo solicitado) o 'Solo Piso' (únicamente queda la pieza en tienda).",
+          "3. Verifica la Ubicación Física: Conoce si el stock está listo en CEDIS Almacén o si requieres vender la pieza de exhibición física de tu sucursal.",
+          "4. Guarda o Edita el WhatsApp: Si falta el celular o cambió de número, pulsa '+ Celular' o el lápiz '✏️' para que quede registrado en el sistema."
         ],
-        goldenRule: "Si la cotización en SMueblería no tenía celular, agrégalo aquí mismo con el botón '+ Celular / ✏️' para poder mandarle WhatsApp en 1 clic."
+        goldenRule: "Si una cotización tiene varios muebles y uno marca 'Solo Piso' o 'Insuficiente', enfoca tu mensaje de WhatsApp en apartar esa pieza crítica hoy mismo."
       },
 
       // 8. PASO 4: BOTÓN ENVIAR SEGUIMIENTO
@@ -377,23 +401,32 @@
         imgUrl: "https://brewpage.app/public/UXPdUtGjEU",
         fileName: "10-btn-modal-wa-tonos.png",
         replicaHtml: `
-          <div class="space-y-2 w-full">
-            <div class="bg-amber-50 border border-amber-300 text-slate-800 p-2 rounded text-[11px] flex justify-between">
-              <span>☑️ PORTOFINO BAUL MAT LISO ROSA...</span><b class="text-red-600">1 pzas hoy</b>
+          <div class="space-y-2 w-full text-[11px]">
+            <div class="bg-slate-50 p-2 rounded-lg border border-slate-200 space-y-1.5">
+              <div class="text-[10px] font-bold text-slate-600 uppercase">Piezas Cotizadas a Incluir en el Mensaje:</div>
+              <div class="bg-white border border-slate-200 p-1.5 rounded flex items-center justify-between gap-1.5">
+                <span class="truncate">☑️ PORTOFINO CAMA KS <span class="text-slate-400 font-normal">(Cotizado: 1 pza)</span></span>
+                <span class="text-emerald-700 font-bold shrink-0">5 pzas en CEDIS</span>
+              </div>
+              <div class="bg-amber-50/70 border border-amber-200 p-1.5 rounded flex items-center justify-between gap-1.5">
+                <span class="truncate">☑️ PORTOFINO BAUL MAT <span class="text-slate-400 font-normal">(Cotizado: 1 pza)</span></span>
+                <span class="text-amber-800 font-bold shrink-0">1 pza (Solo Piso)</span>
+              </div>
             </div>
-            <div class="flex flex-wrap gap-1.5 justify-center">
-              <span class="px-2.5 py-1.5 rounded-lg bg-[#d97706] text-white font-bold text-[11px]">💖 1. Ilusión & Disponibilidad</span>
-              <span class="px-2.5 py-1.5 rounded-lg bg-white text-slate-700 border text-[11px] font-semibold">⭐ 2. Última en Tienda</span>
-              <span class="px-2.5 py-1.5 rounded-lg bg-white text-slate-700 border text-[11px] font-semibold">🤝 3. Seguimiento Cálido</span>
+            <div class="flex flex-wrap gap-1.5 justify-center pt-0.5">
+              <span class="px-2 py-1 rounded bg-slate-900 text-white font-bold text-[10px]">💖 1. Ilusión & Stock</span>
+              <span class="px-2 py-1 rounded bg-white text-slate-700 border text-[10px] font-semibold">⭐ 2. Última en Tienda</span>
+              <span class="px-2 py-1 rounded bg-white text-slate-700 border text-[10px] font-semibold">🤝 3. Seguimiento Cálido</span>
             </div>
           </div>
         `,
-        visualDesc: "Lista de piezas con casillas [✓] ('Seleccionar todas') y 3 botones de tono bajo la leyenda '✨ Mensajes cálidos, sin tecnicismos de almacén'.",
-        purpose: "Permitirte elegir de qué muebles quieres hablarle al cliente y cambiar el estilo del mensaje con un solo clic según la urgencia del stock.",
-        impact: "El cliente recibe un mensaje cálido de diseño de interiores (nunca frases frías como 'no hay en CEDIS').",
+        visualDesc: "Lista de piezas con casillas [✓] donde ves cada mueble con sus Piezas Solicitadas (Cotizadas) y su Stock Actual en almacén, más los 3 botones de tono persuasivo.",
+        purpose: "Permitirte elegir de qué muebles quieres hablarle al cliente y adaptar el estilo del mensaje según las piezas pedidas y el stock real.",
+        impact: "El cliente recibe un mensaje cálido de diseño enfocado en las piezas críticas antes de que se agoten.",
         steps: [
-          "1. Marca o desmarca las piezas [✓]: Si cotizaste 5 muebles pero solo 1 está por agotarse, desmarca los otros 4 para enfocar el mensaje en esa pieza.",
-          "2. Elige el botón de Tono ideal: Usa '💖 1. Ilusión & Disponibilidad' para emocionar con entrega inmediata; usa '⭐ 2. Última en Tienda' cuando solo quede la pieza de exhibición; o usa '🤝 3. Seguimiento Cálido' para consultar avances de su obra o espacio.",
+          "1. Marca o desmarca las piezas [✓]: Si el cliente cotizó varios muebles pero solo 1 está por agotarse o queda en piso, selecciona únicamente esa pieza para crear urgencia.",
+          "2. Comprueba las Piezas Cotizadas vs Stock: El cuadro muestra entre paréntesis cuántas piezas pidió tu cliente y cuántas hay disponibles hoy en CEDIS o tienda.",
+          "3. Selecciona el Tono persuasivo: Usa '💖 Ilusión & Disponibilidad' para entrega inmediata; usa '⭐ Última en Tienda' si solo queda la pieza de exhibición; o '🤝 Seguimiento Cálido' para proyectos en avance.",
           "Al cambiar de botón o marcar piezas, verás cómo el texto de abajo se reescribe solo al instante."
         ],
         goldenRule: "Cuando veas que solo queda '1 pza hoy' o 'Solo Piso', selecciona el botón '⭐ 2. Última en Tienda' para crear urgencia real de compra."
