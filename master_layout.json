@@ -1,18 +1,18 @@
 {
   "v": 2,
-  "store": "casa_creata",
+  "store": "colosio",
   "floor": "PB",
   "muros": 34,
   "cam": {
     "pos": [
-      2.74,
-      22.12,
-      -16.49
+      -11.88,
+      7.11,
+      -13.3
     ],
     "target": [
-      6.86,
-      1.41,
-      -13.02
+      8.15,
+      0.45,
+      -12.89
     ]
   },
   "furniture": [
@@ -47,8 +47,8 @@
     {
       "id": "sofa_zama_ivory",
       "lvl": "PB",
-      "x": 15.681,
-      "z": -9.442,
+      "x": 15.301,
+      "z": -9.162,
       "r": 1.571
     },
     {
@@ -220,7 +220,7 @@
       "r": 4.712
     },
     {
-      "id": "mesa_comedor_kamko",
+      "id": "mesa_centror_kamko",
       "lvl": "PB",
       "x": 18.208,
       "z": -12.965,
@@ -325,7 +325,7 @@
       "r": 3.142
     },
     {
-      "id": "mesa_comedor_barril_8p",
+      "id": "mesa_centror_barril_8p",
       "lvl": "PB",
       "x": 2.337,
       "z": -12.795,
@@ -334,8 +334,8 @@
     {
       "id": "sofa_cama_uganda_oat",
       "lvl": "PB",
-      "x": 5.49,
-      "z": -9.438,
+      "x": 5.119,
+      "z": -9.107,
       "r": 1.571
     },
     {
@@ -348,15 +348,15 @@
     {
       "id": "credenza_adana",
       "lvl": "PB",
-      "x": 12.656,
-      "z": -16.078,
+      "x": 12.584,
+      "z": -16.079,
       "r": 0
     },
     {
       "id": "consola_baraman",
       "lvl": "PB",
-      "x": 19.68,
-      "z": -3.914,
+      "x": 19.7,
+      "z": -3.722,
       "r": 1.571
     },
     {
@@ -423,18 +423,11 @@
       "r": 20.42
     },
     {
-      "id": "sala_lumno_baker_linen",
+      "id": "librero_mazati_bellota",
       "lvl": "PB",
-      "x": 2.134,
-      "z": -8.885,
-      "r": 14.94
-    },
-    {
-      "id": "sala_piero_der_moss",
-      "lvl": "PB",
-      "x": 11.752,
-      "z": -13.02,
-      "r": 3.142
+      "x": 19.715,
+      "z": -1.785,
+      "r": 4.712
     },
     {
       "id": "bufetera_madrid",
@@ -446,8 +439,36 @@
     {
       "id": "librero_mazati_bellota",
       "lvl": "PB",
-      "x": 14.6,
-      "z": -6,
+      "x": 19.715,
+      "z": -5.782,
+      "r": 4.712
+    },
+    {
+      "id": "sillon_kate",
+      "lvl": "PB",
+      "x": 3.518,
+      "z": -10.133,
+      "r": 6.283
+    },
+    {
+      "id": "sala_piero_der_moss",
+      "lvl": "PB",
+      "x": 11.852,
+      "z": -13.022,
+      "r": 3.142
+    },
+    {
+      "id": "sala_lumno_baker_linen",
+      "lvl": "PB",
+      "x": 2.47,
+      "z": -8.35,
+      "r": 3.142
+    },
+    {
+      "id": "mesa_lateral_zeus",
+      "lvl": "PB",
+      "x": 16.647,
+      "z": -2.718,
       "r": 0
     },
     {
@@ -458,17 +479,17 @@
       "r": 1.571
     },
     {
-      "id": "sillon_kate",
-      "lvl": "PB",
-      "x": 4,
-      "z": -11.26,
-      "r": 0
-    },
-    {
       "id": "sofa_rennes_grey",
       "lvl": "PB",
       "x": 7.904,
       "z": -15.44,
+      "r": 0
+    },
+    {
+      "id": "mesa_centro_sottana",
+      "lvl": "PB",
+      "x": 8.781,
+      "z": -13.537,
       "r": 0
     }
   ]

@@ -11,7 +11,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>CASA CREATA · Showroom 3D Interactivo</title>
-<script>window.APP_BUILD_VERSION = '1794005061';</script>
+<script>window.APP_BUILD_VERSION = '1794407582';</script>
 <style>
   :root {
     --bg: #0e0f12;
@@ -501,14 +501,14 @@
       height: 95px;
       padding: 6px;
     }
-    .prod-card-body {
+    .prod-card-info {
       padding: 8px;
     }
-    .prod-name {
+    .prod-card-title {
       font-size: 11px;
       line-height: 1.2;
     }
-    .prod-dim {
+    .prod-card-dim {
       font-size: 9px;
       margin-top: 2px;
     }
@@ -756,6 +756,22 @@
   color: #f7eedf;
 }
 
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .prod-store-badge {
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    display: inline-block;
+    align-self: flex-start;
+    letter-spacing: 0.03em;
+  }
+
 </style>
 </head>
 <body>
@@ -764,6 +780,11 @@
 <!-- 1. Cápsula Superior Izquierda: CASA CREATA + [💾 Distribuciones] + [🛋️ + Catálogo] -->
 <div id="topBarLeft">
   <span class="brand-title">CASA CREATA</span>
+  <button class="btn-top-action" id="btnToggleSets" title="Explorar los 51 Sets y Zonas de Casa Creata">📍 Sets ▾</button>
+  <div id="activeZoneHud" class="zone-hud-pill" title="Zona actual en el plano · Clic para ver Sets">
+    <span class="zone-hud-dot"></span>
+    <span id="activeZoneTxt">Planta Baja · Showroom</span>
+  </div>
   <button class="btn-top-action btn-save-action" id="btnSaveProcess" title="Guardar proceso del plano y diseño en curso (Ctrl+S)">💾 Guardar</button>
   <button class="btn-top-action" id="btnOpenDistrib" title="Ver y cargar distribuciones guardadas">📁 Distribuciones</button>
 </div>
@@ -780,6 +801,10 @@
   <button class="pill-btn" id="btnSelectStore" title="Elegir tienda para ver ventas">🏪 Tienda: <b id="lblActiveStore">CASA CREATA</b> ▾</button>
   <button class="pill-btn" id="btnAutoRot">🔄 Girar Vista</button>
   <button class="pill-btn" id="btnResetView">🎯 Centrar</button>
+  <button class="pill-btn" id="btnRecordScreen" title="Grabar recorrido en video 3D (60 FPS)" style="display:inline-flex;align-items:center;gap:5px">
+    <span id="recDot" style="width:8px;height:8px;border-radius:50%;background:#e2ded8;display:inline-block"></span>
+    <span id="lblRecordTxt">Grabar</span>
+  </button>
 
 </div>
 
@@ -833,6 +858,22 @@
 <!-- 3. CATÁLOGO DESPLEGABLE HACIA ABAJO (CERO AMONTONAMIENTO) -->
 
 
+
+<!-- Menú Flotante Desplegable para [📍 Sets / Zonas Oficiales] -->
+<div id="setsDropdownMenu" class="sets-dropdown-popover">
+  <div class="sets-menu-header">
+    <div class="sets-menu-header-title">ZONAS Y SETS DE EXHIBICIÓN</div>
+    <div class="sets-menu-header-sub">51 Sets Oficiales · Acabados y Mobiliario</div>
+  </div>
+  <div class="sets-tabs-bar">
+    <button class="sets-tab-btn active" data-tab="PB">Planta Baja (Sets 1-21)</button>
+    <button class="sets-tab-btn" data-tab="N1">Planta Alta (Sets 22-51)</button>
+  </div>
+  <div class="sets-search-box">
+    <input type="text" id="setsSearchInput" placeholder="🔍 Buscar por Set, categoría o mueble..." class="sets-search-input">
+  </div>
+  <div class="sets-list-container" id="setsListContainer"></div>
+</div>
 
 <div id="catalogBackdrop"></div>
 <div id="catalogDropdown">
@@ -981,13 +1022,16 @@
     </div>
     <div class="distrib-list" id="savedDistribList"></div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
-      <button class="btn-subtle" id="btnCopyUrlShare">🔗 Copiar URL Compartible</button>
+      <div style="display:flex;gap:6px">
+        <button class="btn-subtle" id="btnCopyUrlShare">🔗 Copiar URL</button>
+        <button class="btn-subtle" id="btnRestoreMaster" title="Restaurar los 65 muebles oficiales de fábrica">🔄 Layout Maestro</button>
+      </div>
       <button class="btn-subtle" id="btnClearAllFurn" style="color:#ff7675">Limpiar Todo</button>
     </div>
   </div>
 </div>
 
-<script src="modelos_glb_data.js?v=1794005061"></script>
+<script src="modelos_glb_data.js?v=1794407582"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -3311,13 +3355,32 @@ function selectFurniture(furn, isMulti = false){
   renderSelectionHighlight();
 }
 
+function disposeObject3D(obj){
+  if(!obj) return;
+  obj.traverse(c => {
+    if(c.geometry) c.geometry.dispose();
+    if(c.material){
+      if(Array.isArray(c.material)) c.material.forEach(m => m.dispose());
+      else c.material.dispose();
+    }
+  });
+}
+
+function clearHighlightGroup(){
+  while(selHighlight.children.length > 0){
+    const ch = selHighlight.children[0];
+    selHighlight.remove(ch);
+    disposeObject3D(ch);
+  }
+}
+
 function deselectFurniture(){
   selectedFurniture = null;
   selectedFurnitureList = [];
   cardWrap.classList.remove('open');
   document.getElementById('editControlsBox').classList.remove('open');
   document.getElementById('btnToggleEdit').classList.remove('active');
-  while(selHighlight.children.length > 0) selHighlight.remove(selHighlight.children[0]);
+  clearHighlightGroup();
 }
 
 function renderFichaTables(item){
@@ -3369,7 +3432,7 @@ function switchFurnitureVariant(furn, newVariantItem){
 }
 
 function renderSelectionHighlight(){
-  while(selHighlight.children.length > 0) selHighlight.remove(selHighlight.children[0]);
+  clearHighlightGroup();
   const targets = (selectedFurnitureList && selectedFurnitureList.length > 0) ? selectedFurnitureList : (selectedFurniture ? [selectedFurniture] : []);
   if(targets.length === 0) return;
 
@@ -3394,38 +3457,51 @@ document.getElementById('btnToggleEdit').addEventListener('click', e => {
 document.getElementById('btnDeselect').addEventListener('click', deselectFurniture);
 document.getElementById('btnCloseFicha').addEventListener('click', deselectFurniture);
 
+const TWO_PI = Math.PI * 2;
+function normalizeRad(r){
+  return ((r % TWO_PI) + TWO_PI) % TWO_PI;
+}
+
 document.getElementById('rotRange').addEventListener('input', e => {
   if(!selectedFurniture) return;
   const deg = parseFloat(e.target.value);
-  selectedFurniture.rotation.y = THREE.MathUtils.degToRad(deg);
-  const clamped = clampPositionToWalls(
-    selectedFurniture.position.x, selectedFurniture.position.z,
-    selectedFurniture.rotation.y, selectedFurniture.userData.item,
-    selectedFurniture.userData.level, selectedFurniture, true
-  );
-  selectedFurniture.position.x = clamped.x;
-  selectedFurniture.position.z = clamped.z;
+  const newRad = normalizeRad(THREE.MathUtils.degToRad(deg));
+  const deltaRad = newRad - selectedFurniture.rotation.y;
+  const targets = (selectedFurnitureList && selectedFurnitureList.length > 0) ? selectedFurnitureList : [selectedFurniture];
+  targets.forEach(furn => {
+    furn.rotation.y = normalizeRad(furn.rotation.y + deltaRad);
+    const clamped = clampPositionToWalls(
+      furn.position.x, furn.position.z,
+      furn.rotation.y, furn.userData.item,
+      furn.userData.level, targets, true
+    );
+    furn.position.x = clamped.x;
+    furn.position.z = clamped.z;
+  });
   document.getElementById('rotDegTxt').textContent = Math.round(deg) + '°';
   renderSelectionHighlight();
   saveStateToUrl();
+});
+document.getElementById('rotRange').addEventListener('change', () => {
+  recordHistory('rot_slider');
 });
 document.getElementById('bRotM45').addEventListener('click', () => {
   const targets = (selectedFurnitureList && selectedFurnitureList.length > 0) ? selectedFurnitureList : (selectedFurniture ? [selectedFurniture] : []);
   if(targets.length === 0) return;
   targets.forEach(furn => {
-    furn.rotation.y -= Math.PI/4;
-    recordHistory('rot', furn);
+    furn.rotation.y = normalizeRad(furn.rotation.y - Math.PI/4);
   });
   updateEditValues();
+  recordHistory('rot');
 });
 document.getElementById('bRotP45').addEventListener('click', () => {
   const targets = (selectedFurnitureList && selectedFurnitureList.length > 0) ? selectedFurnitureList : (selectedFurniture ? [selectedFurniture] : []);
   if(targets.length === 0) return;
   targets.forEach(furn => {
-    furn.rotation.y += Math.PI/4;
-    recordHistory('rot', furn);
+    furn.rotation.y = normalizeRad(furn.rotation.y + Math.PI/4);
   });
   updateEditValues();
+  recordHistory('rot');
 });
 
 function updateEditValues(){
@@ -3753,8 +3829,8 @@ function snapSelectedToNearest(){
       }
     });
 
-    renderSelectionHighlight();
-    saveStateToUrl();
+    updateEditValues();
+    recordHistory('snap');
     showSaveToast('¡Mueble pegado al ras del obstáculo más cercano!', '🧲');
   } else {
     showSaveToast('No se encontró ningún muro ni mueble adyacente para pegar', 'ℹ️');
@@ -3802,12 +3878,13 @@ document.getElementById('bDelSelected').addEventListener('click', () => {
   const targets = (selectedFurnitureList && selectedFurnitureList.length > 0) ? [...selectedFurnitureList] : (selectedFurniture ? [selectedFurniture] : []);
   if(targets.length === 0) return;
   targets.forEach(furn => {
-    recordHistory('remove', furn);
     if(furn.parent) furn.parent.remove(furn);
+    disposeObject3D(furn);
     const idx = placedFurniture.indexOf(furn);
     if(idx >= 0) placedFurniture.splice(idx, 1);
   });
   deselectFurniture();
+  recordHistory('remove');
   saveStateToUrl();
 });
 
@@ -3893,19 +3970,19 @@ function renderCatalog(catFilter){
 // CONFIGURACIÓN MAESTRA OFICIAL: DISTRIBUCIÓN RESTAURADA (LINK ÚNICO)
 window.MASTER_DEFAULT_LAYOUT = {
   "v": 2,
-  "store": "casa_creata",
+  "store": "colosio",
   "floor": "PB",
   "muros": 34,
   "cam": {
     "pos": [
-      2.74,
-      22.12,
-      -16.49
+      -11.88,
+      7.11,
+      -13.3
     ],
     "target": [
-      6.86,
-      1.41,
-      -13.02
+      8.15,
+      0.45,
+      -12.89
     ]
   },
   "furniture": [
@@ -3940,8 +4017,8 @@ window.MASTER_DEFAULT_LAYOUT = {
     {
       "id": "sofa_zama_ivory",
       "lvl": "PB",
-      "x": 15.681,
-      "z": -9.442,
+      "x": 15.301,
+      "z": -9.162,
       "r": 1.571
     },
     {
@@ -4113,7 +4190,7 @@ window.MASTER_DEFAULT_LAYOUT = {
       "r": 4.712
     },
     {
-      "id": "mesa_comedor_kamko",
+      "id": "mesa_centror_kamko",
       "lvl": "PB",
       "x": 18.208,
       "z": -12.965,
@@ -4218,7 +4295,7 @@ window.MASTER_DEFAULT_LAYOUT = {
       "r": 3.142
     },
     {
-      "id": "mesa_comedor_barril_8p",
+      "id": "mesa_centror_barril_8p",
       "lvl": "PB",
       "x": 2.337,
       "z": -12.795,
@@ -4227,8 +4304,8 @@ window.MASTER_DEFAULT_LAYOUT = {
     {
       "id": "sofa_cama_uganda_oat",
       "lvl": "PB",
-      "x": 5.49,
-      "z": -9.438,
+      "x": 5.119,
+      "z": -9.107,
       "r": 1.571
     },
     {
@@ -4241,15 +4318,15 @@ window.MASTER_DEFAULT_LAYOUT = {
     {
       "id": "credenza_adana",
       "lvl": "PB",
-      "x": 12.656,
-      "z": -16.078,
+      "x": 12.584,
+      "z": -16.079,
       "r": 0
     },
     {
       "id": "consola_baraman",
       "lvl": "PB",
-      "x": 19.68,
-      "z": -3.914,
+      "x": 19.7,
+      "z": -3.722,
       "r": 1.571
     },
     {
@@ -4316,18 +4393,11 @@ window.MASTER_DEFAULT_LAYOUT = {
       "r": 20.42
     },
     {
-      "id": "sala_lumno_baker_linen",
+      "id": "librero_mazati_bellota",
       "lvl": "PB",
-      "x": 2.134,
-      "z": -8.885,
-      "r": 14.94
-    },
-    {
-      "id": "sala_piero_der_moss",
-      "lvl": "PB",
-      "x": 11.752,
-      "z": -13.02,
-      "r": 3.142
+      "x": 19.715,
+      "z": -1.785,
+      "r": 4.712
     },
     {
       "id": "bufetera_madrid",
@@ -4339,8 +4409,36 @@ window.MASTER_DEFAULT_LAYOUT = {
     {
       "id": "librero_mazati_bellota",
       "lvl": "PB",
-      "x": 14.6,
-      "z": -6,
+      "x": 19.715,
+      "z": -5.782,
+      "r": 4.712
+    },
+    {
+      "id": "sillon_kate",
+      "lvl": "PB",
+      "x": 3.518,
+      "z": -10.133,
+      "r": 6.283
+    },
+    {
+      "id": "sala_piero_der_moss",
+      "lvl": "PB",
+      "x": 11.852,
+      "z": -13.022,
+      "r": 3.142
+    },
+    {
+      "id": "sala_lumno_baker_linen",
+      "lvl": "PB",
+      "x": 2.47,
+      "z": -8.35,
+      "r": 3.142
+    },
+    {
+      "id": "mesa_lateral_zeus",
+      "lvl": "PB",
+      "x": 16.647,
+      "z": -2.718,
       "r": 0
     },
     {
@@ -4351,17 +4449,17 @@ window.MASTER_DEFAULT_LAYOUT = {
       "r": 1.571
     },
     {
-      "id": "sillon_kate",
-      "lvl": "PB",
-      "x": 4,
-      "z": -11.26,
-      "r": 0
-    },
-    {
       "id": "sofa_rennes_grey",
       "lvl": "PB",
       "x": 7.904,
       "z": -15.44,
+      "r": 0
+    },
+    {
+      "id": "mesa_centro_sottana",
+      "lvl": "PB",
+      "x": 8.781,
+      "z": -13.537,
       "r": 0
     }
   ]
@@ -4705,16 +4803,7 @@ function restoreInitialState(){
   }
 
   if(!targetObj || getFurnitureList(targetObj).length === 0){
-    targetObj = window.MASTER_DEFAULT_LAYOUT;
-  } else if(window.MASTER_DEFAULT_LAYOUT && Array.isArray(window.MASTER_DEFAULT_LAYOUT.furniture)){
-    const curList = getFurnitureList(targetObj);
-    const placedSet = new Set(curList.map(f => f.id));
-    window.MASTER_DEFAULT_LAYOUT.furniture.forEach(mf => {
-      if(!placedSet.has(mf.id)){
-        curList.push(Object.assign({}, mf));
-        placedSet.add(mf.id);
-      }
-    });
+    targetObj = JSON.parse(JSON.stringify(window.MASTER_DEFAULT_LAYOUT));
   }
 
   if(targetObj){
@@ -4935,9 +5024,23 @@ document.getElementById('btnSaveDistribNow').addEventListener('click', () => {
 document.getElementById('btnCopyUrlShare').addEventListener('click', () => {
   saveStateToUrl();
   navigator.clipboard.writeText(location.href).then(() => {
-    alert('¡URL de distribución copiada al portapapeles! Puedes enviarla o abrirla en cualquier navegador o celular.');
+    showSaveToast('¡URL copiada al portapapeles!', '🔗');
   });
 });
+
+const btnRestoreMasterEl = document.getElementById('btnRestoreMaster');
+if(btnRestoreMasterEl){
+  btnRestoreMasterEl.addEventListener('click', () => {
+    if(confirm('¿Deseas restaurar la distribución maestra original de 65 muebles?')){
+      const masterCopy = JSON.parse(JSON.stringify(window.MASTER_DEFAULT_LAYOUT));
+      loadSetupFromJson(masterCopy);
+      recordHistory('restore_master');
+      saveStateToUrl();
+      distribModal.classList.remove('open');
+      showSaveToast('¡Distribución maestra restaurada (65 muebles)!', '🔄');
+    }
+  });
+}
 
 document.getElementById('btnClearAllFurn').addEventListener('click', () => {
   if(confirm('¿Seguro que deseas quitar todos los muebles de los 3 pisos?')){
@@ -4971,12 +5074,15 @@ onResize();
 
 renderer.setAnimationLoop((now) => {
   if(cameraAnim) cameraAnim.update(now);
+  let levelsMoving = false;
   NIVELES.forEach(L => {
-    curY[L.id] += (targetY[L.id] - curY[L.id]) * 0.12;
+    const diff = targetY[L.id] - curY[L.id];
+    if(Math.abs(diff) > 0.0005) levelsMoving = true;
+    curY[L.id] += diff * 0.12;
     levelGroups[L.id].position.y = curY[L.id];
   });
   controls.update();
-  if(selectedFurniture) renderSelectionHighlight();
+  if(selectedFurniture && levelsMoving) renderSelectionHighlight();
   renderer.render(scene, camera);
 });
 
